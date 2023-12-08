@@ -14,6 +14,7 @@ const typeorm_1 = require("@nestjs/typeorm");
 const pets_entity_1 = require("./pets/entity/pets.entity");
 const pets_module_1 = require("./pets/pets.module");
 const config_1 = require("@nestjs/config");
+const pets_upload_module_1 = require("./pets-upload/pets-upload.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -36,7 +37,8 @@ exports.AppModule = AppModule = __decorate([
                 }),
                 inject: [config_1.ConfigService]
             }),
-            pets_module_1.petModule
+            pets_module_1.petModule,
+            pets_upload_module_1.PetsUploadModule
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

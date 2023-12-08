@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PetEntity } from './pets/entity/pets.entity';
 import { petModule } from './pets/pets.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { PetsUploadModule } from './pets-upload/pets-upload.module';
 
 @Module({
   imports: [
@@ -25,7 +26,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       inject: [ConfigService]
     
     }),
-    petModule
+    petModule,
+    PetsUploadModule
   ],
   //  module: [petModule],
   controllers: [AppController],

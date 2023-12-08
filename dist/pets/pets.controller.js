@@ -15,6 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PetController = void 0;
 const common_1 = require("@nestjs/common");
 const pets_service_1 = require("./pets.service");
+const create_pet_dto_1 = require("./dto/create-pet.dto");
+const update_pets_dto_1 = require("./dto/update-pets.dto");
 let PetController = class PetController {
     constructor(petServices) {
         this.petServices = petServices;
@@ -40,7 +42,7 @@ __decorate([
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [create_pet_dto_1.createPetsDto]),
     __metadata("design:returntype", Promise)
 ], PetController.prototype, "createPet", null);
 __decorate([
@@ -61,7 +63,7 @@ __decorate([
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:paramtypes", [Object, update_pets_dto_1.UpdatePetsDto]),
     __metadata("design:returntype", Promise)
 ], PetController.prototype, "updatePets", null);
 __decorate([
