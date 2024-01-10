@@ -1,8 +1,7 @@
 import { HttpException, Injectable } from "@nestjs/common";
 import { Repository } from "typeorm";
-import { PetEntity } from "./entity/pets.entity";
 import { InjectRepository } from "@nestjs/typeorm";
-import { error } from "console";
+import { PetEntity } from "src/pet-entity/pets.entity";
 
 @Injectable() 
 export class PetService{
@@ -13,10 +12,10 @@ export class PetService{
     }
 
 
-    async getPet(id: number){
+    async getPet(id: string){
         const GetPet = await this.petRepo.findOne({ where: { id : id}})
         if( !GetPet){
-            throw new HttpException(`id not found`, 400)
+            throw new HttpException(`PLS INPUT THE CORRECT ID`, 400)
         }
         return GetPet;
     }
@@ -25,7 +24,7 @@ export class PetService{
         return await this.petRepo.find()
   }
 
-     async updatePet(id: number, payload){
+     async updatePet(id: string, payload){
      const petUpdate = await this.petRepo.update(id, payload)
       if( !petUpdate){
          throw new HttpException( " wrong update request", 400 )
@@ -33,7 +32,7 @@ export class PetService{
       return petUpdate
   }
     
-  async deletePet( id:number){
+  async deletePet( id:string){
     return await this.petRepo.delete(id)
   }
    }

@@ -1,11 +1,11 @@
 import { Repository } from "typeorm";
-import { PetEntity } from "./entity/pets.entity";
+import { PetEntity } from "src/pet-entity/pets.entity";
 export declare class PetService {
     private petRepo;
     constructor(petRepo: Repository<PetEntity>);
     createPet(payload: any): Promise<any>;
-    getPet(id: number): Promise<PetEntity>;
+    getPet(id: string): Promise<PetEntity>;
     getAllPets(): Promise<PetEntity[]>;
-    updatePet(id: number, payload: any): Promise<import("typeorm").UpdateResult>;
-    deletePet(id: number): Promise<import("typeorm").DeleteResult>;
+    updatePet(id: string, payload: any): Promise<import("typeorm").UpdateResult>;
+    deletePet(id: string): Promise<import("typeorm").DeleteResult>;
 }

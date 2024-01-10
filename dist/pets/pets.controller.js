@@ -15,8 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PetController = void 0;
 const common_1 = require("@nestjs/common");
 const pets_service_1 = require("./pets.service");
-const create_pet_dto_1 = require("./dto/create-pet.dto");
-const update_pets_dto_1 = require("./dto/update-pets.dto");
+const create_pet_dto_1 = require("../pet-dto/create-pet.dto");
+const update_pets_dto_1 = require("../pet-dto/update-pets.dto");
 let PetController = class PetController {
     constructor(petServices) {
         this.petServices = petServices;
@@ -24,17 +24,32 @@ let PetController = class PetController {
     async createPet(payload) {
         return await this.petServices.createPet(payload);
     }
-    async findPet(payload) {
-        return await this.petServices.getPet(payload);
+    async findPet(id) {
+        try {
+            return await this.petServices.getPet(id);
+        }
+        catch (err) {
+            throw new common_1.NotFoundException();
+        }
     }
     async findAllPets() {
         return await this.petServices.getAllPets();
     }
     async updatePets(id, payload) {
-        return await this.petServices.updatePet(id, payload);
+        try {
+            return await this.petServices.updatePet(id, payload);
+        }
+        catch (err) {
+            throw new common_1.NotFoundException();
+        }
     }
-    async deletePets(payload) {
-        return await this.petServices.deletePet(payload);
+    async deletePets(id) {
+        try {
+            return await this.petServices.deletePet(id);
+        }
+        catch (err) {
+            throw new common_1.NotFoundException();
+        }
     }
 };
 exports.PetController = PetController;
@@ -49,7 +64,7 @@ __decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], PetController.prototype, "findPet", null);
 __decorate([
@@ -63,14 +78,14 @@ __decorate([
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, update_pets_dto_1.UpdatePetsDto]),
+    __metadata("design:paramtypes", [String, update_pets_dto_1.UpdatePetsDto]),
     __metadata("design:returntype", Promise)
 ], PetController.prototype, "updatePets", null);
 __decorate([
     (0, common_1.Delete)(':id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], PetController.prototype, "deletePets", null);
 exports.PetController = PetController = __decorate([

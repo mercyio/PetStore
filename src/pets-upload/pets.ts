@@ -2,14 +2,14 @@ import { HttpException } from "@nestjs/common"
 import { extname } from "path"
 
 export const uploadPetsFile =(req, file, callback)=>{
-    if(!file.originalName.match(/\.(jpeg|jpeg|png)$/)){
+    if(!file.originalName.match(/\.(jpeg|jpg|png)$/)){
      return new HttpException('Try again', 404 )
     }
     callback(null,true)
 }
 
 
-export const editFile =(req, file, callback)=>{
+export const editFiles =(req, file, callback)=>{
    const name = file.originalName.split('.')[0];
    const fileExtName = extname(file.originalName);
    const requiredLenght = 6;

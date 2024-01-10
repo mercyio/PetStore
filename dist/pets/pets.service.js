@@ -15,8 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PetService = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("typeorm");
-const pets_entity_1 = require("./entity/pets.entity");
 const typeorm_2 = require("@nestjs/typeorm");
+const pets_entity_1 = require("../pet-entity/pets.entity");
 let PetService = class PetService {
     constructor(petRepo) {
         this.petRepo = petRepo;
@@ -27,7 +27,7 @@ let PetService = class PetService {
     async getPet(id) {
         const GetPet = await this.petRepo.findOne({ where: { id: id } });
         if (!GetPet) {
-            throw new common_1.HttpException(`id not found`, 400);
+            throw new common_1.HttpException(`PLS INPUT THE CORRECT ID`, 400);
         }
         return GetPet;
     }

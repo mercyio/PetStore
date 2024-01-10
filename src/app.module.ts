@@ -1,11 +1,13 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { PetEntity } from './pets/entity/pets.entity';
-import { petModule } from './pets/pets.module';
+import { petModule } from './Pets/pets.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PetsUploadModule } from './pets-upload/pets-upload.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { PetEntity } from './pet-entity/pets.entity';
+import { AuthModule } from './auth/auth.module';
+import { AuthController } from './auth/auth.controller';
+import { UserEntity } from './auth-entities/user.entity';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -20,17 +22,19 @@ import { PetsUploadModule } from './pets-upload/pets-upload.module';
         username: configService.getOrThrow('DB_USER'),
         password: configService.getOrThrow('DB_PASSWORD'),
         database: configService.getOrThrow('DB_DATABASE'),
-        entities: [PetEntity],
+        entities: [PetEntity, UserEntity],
         synchronize: configService.getOrThrow('DB_SYNC'),
       }),
       inject: [ConfigService]
     
     }),
     petModule,
-    PetsUploadModule
+    PetsUploadModule,
+    AuthModule,
+    UserModule
   ],
-  //  module: [petModule],
-  controllers: [AppController],
-  providers: [AppService],
+  
+    controllers: [AuthController],
+    // providers: [AppService],
 })
 export class AppModule {}
