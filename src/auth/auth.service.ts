@@ -2,22 +2,20 @@ import { Body, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UserEntity } from 'src/auth-entities/user.entity';
+import { UserEntity } from 'src/auth/auth-entities/user.entity';
 import * as bcrypt from 'bcrypt';
-import { SignupDto } from 'src/auth-dto/signup.dto';
-import { LoginDto } from 'src/auth-dto/login.dto';
+import { SignupDto } from 'src/auth/auth-dto/signup.dto';
 // import { generate } from 'rxjs';
 
 @Injectable()
 export class AuthService {
 
   constructor ( 
-    @InjectRepository(UserEntity) 
-    private UserEntity: Repository<UserEntity>, 
+    @InjectRepository(UserEntity) private UserEntity: Repository<UserEntity>,
     private jwtService :JwtService,
     ){}
 
-    async signup(payload: SignupDto) {
+    async signup(@Body() payload: SignupDto) {
 
       const saltOrRounds = 10;
 
@@ -35,25 +33,31 @@ export class AuthService {
   
 
 
-  async login(payload:LoginDto, Email:string, Password: string) {
-    const findUser = await this.UserEntity.findOne({where : {Email : Email}});
-    const comparePassword = await bcrypt.compare(Password,findUser.Password)
-
+  async login(Email:string, Password: string) {
+    const findUser = await this.UserEntity.findOne({where : {Email}});
+   
     if(!findUser){
       throw new UnauthorizedException('INVALID CREDENTIALS')
     }
+
+    // console.log(comparePassword)
+
+    const comparePassword = await bcrypt.compare(Password,findUser.Password)
 
     if(comparePassword !== true){
       throw new UnauthorizedException("invalid credential")
     }
 
+      const payload = {
+      userId: findUser.userId,
+      Email: findUser.Email,
+      Password: findUser.Password
+    };
+
     return {
      accessToken: this.jwtService.sign(payload)
       }
     }
-
-
-    
     
   }
       // refreshToken: await this.generateToken(user.id)

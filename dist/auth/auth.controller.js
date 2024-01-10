@@ -16,14 +16,14 @@ exports.AuthController = void 0;
 const common_1 = require("@nestjs/common");
 const auth_service_1 = require("./auth.service");
 const passport_1 = require("@nestjs/passport");
-const login_dto_1 = require("../auth-dto/login.dto");
-const signup_dto_1 = require("../auth-dto/signup.dto");
+const login_dto_1 = require("./auth-dto/login.dto");
+const signup_dto_1 = require("./auth-dto/signup.dto");
 let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
     }
-    async loginUser(Email, Password, payload) {
-        const accessToken = await this.authService.login(payload, Email, Password);
+    async loginUser(payload) {
+        const accessToken = await this.authService.login(payload.Email, payload.Password);
         return accessToken;
     }
     async signupUser(payload) {
@@ -33,8 +33,8 @@ let AuthController = class AuthController {
     getProfile(payload) {
         return `this route is protected, but the user ${payload.Email} has access`;
     }
-    async refreshToken(Email, Password, payload) {
-        return await this.authService.login(payload, Email, Password);
+    async refreshToken(payload) {
+        return await this.authService.login(payload.Email, payload.Password);
     }
 };
 exports.AuthController = AuthController;
@@ -42,7 +42,7 @@ __decorate([
     (0, common_1.Post)('/login'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String, login_dto_1.LoginDto]),
+    __metadata("design:paramtypes", [login_dto_1.LoginDto]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "loginUser", null);
 __decorate([
@@ -64,7 +64,7 @@ __decorate([
     (0, common_1.Post)('auth/refreshtoken'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String, login_dto_1.LoginDto]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "refreshToken", null);
 exports.AuthController = AuthController = __decorate([

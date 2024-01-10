@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, NotFoundException, Param, ParseIntPipe, Patch, Post, UseInterceptors, ValidationPipe } from "@nestjs/common";
 import { PetService } from "./pets.service";
-import { createPetsDto } from "../pet-dto/create-pet.dto";
-import { UpdatePetsDto } from "../pet-dto/update-pets.dto";
+import { createPetsDto } from "./pet-dto/create-pet.dto";
+import { UpdatePetsDto } from "./pet-dto/update-pets.dto";
 
 @Controller('pets')
 export class PetController{

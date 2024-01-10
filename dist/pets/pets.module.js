@@ -11,7 +11,7 @@ const common_1 = require("@nestjs/common");
 const pets_service_1 = require("./pets.service");
 const pets_controller_1 = require("./pets.controller");
 const typeorm_1 = require("@nestjs/typeorm");
-const pets_entity_1 = require("../pet-entity/pets.entity");
+const pets_entity_1 = require("./pet-entity/pets.entity");
 let petModule = class petModule {
 };
 exports.petModule = petModule;

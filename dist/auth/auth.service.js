@@ -17,8 +17,9 @@ const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
-const user_entity_1 = require("../auth-entities/user.entity");
+const user_entity_1 = require("./auth-entities/user.entity");
 const bcrypt = require("bcrypt");
+const signup_dto_1 = require("./auth-dto/signup.dto");
 let AuthService = class AuthService {
     constructor(UserEntity, jwtService) {
         this.UserEntity = UserEntity;
@@ -30,21 +31,32 @@ let AuthService = class AuthService {
         const user = await this.UserEntity.save({ ...payload, Password: hashedPassword });
         return user;
     }
-    async login(payload, Email, Password) {
-        const findUser = await this.UserEntity.findOne({ where: { Email: Email } });
-        const comparePassword = await bcrypt.compare(Password, findUser.Password);
+    async login(Email, Password) {
+        const findUser = await this.UserEntity.findOne({ where: { Email } });
         if (!findUser) {
             throw new common_1.UnauthorizedException('INVALID CREDENTIALS');
         }
+        const comparePassword = await bcrypt.compare(Password, findUser.Password);
         if (comparePassword !== true) {
             throw new common_1.UnauthorizedException("invalid credential");
         }
+        const payload = {
+            userId: findUser.userId,
+            Email: findUser.Email,
+            Password: findUser.Password
+        };
         return {
             accessToken: this.jwtService.sign(payload)
         };
     }
 };
 exports.AuthService = AuthService;
+__decorate([
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [signup_dto_1.SignupDto]),
+    __metadata("design:returntype", Promise)
+], AuthService.prototype, "signup", null);
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(user_entity_1.UserEntity)),

@@ -15,8 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PetController = void 0;
 const common_1 = require("@nestjs/common");
 const pets_service_1 = require("./pets.service");
-const create_pet_dto_1 = require("../pet-dto/create-pet.dto");
-const update_pets_dto_1 = require("../pet-dto/update-pets.dto");
+const create_pet_dto_1 = require("./pet-dto/create-pet.dto");
+const update_pets_dto_1 = require("./pet-dto/update-pets.dto");
 let PetController = class PetController {
     constructor(petServices) {
         this.petServices = petServices;

@@ -1,13 +1,15 @@
 import { Module } from '@nestjs/common';
 import { petModule } from './Pets/pets.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { PetsUploadModule } from './pets-upload/pets-upload.module';
+import { PetsUploadModule } from './Pets/pets-upload/pets-upload.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { PetEntity } from './pet-entity/pets.entity';
+import { PetEntity } from './Pets/pet-entity/pets.entity';
 import { AuthModule } from './auth/auth.module';
 import { AuthController } from './auth/auth.controller';
-import { UserEntity } from './auth-entities/user.entity';
+import { UserEntity } from './auth/auth-entities/user.entity';
 import { UserModule } from './user/user.module';
+import { APP_GUARD } from '@nestjs/core';
+import {RoleGuard} from './user/roles.guard'
 
 @Module({
   imports: [
@@ -35,6 +37,12 @@ import { UserModule } from './user/user.module';
   ],
   
     controllers: [AuthController],
+    providers: [
+      {
+      provide: APP_GUARD,
+      useClass: RoleGuard,
+},
+]
     // providers: [AppService],
 })
 export class AppModule {}
