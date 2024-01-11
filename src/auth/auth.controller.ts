@@ -5,6 +5,7 @@ import { jwtAuthGuard } from "src/auth/auth-guard/jwt.auth.guard";
 import { AuthGuard } from "@nestjs/passport";
 import { LoginDto } from "src/auth/auth-dto/login.dto";
 import { SignupDto } from "src/auth/auth-dto/signup.dto";
+import { Role, Roles } from "src/auth/auth-guard/roles.enum";
 
 
 @Controller('user')
@@ -25,11 +26,13 @@ export class AuthController{
       const user = await this.authService.signup(payload);
       return  user;
     }
-    
-    // @UseGuards(jwtAuthGuard)
+
+
+
+    @UseGuards(jwtAuthGuard)
     @Get('/profile')
-    getProfile(@Body() payload: LoginDto): string{
-        return   `this route is protected, but the user ${payload.Email} has access`
+    async getProfile(@Request() req){ 
+      return req.user;
       }
 
       @UseGuards(AuthGuard('jwt-refreshtoken'))

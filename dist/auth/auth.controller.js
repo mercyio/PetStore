@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
 const common_1 = require("@nestjs/common");
 const auth_service_1 = require("./auth.service");
+const jwt_auth_guard_1 = require("./auth-guard/jwt.auth.guard");
 const passport_1 = require("@nestjs/passport");
 const login_dto_1 = require("./auth-dto/login.dto");
 const signup_dto_1 = require("./auth-dto/signup.dto");
@@ -30,8 +31,8 @@ let AuthController = class AuthController {
         const user = await this.authService.signup(payload);
         return user;
     }
-    getProfile(payload) {
-        return `this route is protected, but the user ${payload.Email} has access`;
+    async getProfile(req) {
+        return req.user;
     }
     async refreshToken(payload) {
         return await this.authService.login(payload.Email, payload.Password);
@@ -53,11 +54,12 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "signupUser", null);
 __decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.jwtAuthGuard),
     (0, common_1.Get)('/profile'),
-    __param(0, (0, common_1.Body)()),
+    __param(0, (0, common_1.Request)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [login_dto_1.LoginDto]),
-    __metadata("design:returntype", String)
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
 ], AuthController.prototype, "getProfile", null);
 __decorate([
     (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt-refreshtoken')),

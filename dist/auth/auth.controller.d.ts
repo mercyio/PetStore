@@ -12,8 +12,9 @@ export declare class AuthController {
         userName: string;
         Email: string;
         PhoneNumber: string;
+        Role: string;
     } & import("./auth-entities/user.entity").UserEntity>;
-    getProfile(payload: LoginDto): string;
+    getProfile(req: any): Promise<any>;
     refreshToken(payload: any): Promise<{
         accessToken: string;
     }>;

@@ -11,8 +11,10 @@ export declare class AuthService {
         userName: string;
         Email: string;
         PhoneNumber: string;
+        Role: string;
     } & UserEntity>;
     login(Email: string, Password: string): Promise<{
         accessToken: string;
     }>;
+    user(Email: string): Promise<UserEntity>;
 }

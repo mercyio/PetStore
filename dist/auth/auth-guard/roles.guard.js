@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.RoleGuard = void 0;
 const common_1 = require("@nestjs/common");
 const core_1 = require("@nestjs/core");
-const auth_service_1 = require("../auth/auth.service");
+const auth_service_1 = require("../auth.service");
 let RoleGuard = class RoleGuard {
     constructor(reflector, Authservice) {
         this.reflector = reflector;

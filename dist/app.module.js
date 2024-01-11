@@ -16,9 +16,8 @@ const pets_entity_1 = require("./Pets/pet-entity/pets.entity");
 const auth_module_1 = require("./auth/auth.module");
 const auth_controller_1 = require("./auth/auth.controller");
 const user_entity_1 = require("./auth/auth-entities/user.entity");
-const user_module_1 = require("./user/user.module");
 const core_1 = require("@nestjs/core");
-const roles_guard_1 = require("./user/roles.guard");
+const roles_guard_1 = require("./auth/auth-guard/roles.guard");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -44,7 +43,6 @@ exports.AppModule = AppModule = __decorate([
             pets_module_1.petModule,
             pets_upload_module_1.PetsUploadModule,
             auth_module_1.AuthModule,
-            user_module_1.UserModule
         ],
         controllers: [auth_controller_1.AuthController],
         providers: [

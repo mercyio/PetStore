@@ -1,4 +1,5 @@
-import {Column, CreateDateColumn, Entity, PrimaryGeneratedColumn} from "typeorm";
+import { Role } from "src/auth/auth-guard/roles.enum";
+import {Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
 
 @Entity('user')
 export class UserEntity{
@@ -16,8 +17,18 @@ export class UserEntity{
 
         @Column()
         PhoneNumber: string;
+
+        @Column({
+                type:'enum', 
+                enum: Role,
+                default: Role.User
+        })
+        role:Role
       
         @CreateDateColumn()
-        createdAt: Date
+        createdAt: Date;
+
+        @UpdateDateColumn()
+        updatedAt: Date
 }
 

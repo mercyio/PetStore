@@ -17,7 +17,7 @@ const common_1 = require("@nestjs/common");
 const user_service_1 = require("./user.service");
 const create_user_dto_1 = require("./dto/create-user.dto");
 const update_user_dto_1 = require("./dto/update-user.dto");
-const roles_enum_1 = require("./roles.enum");
+const roles_enum_1 = require("../auth/auth-guard/roles.enum");
 let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;

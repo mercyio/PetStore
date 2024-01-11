@@ -49,6 +49,10 @@ let AuthService = class AuthService {
             accessToken: this.jwtService.sign(payload)
         };
     }
+    async user(Email) {
+        const locateUser = await this.UserEntity.findOne({ where: { Email } });
+        return locateUser;
+    }
 };
 exports.AuthService = AuthService;
 __decorate([

@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { UserEntity } from 'src/auth/auth-entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { SignupDto } from 'src/auth/auth-dto/signup.dto';
+
 // import { generate } from 'rxjs';
 
 @Injectable()
@@ -59,7 +60,13 @@ export class AuthService {
       }
     }
     
+    async user(Email:string){
+      const locateUser = await this.UserEntity.findOne({where:{Email}})
+      return locateUser
+    }
+    
   }
+
       // refreshToken: await this.generateToken(user.id)
 
   // async generateToken(id){

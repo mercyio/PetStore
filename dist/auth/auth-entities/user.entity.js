@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserEntity = void 0;
+const roles_enum_1 = require("../auth-guard/roles.enum");
 const typeorm_1 = require("typeorm");
 let UserEntity = class UserEntity {
 };
@@ -35,9 +36,21 @@ __decorate([
     __metadata("design:type", String)
 ], UserEntity.prototype, "PhoneNumber", void 0);
 __decorate([
+    (0, typeorm_1.Column)({
+        type: 'enum',
+        enum: roles_enum_1.Role,
+        default: roles_enum_1.Role.User
+    }),
+    __metadata("design:type", String)
+], UserEntity.prototype, "role", void 0);
+__decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
 ], UserEntity.prototype, "createdAt", void 0);
+__decorate([
+    (0, typeorm_1.UpdateDateColumn)(),
+    __metadata("design:type", Date)
+], UserEntity.prototype, "updatedAt", void 0);
 exports.UserEntity = UserEntity = __decorate([
     (0, typeorm_1.Entity)('user')
 ], UserEntity);
