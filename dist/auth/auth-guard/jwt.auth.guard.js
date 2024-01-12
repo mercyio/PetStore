@@ -6,7 +6,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.jwtConstants = exports.jwtAuthGuard = void 0;
+exports.jwtAuthGuard = void 0;
 const common_1 = require("@nestjs/common");
 const passport_1 = require("@nestjs/passport");
 let jwtAuthGuard = class jwtAuthGuard extends (0, passport_1.AuthGuard)('jwt') {
@@ -15,7 +15,4 @@ exports.jwtAuthGuard = jwtAuthGuard;
 exports.jwtAuthGuard = jwtAuthGuard = __decorate([
     (0, common_1.Injectable)()
 ], jwtAuthGuard);
-exports.jwtConstants = {
-    secret: 'your-secret-key-here',
-};
 //# sourceMappingURL=jwt.auth.guard.js.map

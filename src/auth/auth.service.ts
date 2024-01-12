@@ -1,10 +1,11 @@
-import { Body, Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Body, ExecutionContext, HttpException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UserEntity } from 'src/auth/auth-entities/user.entity';
+import { UserEntity } from 'src/auth/entities/user.entity';
 import * as bcrypt from 'bcrypt';
-import { SignupDto } from 'src/auth/auth-dto/signup.dto';
+import { SignupDto } from 'src/auth/dto/signup.dto';
+import { Request } from 'express';
 
 // import { generate } from 'rxjs';
 
@@ -16,21 +17,35 @@ export class AuthService {
     private jwtService :JwtService,
     ){}
 
-    async signup(@Body() payload: SignupDto) {
+    async signup(payload: SignupDto) {
+      payload.Email=payload.Email.toLowerCase()
+
+      const {Email, Password, ...rest}=payload
+      
+      const userEmail= await this.UserEntity.findOne({where:{Email:Email}})
+
+      if(userEmail){
+        throw new HttpException('EMAIL ALREADY EXIST', 400)
+      }
 
       const saltOrRounds = 10;
 
-      const hashedPassword = await bcrypt.hash(payload.Password, saltOrRounds);
-
-      const user = await this.UserEntity.save({...payload, Password: hashedPassword});
+      const hashedPassword = await bcrypt.hash(Password, saltOrRounds);
+      try{
+        const user = await this.UserEntity.save({...payload, Password: hashedPassword});
+        await this.UserEntity.save(user);
+        delete user.Password;
+        return user;
+      }
+      catch(err){
+        if(err.code === '22P02'){
+          throw new BadRequestException('ADMIN ROLE SHOULD BE LOWERCASE')
+        }
+        return err
+      }
     
-      return user;
+      
     }
-
-  //   async signup(@Body() payload: CreateAuthDto){
-  //     const user = await this. UserEntity.save(payload);
-  //     return user;
-  // }
   
 
 
@@ -51,8 +66,11 @@ export class AuthService {
 
       const payload = {
       userId: findUser.userId,
+      Username: findUser.username,
       Email: findUser.Email,
-      Password: findUser.Password
+      Password: findUser.Password,
+      PhoneNumber:findUser.PhoneNumber,
+      Role: findUser.role
     };
 
     return {
@@ -64,19 +82,6 @@ export class AuthService {
       const locateUser = await this.UserEntity.findOne({where:{Email}})
       return locateUser
     }
-    
   }
-
-      // refreshToken: await this.generateToken(user.id)
-
-  // async generateToken(id){
-    
-  //   let refreshToken = randToken.generate(16);
-  //   let expiryDate = new Date();
-  //   expiryDate.setDate(expiryDate.getDate() + 6);
-  //   await this.petService.saveorupdateRefreshToken(refreshToken, id, expiryDate);
-  //   return refreshToken
-
-
-  // }
-
+  
+   

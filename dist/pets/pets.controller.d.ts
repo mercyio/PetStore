@@ -7,6 +7,9 @@ export declare class PetController {
     createPet(payload: createPetsDto): Promise<any>;
     findPet(id: string): Promise<import("./pet-entity/pets.entity").PetEntity>;
     findAllPets(): Promise<import("./pet-entity/pets.entity").PetEntity[]>;
-    updatePets(id: string, payload: UpdatePetsDto): Promise<import("typeorm").UpdateResult>;
-    deletePets(id: string): Promise<import("typeorm").DeleteResult>;
+    updatePets(id: string, payload: UpdatePetsDto): Promise<{
+        petUpdate: import("typeorm").UpdateResult;
+        valid: import("./pet-entity/pets.entity").PetEntity;
+    }>;
+    deletePets(id: string): Promise<string>;
 }

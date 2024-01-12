@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const pets_service_1 = require("./pets.service");
 const create_pet_dto_1 = require("./pet-dto/create-pet.dto");
 const update_pets_dto_1 = require("./pet-dto/update-pets.dto");
+const auth_guard_1 = require("../auth/guard/auth.guard");
 let PetController = class PetController {
     constructor(petServices) {
         this.petServices = petServices;
@@ -25,31 +26,16 @@ let PetController = class PetController {
         return await this.petServices.createPet(payload);
     }
     async findPet(id) {
-        try {
-            return await this.petServices.getPet(id);
-        }
-        catch (err) {
-            throw new common_1.NotFoundException();
-        }
+        return await this.petServices.getPet(id);
     }
     async findAllPets() {
         return await this.petServices.getAllPets();
     }
     async updatePets(id, payload) {
-        try {
-            return await this.petServices.updatePet(id, payload);
-        }
-        catch (err) {
-            throw new common_1.NotFoundException();
-        }
+        return await this.petServices.updatePet(id, payload);
     }
     async deletePets(id) {
-        try {
-            return await this.petServices.deletePet(id);
-        }
-        catch (err) {
-            throw new common_1.NotFoundException();
-        }
+        return await this.petServices.deletePet(id);
     }
 };
 exports.PetController = PetController;
@@ -74,6 +60,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], PetController.prototype, "findAllPets", null);
 __decorate([
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
     (0, common_1.Patch)(':id'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
@@ -82,6 +69,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], PetController.prototype, "updatePets", null);
 __decorate([
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
     (0, common_1.Delete)(':id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),

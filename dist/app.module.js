@@ -15,9 +15,7 @@ const typeorm_1 = require("@nestjs/typeorm");
 const pets_entity_1 = require("./Pets/pet-entity/pets.entity");
 const auth_module_1 = require("./auth/auth.module");
 const auth_controller_1 = require("./auth/auth.controller");
-const user_entity_1 = require("./auth/auth-entities/user.entity");
-const core_1 = require("@nestjs/core");
-const roles_guard_1 = require("./auth/auth-guard/roles.guard");
+const user_entity_1 = require("./auth/entities/user.entity");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -45,12 +43,7 @@ exports.AppModule = AppModule = __decorate([
             auth_module_1.AuthModule,
         ],
         controllers: [auth_controller_1.AuthController],
-        providers: [
-            {
-                provide: core_1.APP_GUARD,
-                useClass: roles_guard_1.RoleGuard,
-            },
-        ]
+        providers: []
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

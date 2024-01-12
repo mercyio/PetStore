@@ -1,11 +1,9 @@
 import { Body, Controller, Get, Post, Request, UseGuards } from "@nestjs/common";
-import { LocalAuthGuard } from "./auth-guard/local.auth.guard";
 import { AuthService } from "./auth.service";
-import { jwtAuthGuard } from "src/auth/auth-guard/jwt.auth.guard";
-import { AuthGuard } from "@nestjs/passport";
-import { LoginDto } from "src/auth/auth-dto/login.dto";
-import { SignupDto } from "src/auth/auth-dto/signup.dto";
-import { Role, Roles } from "src/auth/auth-guard/roles.enum";
+import { LoginDto } from "src/auth/dto/login.dto";
+import { SignupDto } from "src/auth/dto/signup.dto";
+import { Role, Roles } from "src/auth/guard/roles.enum";
+import { AuthGuard } from "./guard/auth.guard";
 
 
 @Controller('user')
@@ -27,13 +25,13 @@ export class AuthController{
       return  user;
     }
 
-    @UseGuards(jwtAuthGuard)
+    @UseGuards(AuthGuard)
     @Get('/profile')
     async getProfile(@Request() req){ 
       return req.user;
       }
 
-      @UseGuards(AuthGuard('jwt-refreshtoken'))
+      // @UseGuards(AuthGuard('jwt-refreshtoken'))
      @Post('auth/refreshtoken')
      async refreshToken(@Body() payload){
     return await this.authService.login(payload.Email, payload.Password);

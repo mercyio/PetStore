@@ -2,6 +2,7 @@ import { HttpException, Injectable } from "@nestjs/common";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { PetEntity } from "src/Pets/pet-entity/pets.entity";
+import { UpdatePetsDto } from "./pet-dto/update-pets.dto";
 
 @Injectable() 
 export class PetService{
@@ -26,14 +27,19 @@ export class PetService{
 
      async updatePet(id: string, payload){
      const petUpdate = await this.petRepo.update(id, payload)
-      if( !petUpdate){
-         throw new HttpException( " wrong update request", 400 )
-      }  
-      return petUpdate
-  }
+     const valid = await this.petRepo.findOne({where:{id}})
+        if(!valid){
+            throw new HttpException('UNABLE TO UPDATE PET, INPUT A VALID ID', 400)
+          }
+         return {petUpdate, valid}
+     }
     
   async deletePet( id:string){
-    return await this.petRepo.delete(id)
+   const deletePet = await this.petRepo.delete(id)
+   if(!deletePet){
+     return 'SUCCESSFULLY DELETED' 
+   }
+   throw new HttpException("INVALID ID. UNABLE TO DELETE", 400)
   }
    }
  

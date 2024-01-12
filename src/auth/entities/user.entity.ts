@@ -1,4 +1,4 @@
-import { Role } from "src/auth/auth-guard/roles.enum";
+import { Role } from "src/auth/guard/roles.enum";
 import {Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
 
 @Entity('user')
@@ -9,7 +9,7 @@ export class UserEntity{
         @Column()
         username: string;
       
-        @Column()
+        @Column({unique:true})
         Email: string;
 
         @Column()

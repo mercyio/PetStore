@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthGuard = void 0;
 const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
-const jwt_auth_guard_1 = require("./jwt.auth.guard");
+const constant_1 = require("../constants/constant");
 let AuthGuard = class AuthGuard {
     constructor(jwtService) {
         this.jwtService = jwtService;
@@ -25,7 +25,7 @@ let AuthGuard = class AuthGuard {
         }
         try {
             const payload = await this.jwtService.verifyAsync(token, {
-                secret: jwt_auth_guard_1.jwtConstants.secret
+                secret: constant_1.jwtConstants.secret
             });
             request['user'] = payload;
         }

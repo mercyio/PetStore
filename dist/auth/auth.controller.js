@@ -15,10 +15,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
 const common_1 = require("@nestjs/common");
 const auth_service_1 = require("./auth.service");
-const jwt_auth_guard_1 = require("./auth-guard/jwt.auth.guard");
-const passport_1 = require("@nestjs/passport");
-const login_dto_1 = require("./auth-dto/login.dto");
-const signup_dto_1 = require("./auth-dto/signup.dto");
+const login_dto_1 = require("./dto/login.dto");
+const signup_dto_1 = require("./dto/signup.dto");
+const auth_guard_1 = require("./guard/auth.guard");
 let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
@@ -54,7 +53,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "signupUser", null);
 __decorate([
-    (0, common_1.UseGuards)(jwt_auth_guard_1.jwtAuthGuard),
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
     (0, common_1.Get)('/profile'),
     __param(0, (0, common_1.Request)()),
     __metadata("design:type", Function),
@@ -62,7 +61,6 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "getProfile", null);
 __decorate([
-    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt-refreshtoken')),
     (0, common_1.Post)('auth/refreshtoken'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),

@@ -6,10 +6,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PetEntity } from './Pets/pet-entity/pets.entity';
 import { AuthModule } from './auth/auth.module';
 import { AuthController } from './auth/auth.controller';
-import { UserEntity } from './auth/auth-entities/user.entity';
+import { UserEntity } from './auth/entities/user.entity';
 // import { UserModule } from './user/user.module';
 import { APP_GUARD } from '@nestjs/core';
-import {RoleGuard} from './auth/auth-guard/roles.guard'
 
 @Module({
   imports: [
@@ -38,10 +37,6 @@ import {RoleGuard} from './auth/auth-guard/roles.guard'
   
     controllers: [AuthController],
     providers: [
-      {
-      provide: APP_GUARD,
-      useClass: RoleGuard,
-},
 ]
     // providers: [AppService],
 })

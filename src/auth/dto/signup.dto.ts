@@ -1,4 +1,5 @@
-import { IsDate, IsEmail, IsNotEmpty, IsNumber, IsString, MinLength } from "class-validator"
+import { IsDate, IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString, MinLength } from "class-validator"
+import { Role } from "../guard/roles.enum"
 
 export class SignupDto {
     @IsNotEmpty()
@@ -17,7 +18,8 @@ export class SignupDto {
 
     @IsNotEmpty()
     @MinLength(6)
-    Password: string
+    Password: string 
 
-    Role: string
+    @IsOptional()
+    role: Role
 }

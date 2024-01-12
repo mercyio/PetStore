@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, SetMetadata } from '
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Role, Roles } from '../auth/auth-guard/roles.enum';
+import { Role, Roles } from '../auth/guard/roles.enum';
 
 @Controller('user')
 export class UserController {

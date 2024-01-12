@@ -36,13 +36,18 @@ let PetService = class PetService {
     }
     async updatePet(id, payload) {
         const petUpdate = await this.petRepo.update(id, payload);
-        if (!petUpdate) {
-            throw new common_1.HttpException(" wrong update request", 400);
+        const valid = await this.petRepo.findOne({ where: { id } });
+        if (!valid) {
+            throw new common_1.HttpException('UNABLE TO UPDATE PET, INPUT A VALID ID', 400);
         }
-        return petUpdate;
+        return { petUpdate, valid };
     }
     async deletePet(id) {
-        return await this.petRepo.delete(id);
+        const deletePet = await this.petRepo.delete(id);
+        if (!deletePet) {
+            return 'SUCCESSFULLY DELETED';
+        }
+        throw new common_1.HttpException("INVALID ID. UNABLE TO DELETE", 400);
     }
 };
 exports.PetService = PetService;

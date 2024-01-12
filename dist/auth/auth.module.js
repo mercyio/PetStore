@@ -11,15 +11,12 @@ const common_1 = require("@nestjs/common");
 const auth_service_1 = require("./auth.service");
 const auth_controller_1 = require("./auth.controller");
 const pets_module_1 = require("../Pets/pets.module");
-const local_strategy_1 = require("./auth-strategies/local.strategy");
 const passport_1 = require("@nestjs/passport");
 const jwt_1 = require("@nestjs/jwt");
 const typeorm_1 = require("@nestjs/typeorm");
-const jwt_strategy_1 = require("./auth-strategies/jwt.strategy");
-const user_entity_1 = require("./auth-entities/user.entity");
-const jwt_auth_guard_1 = require("./auth-guard/jwt.auth.guard");
-const core_1 = require("@nestjs/core");
-const roles_guard_1 = require("./auth-guard/roles.guard");
+const user_entity_1 = require("./entities/user.entity");
+const auth_guard_1 = require("./guard/auth.guard");
+const jwtConstant_1 = require("./constants/jwtConstant");
 let AuthModule = class AuthModule {
 };
 exports.AuthModule = AuthModule;
@@ -31,18 +28,14 @@ exports.AuthModule = AuthModule = __decorate([
             passport_1.PassportModule,
             jwt_1.JwtModule.register({
                 global: true,
-                secret: jwt_auth_guard_1.jwtConstants.secret,
-                signOptions: { expiresIn: '60s' }
+                secret: jwtConstant_1.jwtConstants.secret,
+                signOptions: { expiresIn: '5m' }
             })
         ],
         controllers: [auth_controller_1.AuthController],
-        providers: [auth_service_1.AuthService, local_strategy_1.LocalStrategy, jwt_strategy_1.JwtStrategy,
-            {
-                provide: core_1.APP_GUARD,
-                useClass: roles_guard_1.RoleGuard,
-            }
+        providers: [auth_service_1.AuthService, auth_guard_1.AuthGuard
         ],
-        exports: [auth_service_1.AuthService],
+        exports: [auth_service_1.AuthService,],
     })
 ], AuthModule);
 //# sourceMappingURL=auth.module.js.map

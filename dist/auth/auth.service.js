@@ -17,19 +17,34 @@ const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
-const user_entity_1 = require("./auth-entities/user.entity");
+const user_entity_1 = require("./entities/user.entity");
 const bcrypt = require("bcrypt");
-const signup_dto_1 = require("./auth-dto/signup.dto");
 let AuthService = class AuthService {
     constructor(UserEntity, jwtService) {
         this.UserEntity = UserEntity;
         this.jwtService = jwtService;
     }
     async signup(payload) {
+        payload.Email = payload.Email.toLowerCase();
+        const { Email, Password, ...rest } = payload;
+        const userEmail = await this.UserEntity.findOne({ where: { Email: Email } });
+        if (userEmail) {
+            throw new common_1.HttpException('EMAIL ALREADY EXIST', 400);
+        }
         const saltOrRounds = 10;
-        const hashedPassword = await bcrypt.hash(payload.Password, saltOrRounds);
-        const user = await this.UserEntity.save({ ...payload, Password: hashedPassword });
-        return user;
+        const hashedPassword = await bcrypt.hash(Password, saltOrRounds);
+        try {
+            const user = await this.UserEntity.save({ ...payload, Password: hashedPassword });
+            await this.UserEntity.save(user);
+            delete user.Password;
+            return user;
+        }
+        catch (err) {
+            if (err.code === '22P02') {
+                throw new common_1.BadRequestException('ADMIN ROLE SHOULD BE LOWERCASE');
+            }
+            return err;
+        }
     }
     async login(Email, Password) {
         const findUser = await this.UserEntity.findOne({ where: { Email } });
@@ -42,8 +57,11 @@ let AuthService = class AuthService {
         }
         const payload = {
             userId: findUser.userId,
+            Username: findUser.username,
             Email: findUser.Email,
-            Password: findUser.Password
+            Password: findUser.Password,
+            PhoneNumber: findUser.PhoneNumber,
+            Role: findUser.role
         };
         return {
             accessToken: this.jwtService.sign(payload)
@@ -55,12 +73,6 @@ let AuthService = class AuthService {
     }
 };
 exports.AuthService = AuthService;
-__decorate([
-    __param(0, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [signup_dto_1.SignupDto]),
-    __metadata("design:returntype", Promise)
-], AuthService.prototype, "signup", null);
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(user_entity_1.UserEntity)),
