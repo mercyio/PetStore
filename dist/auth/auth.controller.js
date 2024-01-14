@@ -22,8 +22,8 @@ let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
     }
-    async loginUser(payload) {
-        const accessToken = await this.authService.login(payload.Email, payload.Password);
+    async loginUser(payload, req, res) {
+        const accessToken = await this.authService.login(payload.Email, payload.Password, req, res);
         return accessToken;
     }
     async signupUser(payload) {
@@ -33,16 +33,15 @@ let AuthController = class AuthController {
     async getProfile(req) {
         return req.user;
     }
-    async refreshToken(payload) {
-        return await this.authService.login(payload.Email, payload.Password);
-    }
 };
 exports.AuthController = AuthController;
 __decorate([
     (0, common_1.Post)('/login'),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Req)()),
+    __param(2, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [login_dto_1.LoginDto]),
+    __metadata("design:paramtypes", [login_dto_1.LoginDto, Object, Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "loginUser", null);
 __decorate([
@@ -55,18 +54,11 @@ __decorate([
 __decorate([
     (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
     (0, common_1.Get)('/profile'),
-    __param(0, (0, common_1.Request)()),
+    __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "getProfile", null);
-__decorate([
-    (0, common_1.Post)('auth/refreshtoken'),
-    __param(0, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Promise)
-], AuthController.prototype, "refreshToken", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('user'),
     __metadata("design:paramtypes", [auth_service_1.AuthService])

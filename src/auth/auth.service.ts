@@ -6,6 +6,8 @@ import * as bcrypt from 'bcrypt';
 import { SignupDto } from '../auth/dto/signup.dto';
 import { Request, Response } from 'express';
 import { JwtService } from '@nestjs/jwt';
+import { LoginDto } from './dto/login.dto';
+import { AnySoaRecord } from 'dns';
 
 // import { generate } from 'rxjs';
 
@@ -49,7 +51,8 @@ export class AuthService {
   
 
 
-    async login(Email:string, Password: string) {
+    async login(Email:string, Password:string, @Req()req:Request, @Res()res:Response) {
+
       const findUser = await this.UserEntity.findOne({where : {Email}});
      
       if(!findUser){
@@ -72,16 +75,31 @@ export class AuthService {
         PhoneNumber:findUser.PhoneNumber,
         Role: findUser.role
       };
-  
-      return {
-       accessToken: this.jwtService.sign(payload)
-        }
-      }
+      
+
+      const Token = await this.jwtService.sign(payload)
+
+     res.cookie('isAuthenticated',Token,{
+      httpOnly: true,
+      maxAge: 1 * 60 * 60 * 1000
+   });
+
+   return res.send ({
+        success:true,
+      accessToken:Token
+       })
+     }
+
+
+      // return {
+      //  accessToken: this.jwtService.sign(payload)
+      //   }
       
       async user(Email:string){
         const locateUser = await this.UserEntity.findOne({where:{Email}})
         return locateUser
       }
+}
     
     
 
@@ -128,14 +146,14 @@ export class AuthService {
 
 
 
-    async logout(@Req()req:Request, @Res()res:Response){
-      const clearCookie = res.clearCookie('isAuthenticated')
-      const response = res.send(`user sucessfully logedout`)
-      return{
-        clearCookie,
-        response
-      }
-    }
+    // async logout(@Req()req:Request, @Res()res:Response){
+    //   const clearCookie = res.clearCookie('isAuthenticated')
+    //   const response = res.send(`user sucessfully logedout`)
+    //   return{
+    //     clearCookie,
+    //     response
+    //   }
+    // }
     
   
   

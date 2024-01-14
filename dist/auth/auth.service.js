@@ -46,7 +46,7 @@ let AuthService = class AuthService {
             return err;
         }
     }
-    async login(Email, Password) {
+    async login(Email, Password, req, res) {
         const findUser = await this.UserEntity.findOne({ where: { Email } });
         if (!findUser) {
             throw new common_1.UnauthorizedException('INVALID CREDENTIALS');
@@ -63,31 +63,29 @@ let AuthService = class AuthService {
             PhoneNumber: findUser.PhoneNumber,
             Role: findUser.role
         };
-        return {
-            accessToken: this.jwtService.sign(payload)
-        };
+        const Token = await this.jwtService.sign(payload);
+        res.cookie('isAuthenticated', Token, {
+            httpOnly: true,
+            maxAge: 1 * 60 * 60 * 1000
+        });
+        return res.send({
+            success: true,
+            accessToken: Token
+        });
     }
     async user(Email) {
         const locateUser = await this.UserEntity.findOne({ where: { Email } });
         return locateUser;
     }
-    async logout(req, res) {
-        const clearCookie = res.clearCookie('isAuthenticated');
-        const response = res.send(`user sucessfully logedout`);
-        return {
-            clearCookie,
-            response
-        };
-    }
 };
 exports.AuthService = AuthService;
 __decorate([
-    __param(0, (0, common_1.Req)()),
-    __param(1, (0, common_1.Res)()),
+    __param(2, (0, common_1.Req)()),
+    __param(3, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:paramtypes", [String, String, Object, Object]),
     __metadata("design:returntype", Promise)
-], AuthService.prototype, "logout", null);
+], AuthService.prototype, "login", null);
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(user_entity_1.UserEntity)),
