@@ -22,19 +22,32 @@ let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
     }
-    async loginUser(payload, req, res) {
-        const accessToken = await this.authService.login(payload.Email, payload.Password, req, res);
-        return accessToken;
-    }
     async signupUser(payload) {
         const user = await this.authService.signup(payload);
         return user;
     }
+    async loginUser(payload, req, res) {
+        const accessToken = await this.authService.login(payload.Email, payload.Password, req, res);
+        return accessToken;
+    }
+    async logout(req, res) {
+        return await this.authService.logout(req, res);
+    }
     async getProfile(req) {
         return req.user;
     }
+    async getUsers() {
+        return await this.authService.Allusers();
+    }
 };
 exports.AuthController = AuthController;
+__decorate([
+    (0, common_1.Post)('signup'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [signup_dto_1.SignupDto]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "signupUser", null);
 __decorate([
     (0, common_1.Post)('/login'),
     __param(0, (0, common_1.Body)()),
@@ -45,12 +58,14 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "loginUser", null);
 __decorate([
-    (0, common_1.Post)('signup'),
-    __param(0, (0, common_1.Body)()),
+    (0, common_1.HttpCode)(200),
+    (0, common_1.Post)('logout'),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [signup_dto_1.SignupDto]),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
-], AuthController.prototype, "signupUser", null);
+], AuthController.prototype, "logout", null);
 __decorate([
     (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
     (0, common_1.Get)('/profile'),
@@ -59,6 +74,13 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "getProfile", null);
+__decorate([
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
+    (0, common_1.Get)(),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "getUsers", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('user'),
     __metadata("design:paramtypes", [auth_service_1.AuthService])

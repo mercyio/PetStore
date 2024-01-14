@@ -9,5 +9,9 @@ export declare class AuthService {
     constructor(UserEntity: Repository<UserEntity>, jwtService: JwtService);
     signup(payload: SignupDto): Promise<any>;
     login(Email: string, Password: string, req: Request, res: Response): Promise<Response<any, Record<string, any>>>;
-    user(Email: string): Promise<UserEntity>;
+    logout(req: Request, res: Response): Promise<{
+        clearCookie: Response<any, Record<string, any>>;
+        response: Response<any, Record<string, any>>;
+    }>;
+    Allusers(): Promise<UserEntity[]>;
 }

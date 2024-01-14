@@ -44,9 +44,7 @@ export class AuthService {
           throw new BadRequestException('ADMIN ROLE SHOULD BE LOWERCASE')
         }
         return err
-      }
-    
-      
+      }   
     }
   
 
@@ -85,20 +83,28 @@ export class AuthService {
    });
 
    return res.send ({
-        success:true,
+      success: true,
+      message:`USER SUCCESSFULLY LOGGED-IN`,
       accessToken:Token
        })
      }
 
 
-      // return {
-      //  accessToken: this.jwtService.sign(payload)
-      //   }
-      
-      async user(Email:string){
-        const locateUser = await this.UserEntity.findOne({where:{Email}})
-        return locateUser
+
+     async logout(@Req()req:Request, @Res()res:Response){
+      const clearCookie = res.clearCookie('isAuthenticated')
+       const response = res.send(`user sucessfully logedout`)
+       return{
+         clearCookie,
+         response
       }
+     }
+
+
+     async Allusers(){
+      const Users = await this.UserEntity.find()
+      return Users
+    }
 }
     
     

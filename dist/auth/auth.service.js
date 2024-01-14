@@ -70,12 +70,21 @@ let AuthService = class AuthService {
         });
         return res.send({
             success: true,
+            message: `USER SUCCESSFULLY LOGGED-IN`,
             accessToken: Token
         });
     }
-    async user(Email) {
-        const locateUser = await this.UserEntity.findOne({ where: { Email } });
-        return locateUser;
+    async logout(req, res) {
+        const clearCookie = res.clearCookie('isAuthenticated');
+        const response = res.send(`user sucessfully logedout`);
+        return {
+            clearCookie,
+            response
+        };
+    }
+    async Allusers() {
+        const Users = await this.UserEntity.find();
+        return Users;
     }
 };
 exports.AuthService = AuthService;
@@ -86,6 +95,13 @@ __decorate([
     __metadata("design:paramtypes", [String, String, Object, Object]),
     __metadata("design:returntype", Promise)
 ], AuthService.prototype, "login", null);
+__decorate([
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], AuthService.prototype, "logout", null);
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(user_entity_1.UserEntity)),

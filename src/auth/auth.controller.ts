@@ -44,7 +44,7 @@
     
 // }
 
-import { Body, Controller, Get, Post, Req, Res, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, HttpCode, Post, Req, Res, UseGuards } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { LoginDto } from "src/auth/dto/login.dto";
 import { SignupDto } from "src/auth/dto/signup.dto";
@@ -59,17 +59,24 @@ export class AuthController{
       private authService:AuthService,
       ){}
     
-    // @UseGuards(LocalAuthGuard)
+    @Post('signup')
+    async signupUser (@Body() payload: SignupDto){
+      const user = await this.authService.signup(payload);
+      return  user;
+      }
+
+
     @Post('/login')
     async loginUser(@Body() payload:LoginDto, @Req()req:Request, @Res()res:Response) {
       const accessToken = await this.authService.login(payload.Email, payload.Password, req, res);
       return accessToken;
     }
+    
 
-    @Post('signup')
-    async signupUser (@Body() payload: SignupDto){
-      const user = await this.authService.signup(payload);
-      return  user;
+    @HttpCode(200)
+    @Post('logout')
+    async logout (@Req()req:Request, @Res()res:Response){
+      return await this.authService.logout(req, res)
     }
 
     @UseGuards(AuthGuard)
@@ -77,6 +84,12 @@ export class AuthController{
     async getProfile(@Req()req:Request){ 
       return req.user;
       }
+    
+    @UseGuards(AuthGuard)
+    @Get()
+    async getUsers(){
+    return await this.authService.Allusers()
+    }
 
       // @UseGuards(AuthGuard('jwt-refreshtoken'))
   //    @Post('auth/refreshtoken')
