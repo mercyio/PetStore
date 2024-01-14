@@ -1,11 +1,11 @@
-import { BadRequestException, Body, ExecutionContext, HttpException, Injectable, UnauthorizedException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
+import { BadRequestException, Body, ExecutionContext, HttpException, Injectable, Req, Res, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UserEntity } from 'src/auth/entities/user.entity';
+import { UserEntity } from '../auth/entities/user.entity';
 import * as bcrypt from 'bcrypt';
-import { SignupDto } from 'src/auth/dto/signup.dto';
-import { Request } from 'express';
+import { SignupDto } from '../auth/dto/signup.dto';
+import { Request, Response } from 'express';
+import { JwtService } from '@nestjs/jwt';
 
 // import { generate } from 'rxjs';
 
@@ -49,39 +49,94 @@ export class AuthService {
   
 
 
-  async login(Email:string, Password: string) {
-    const findUser = await this.UserEntity.findOne({where : {Email}});
-   
-    if(!findUser){
-      throw new UnauthorizedException('INVALID CREDENTIALS')
-    }
+    async login(Email:string, Password: string) {
+      const findUser = await this.UserEntity.findOne({where : {Email}});
+     
+      if(!findUser){
+        throw new UnauthorizedException('INVALID CREDENTIALS')
+      }
+  
+      // console.log(comparePassword)
+  
+      const comparePassword = await bcrypt.compare(Password,findUser.Password)
+  
+      if(comparePassword !== true){
+        throw new UnauthorizedException("invalid credential")
+      }
+  
+        const payload = {
+        userId: findUser.userId,
+        Username: findUser.username,
+        Email: findUser.Email,
+        Password: findUser.Password,
+        PhoneNumber:findUser.PhoneNumber,
+        Role: findUser.role
+      };
+  
+      return {
+       accessToken: this.jwtService.sign(payload)
+        }
+      }
+      
+      async user(Email:string){
+        const locateUser = await this.UserEntity.findOne({where:{Email}})
+        return locateUser
+      }
+    
+    
 
-    // console.log(comparePassword)
+  // async login (Email:string, Password: string, @Req() req:Request, @Res() res:Response) {
+    
+  //   const findUser = await this.UserEntity.findOne({where : {Email}});
 
-    const comparePassword = await bcrypt.compare(Password,findUser.Password)
+  //   if(!findUser){
+  //     throw new UnauthorizedException('EMAIL NOT FOUND')
+  //   }
 
-    if(comparePassword !== true){
-      throw new UnauthorizedException("invalid credential")
-    }
+  //   const comparePassword = await bcrypt.compare(Password,findUser.Password)
 
-      const payload = {
-      userId: findUser.userId,
-      Username: findUser.username,
-      Email: findUser.Email,
-      Password: findUser.Password,
-      PhoneNumber:findUser.PhoneNumber,
-      Role: findUser.role
-    };
+  //   if(comparePassword !== true){
+  //     throw new UnauthorizedException("INVALID PASSWORD")
+  //   }
 
-    return {
-     accessToken: this.jwtService.sign(payload)
+  //     const payload = {
+  //     userId: findUser.userId,
+  //     Username: findUser.username,
+  //     Email: findUser.Email,
+  //     Password: findUser.Password,
+  //     PhoneNumber:findUser.PhoneNumber,
+  //     Role: findUser.role
+  //   };
+
+  //   const Token = await this.jwtService.signAsync(payload)
+
+  //   res.cookie('isAuthenticated',Token,{
+  //     httpOnly: true,
+  //     maxAge: 1 * 60 * 60 * 1000
+  //   });
+
+  //   return {
+  //     success:true,
+  //     accessToken:Token
+  //     }
+  //   }
+    
+  //   async user(Email:string){
+  //     const locateUser = await this.UserEntity.findOne({where:{Email}})
+  //     return locateUser
+  //   }
+
+
+
+    async logout(@Req()req:Request, @Res()res:Response){
+      const clearCookie = res.clearCookie('isAuthenticated')
+      const response = res.send(`user sucessfully logedout`)
+      return{
+        clearCookie,
+        response
       }
     }
     
-    async user(Email:string){
-      const locateUser = await this.UserEntity.findOne({where:{Email}})
-      return locateUser
-    }
-  }
+  
   
    

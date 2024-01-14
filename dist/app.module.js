@@ -11,11 +11,9 @@ const common_1 = require("@nestjs/common");
 const pets_module_1 = require("./Pets/pets.module");
 const config_1 = require("@nestjs/config");
 const pets_upload_module_1 = require("./Pets/pets-upload/pets-upload.module");
-const typeorm_1 = require("@nestjs/typeorm");
-const pets_entity_1 = require("./Pets/pet-entity/pets.entity");
 const auth_module_1 = require("./auth/auth.module");
-const auth_controller_1 = require("./auth/auth.controller");
-const user_entity_1 = require("./auth/entities/user.entity");
+const database_module_1 = require("./database/database.module");
+const user_module_1 = require("./user/user.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -25,24 +23,13 @@ exports.AppModule = AppModule = __decorate([
             config_1.ConfigModule.forRoot({
                 isGlobal: true
             }),
-            typeorm_1.TypeOrmModule.forRootAsync({
-                useFactory: (configService) => ({
-                    type: 'mysql',
-                    host: configService.getOrThrow('DB_HOST'),
-                    port: configService.getOrThrow('DB_PORT'),
-                    username: configService.getOrThrow('DB_USER'),
-                    password: configService.getOrThrow('DB_PASSWORD'),
-                    database: configService.getOrThrow('DB_DATABASE'),
-                    entities: [pets_entity_1.PetEntity, user_entity_1.UserEntity],
-                    synchronize: configService.getOrThrow('DB_SYNC'),
-                }),
-                inject: [config_1.ConfigService]
-            }),
-            pets_module_1.petModule,
+            pets_module_1.PetModule,
             pets_upload_module_1.PetsUploadModule,
             auth_module_1.AuthModule,
+            database_module_1.DatabaseModule,
+            user_module_1.UserModule
         ],
-        controllers: [auth_controller_1.AuthController],
+        controllers: [],
         providers: []
     })
 ], AppModule);

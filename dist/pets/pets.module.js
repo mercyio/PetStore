@@ -6,22 +6,24 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.petModule = void 0;
+exports.PetModule = void 0;
 const common_1 = require("@nestjs/common");
 const pets_service_1 = require("./pets.service");
 const pets_controller_1 = require("./pets.controller");
 const typeorm_1 = require("@nestjs/typeorm");
 const pets_entity_1 = require("./pet-entity/pets.entity");
-let petModule = class petModule {
+const user_entity_1 = require("../auth/entities/user.entity");
+let PetModule = class PetModule {
 };
-exports.petModule = petModule;
-exports.petModule = petModule = __decorate([
+exports.PetModule = PetModule;
+exports.PetModule = PetModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            typeorm_1.TypeOrmModule.forFeature([pets_entity_1.PetEntity]),
+            typeorm_1.TypeOrmModule.forFeature([pets_entity_1.PetEntity, user_entity_1.UserEntity]),
         ],
         providers: [pets_service_1.PetService],
-        controllers: [pets_controller_1.PetController]
+        controllers: [pets_controller_1.PetController],
+        exports: [pets_service_1.PetService]
     })
-], petModule);
+], PetModule);
 //# sourceMappingURL=pets.module.js.map

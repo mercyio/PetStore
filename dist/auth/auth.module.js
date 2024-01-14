@@ -24,12 +24,12 @@ exports.AuthModule = AuthModule = __decorate([
     (0, common_1.Module)({
         imports: [
             typeorm_1.TypeOrmModule.forFeature([user_entity_1.UserEntity]),
-            pets_module_1.petModule,
+            pets_module_1.PetModule,
             passport_1.PassportModule,
             jwt_1.JwtModule.register({
                 global: true,
                 secret: jwtConstant_1.jwtConstants.secret,
-                signOptions: { expiresIn: '5m' }
+                signOptions: { expiresIn: '1h' }
             })
         ],
         controllers: [auth_controller_1.AuthController],

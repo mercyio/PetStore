@@ -35,19 +35,36 @@ let PetService = class PetService {
         return await this.petRepo.find();
     }
     async updatePet(id, payload) {
-        const petUpdate = await this.petRepo.update(id, payload);
-        const valid = await this.petRepo.findOne({ where: { id } });
-        if (!valid) {
-            throw new common_1.HttpException('UNABLE TO UPDATE PET, INPUT A VALID ID', 400);
+        const findPet = await this.petRepo.findOne({ where: { id } });
+        if (!findPet) {
+            throw new common_1.HttpException('invalid pet ID', 400);
         }
-        return { petUpdate, valid };
+        const updatePet = await this.petRepo
+            .createQueryBuilder()
+            .update(pets_entity_1.PetEntity)
+            .set(payload)
+            .where('id = :id', { id })
+            .execute();
+        return {
+            updated: updatePet.affected,
+            message: `SUCCESSFULLY UPDATED`,
+            result: findPet
+        };
     }
     async deletePet(id) {
-        const deletePet = await this.petRepo.delete(id);
-        if (!deletePet) {
-            return 'SUCCESSFULLY DELETED';
+        const findPet = await this.petRepo.findOne({ where: { id } });
+        if (!findPet) {
+            throw new common_1.HttpException("INVALID ID. UNABLE TO DELETE", 400);
         }
-        throw new common_1.HttpException("INVALID ID. UNABLE TO DELETE", 400);
+        const deletePet = await this.petRepo
+            .createQueryBuilder()
+            .delete()
+            .where('id = :id', { id })
+            .execute();
+        return {
+            deleted: deletePet.affected,
+            message: `SUCCESSFULLY DELETED ${findPet}`
+        };
     }
 };
 exports.PetService = PetService;

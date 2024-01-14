@@ -1,2 +1,2 @@
-export declare class petModule {
+export declare class PetModule {
 }

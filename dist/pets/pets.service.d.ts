@@ -7,8 +7,13 @@ export declare class PetService {
     getPet(id: string): Promise<PetEntity>;
     getAllPets(): Promise<PetEntity[]>;
     updatePet(id: string, payload: any): Promise<{
-        petUpdate: import("typeorm").UpdateResult;
-        valid: PetEntity;
+        updated: number;
+        message: string;
+        result: PetEntity;
     }>;
-    deletePet(id: string): Promise<string>;
+    cv: any;
+    deletePet(id: string): Promise<{
+        deleted: number;
+        message: string;
+    }>;
 }

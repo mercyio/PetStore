@@ -14,11 +14,11 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
-const jwt_1 = require("@nestjs/jwt");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
-const user_entity_1 = require("./entities/user.entity");
+const user_entity_1 = require("../auth/entities/user.entity");
 const bcrypt = require("bcrypt");
+const jwt_1 = require("@nestjs/jwt");
 let AuthService = class AuthService {
     constructor(UserEntity, jwtService) {
         this.UserEntity = UserEntity;
@@ -71,8 +71,23 @@ let AuthService = class AuthService {
         const locateUser = await this.UserEntity.findOne({ where: { Email } });
         return locateUser;
     }
+    async logout(req, res) {
+        const clearCookie = res.clearCookie('isAuthenticated');
+        const response = res.send(`user sucessfully logedout`);
+        return {
+            clearCookie,
+            response
+        };
+    }
 };
 exports.AuthService = AuthService;
+__decorate([
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], AuthService.prototype, "logout", null);
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(user_entity_1.UserEntity)),
