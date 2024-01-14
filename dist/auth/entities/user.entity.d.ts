@@ -1,4 +1,4 @@
-import { Role } from "src/auth/guard/roles.enum";
+import { Role } from "src/auth/enum/roles.enum";
 export declare class UserEntity {
     userId: string;
     username: string;

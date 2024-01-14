@@ -16,26 +16,33 @@ const jwt_1 = require("@nestjs/jwt");
 const typeorm_1 = require("@nestjs/typeorm");
 const user_entity_1 = require("./entities/user.entity");
 const auth_guard_1 = require("./guard/auth.guard");
-const jwtConstant_1 = require("./constants/jwtConstant");
+const config_1 = require("@nestjs/config");
+const pets_entity_1 = require("../Pets/pet-entity/pets.entity");
 let AuthModule = class AuthModule {
 };
 exports.AuthModule = AuthModule;
 exports.AuthModule = AuthModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            typeorm_1.TypeOrmModule.forFeature([user_entity_1.UserEntity]),
+            typeorm_1.TypeOrmModule.forFeature([user_entity_1.UserEntity, pets_entity_1.PetEntity]),
+            jwt_1.JwtModule.registerAsync({
+                imports: [config_1.ConfigModule],
+                useFactory: async (configService) => ({
+                    secret: configService.getOrThrow('JWT_SECRET'),
+                    signOptions: {
+                        algorithm: configService.getOrThrow('JWT_ALGORITHM')
+                    }
+                }),
+                inject: [config_1.ConfigService],
+            }),
             pets_module_1.PetModule,
-            passport_1.PassportModule,
-            jwt_1.JwtModule.register({
-                global: true,
-                secret: jwtConstant_1.jwtConstants.secret,
-                signOptions: { expiresIn: '1h' }
-            })
+            passport_1.PassportModule.register({
+                defaultStrategy: 'jwt'
+            }),
         ],
         controllers: [auth_controller_1.AuthController],
-        providers: [auth_service_1.AuthService, auth_guard_1.AuthGuard
-        ],
-        exports: [auth_service_1.AuthService,],
+        providers: [auth_service_1.AuthService, auth_guard_1.AuthGuard],
+        exports: [auth_service_1.AuthService, auth_guard_1.AuthGuard],
     })
 ], AuthModule);
 //# sourceMappingURL=auth.module.js.map

@@ -63,7 +63,7 @@ let PetService = class PetService {
             .execute();
         return {
             deleted: deletePet.affected,
-            message: `SUCCESSFULLY DELETED ${findPet}`
+            message: `SUCCESSFULLY DELETED`
         };
     }
 };

@@ -1,4 +1,4 @@
-import { Role } from "../guard/roles.enum";
+import { Role } from "../enum/roles.enum";
 export declare class SignupDto {
     userName: string;
     Email: string;

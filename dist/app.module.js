@@ -29,8 +29,6 @@ exports.AppModule = AppModule = __decorate([
             database_module_1.DatabaseModule,
             user_module_1.UserModule
         ],
-        controllers: [],
-        providers: []
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

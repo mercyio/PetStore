@@ -1,5 +1,5 @@
 import { IsDate, IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString, MinLength } from "class-validator"
-import { Role } from "../guard/roles.enum"
+import { Role } from "../enum/roles.enum"
 
 export class SignupDto {
     @IsNotEmpty()

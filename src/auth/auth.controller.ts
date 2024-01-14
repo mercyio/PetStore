@@ -48,7 +48,7 @@ import { Body, Controller, Get, HttpCode, Post, Req, Res, UseGuards } from "@nes
 import { AuthService } from "./auth.service";
 import { LoginDto } from "src/auth/dto/login.dto";
 import { SignupDto } from "src/auth/dto/signup.dto";
-import { Role, Roles } from "src/auth/guard/roles.enum";
+import { Role, Roles } from "src/auth/enum/roles.enum";
 import { AuthGuard } from "./guard/auth.guard";
 import { Request, Response } from "express";
 
