@@ -2,7 +2,8 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, SetMetadata } from '
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Role, Roles } from '../auth/enum/roles.enum';
+import { Role } from 'src/auth/enum/roles.enum';
+import { Roles } from 'src/auth/rolesDecorator/roles.decorator';
 
 @Controller('user')
 export class UserController {

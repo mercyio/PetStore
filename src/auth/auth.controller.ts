@@ -48,9 +48,11 @@ import { Body, Controller, Get, HttpCode, Post, Req, Res, UseGuards } from "@nes
 import { AuthService } from "./auth.service";
 import { LoginDto } from "src/auth/dto/login.dto";
 import { SignupDto } from "src/auth/dto/signup.dto";
-import { Role, Roles } from "src/auth/enum/roles.enum";
 import { AuthGuard } from "./guard/auth.guard";
 import { Request, Response } from "express";
+import { RolesGuard } from "./guard/roles.guard";
+import { Roles } from "./rolesDecorator/roles.decorator";
+import { Role } from "./enum/roles.enum";
 
 
 @Controller('user')
@@ -85,7 +87,8 @@ export class AuthController{
       return req.user;
       }
     
-    @UseGuards(AuthGuard)
+    @Roles(Role.Admin)
+    @UseGuards(AuthGuard, RolesGuard)
     @Get()
     async getUsers(){
     return await this.authService.Allusers()

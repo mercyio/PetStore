@@ -18,6 +18,7 @@ const user_entity_1 = require("./entities/user.entity");
 const auth_guard_1 = require("./guard/auth.guard");
 const config_1 = require("@nestjs/config");
 const pets_entity_1 = require("../Pets/pet-entity/pets.entity");
+const roles_guard_1 = require("./guard/roles.guard");
 let AuthModule = class AuthModule {
 };
 exports.AuthModule = AuthModule;
@@ -41,7 +42,7 @@ exports.AuthModule = AuthModule = __decorate([
             }),
         ],
         controllers: [auth_controller_1.AuthController],
-        providers: [auth_service_1.AuthService, auth_guard_1.AuthGuard],
+        providers: [auth_service_1.AuthService, auth_guard_1.AuthGuard, roles_guard_1.RolesGuard],
         exports: [auth_service_1.AuthService, auth_guard_1.AuthGuard],
     })
 ], AuthModule);

@@ -9,6 +9,8 @@ import { UserEntity } from 'src/auth/entities/user.entity';
 import { AuthGuard } from './guard/auth.guard';
  import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PetEntity } from 'src/Pets/pet-entity/pets.entity';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from './guard/roles.guard';
 
 
 @Module({
@@ -34,7 +36,7 @@ import { PetEntity } from 'src/Pets/pet-entity/pets.entity';
 
     ],
     controllers: [AuthController],
-    providers: [AuthService, AuthGuard],
+    providers: [AuthService, AuthGuard, RolesGuard],
     exports: [AuthService, AuthGuard],
   })
 export class AuthModule {}
