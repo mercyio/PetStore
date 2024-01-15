@@ -1,29 +1,35 @@
 import { Module } from "@nestjs/common";
 import { PetService } from "./pets.service";
 import { PetController } from "./pets.controller";
-import { AuthService } from "src/auth/auth.service";
-// import { AuthGuard } from "src/auth/guard/auth.guard";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { PetEntity } from "./pet-entity/pets.entity";
 import { UserEntity } from "src/auth/entities/user.entity";
-// import { AuthModule } from "src/auth/auth.module";
-// import { TypeOrmModule } from "@nestjs/typeorm";
-// import { PetEntity } from "src/Pets/pet-entity/pets.entity";
-// import { AuthService } from "src/auth/auth.service";
-// import { AuthGuard } from "src/auth/guard/auth.guard";
-// import { AuthModule } from "src/auth/auth.module";
-// import { PetsUploadModule } from "./pets-upload/pets-upload.module";
-// import { UserEntity } from "src/auth/entities/user.entity";
+import { AuthGuard } from "src/auth/guard/auth.guard";
+import { JwtModule } from "@nestjs/jwt";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 
 
 
 @Module( {
      imports:[
         TypeOrmModule.forFeature([PetEntity, UserEntity]),
+        JwtModule.registerAsync ({
+         imports: [ConfigModule],
+         useFactory: async (configService: ConfigService) =>
+         ({
+             secret: configService.getOrThrow<string>
+             ('JWT_SECRET'),
+             signOptions:{
+                 algorithm: configService.getOrThrow
+                 ('JWT_ALGORITHM')
+             }
+         }),
+         inject: [ConfigService],
+      })
      ],
 
-    providers: [PetService],
+    providers: [PetService, AuthGuard],
     controllers: [PetController],
-    exports:[PetService]
+    exports:[PetService, AuthGuard]
 })
 export class PetModule{}

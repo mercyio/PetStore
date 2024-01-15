@@ -1,7 +1,7 @@
 import { Role } from "src/auth/enum/roles.enum";
 export declare class UserEntity {
     userId: string;
-    username: string;
+    userName: string;
     Email: string;
     Password: string;
     PhoneNumber: string;

@@ -78,8 +78,9 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "getProfile", null);
 __decorate([
-    (0, roles_decorator_1.Roles)(roles_enum_1.Role.Admin),
+    (0, roles_decorator_1.Roles)(roles_enum_1.Role.admin),
     (0, common_1.UseGuards)(auth_guard_1.AuthGuard, roles_guard_1.RolesGuard),
+    (0, common_1.UseInterceptors)(common_1.ClassSerializerInterceptor),
     (0, common_1.Get)(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),

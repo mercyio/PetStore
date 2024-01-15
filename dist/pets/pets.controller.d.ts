@@ -8,8 +8,8 @@ export declare class PetController {
     findPet(id: string): Promise<import("./pet-entity/pets.entity").PetEntity>;
     findAllPets(): Promise<import("./pet-entity/pets.entity").PetEntity[]>;
     updatePets(id: string, payload: UpdatePetsDto): Promise<{
-        updated: number;
         message: string;
+        affected: number;
         result: import("./pet-entity/pets.entity").PetEntity;
     }>;
     deletePets(id: string): Promise<{

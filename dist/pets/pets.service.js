@@ -46,8 +46,8 @@ let PetService = class PetService {
             .where('id = :id', { id })
             .execute();
         return {
-            updated: updatePet.affected,
             message: `SUCCESSFULLY UPDATED`,
+            affected: updatePet.affected,
             result: findPet
         };
     }

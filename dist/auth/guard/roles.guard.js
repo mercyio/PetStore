@@ -22,7 +22,7 @@ let RolesGuard = class RolesGuard {
             context.getHandler(),
             context.getClass(),
         ]);
-        if (!requireRoles) {
+        if (requireRoles) {
             return true;
         }
         const { user } = context.switchToHttp().getRequest();

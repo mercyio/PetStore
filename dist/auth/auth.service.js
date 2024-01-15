@@ -19,6 +19,7 @@ const typeorm_2 = require("typeorm");
 const user_entity_1 = require("../auth/entities/user.entity");
 const bcrypt = require("bcrypt");
 const jwt_1 = require("@nestjs/jwt");
+const users_1 = require("./serializer/users");
 let AuthService = class AuthService {
     constructor(UserEntity, jwtService) {
         this.UserEntity = UserEntity;
@@ -57,7 +58,7 @@ let AuthService = class AuthService {
         }
         const payload = {
             userId: findUser.userId,
-            Username: findUser.username,
+            Username: findUser.userName,
             Email: findUser.Email,
             Password: findUser.Password,
             PhoneNumber: findUser.PhoneNumber,
@@ -84,7 +85,8 @@ let AuthService = class AuthService {
     }
     async Allusers() {
         const Users = await this.UserEntity.find();
-        return Users;
+        const serializeAllUsers = Users.map((users) => new users_1.SerializeUsers(users));
+        return serializeAllUsers;
     }
 };
 exports.AuthService = AuthService;

@@ -42,7 +42,7 @@ let UserController = class UserController {
 exports.UserController = UserController;
 __decorate([
     (0, common_1.Post)(),
-    (0, roles_decorator_1.Roles)(roles_enum_1.Role.Admin),
+    (0, roles_decorator_1.Roles)(roles_enum_1.Role.admin),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [create_user_dto_1.CreateUserDto]),

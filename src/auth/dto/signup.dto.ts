@@ -23,3 +23,4 @@ export class SignupDto {
     @IsOptional()
     role: Role
 }
+

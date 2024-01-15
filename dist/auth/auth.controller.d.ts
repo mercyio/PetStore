@@ -13,5 +13,5 @@ export declare class AuthController {
         response: Response<any, Record<string, any>>;
     }>;
     getProfile(req: Request): Promise<Express.User>;
-    getUsers(): Promise<import("./entities/user.entity").UserEntity[]>;
+    getUsers(): Promise<import("./serializer/users").SerializeUsers[]>;
 }

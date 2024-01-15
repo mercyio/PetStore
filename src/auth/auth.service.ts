@@ -3,11 +3,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserEntity } from '../auth/entities/user.entity';
 import * as bcrypt from 'bcrypt';
-import { SignupDto } from '../auth/dto/signup.dto';
 import { Request, Response } from 'express';
 import { JwtService } from '@nestjs/jwt';
 import { LoginDto } from './dto/login.dto';
 import { AnySoaRecord } from 'dns';
+import { SignupDto } from './dto/signup.dto';
+import { SerializeUsers } from './serializer/users';
 
 // import { generate } from 'rxjs';
 
@@ -67,7 +68,7 @@ export class AuthService {
   
         const payload = {
         userId: findUser.userId,
-        Username: findUser.username,
+        Username: findUser.userName,
         Email: findUser.Email,
         Password: findUser.Password,
         PhoneNumber:findUser.PhoneNumber,
@@ -103,7 +104,10 @@ export class AuthService {
 
      async Allusers(){
       const Users = await this.UserEntity.find()
-      return Users
+
+      const serializeAllUsers = Users.map((users) => new SerializeUsers(users))
+      
+      return serializeAllUsers;
     }
 }
     

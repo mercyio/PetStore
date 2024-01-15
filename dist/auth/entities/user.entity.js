@@ -22,7 +22,7 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], UserEntity.prototype, "username", void 0);
+], UserEntity.prototype, "userName", void 0);
 __decorate([
     (0, typeorm_1.Column)({ unique: true }),
     __metadata("design:type", String)
@@ -39,7 +39,7 @@ __decorate([
     (0, typeorm_1.Column)({
         type: 'enum',
         enum: roles_enum_1.Role,
-        default: roles_enum_1.Role.Unknown
+        default: roles_enum_1.Role.unknown
     }),
     __metadata("design:type", String)
 ], UserEntity.prototype, "role", void 0);

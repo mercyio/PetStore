@@ -7,8 +7,8 @@ export declare class PetService {
     getPet(id: string): Promise<PetEntity>;
     getAllPets(): Promise<PetEntity[]>;
     updatePet(id: string, payload: any): Promise<{
-        updated: number;
         message: string;
+        affected: number;
         result: PetEntity;
     }>;
     cv: any;

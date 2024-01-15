@@ -94,8 +94,8 @@ export class PetService{
         .execute();
 
         return {
-            updated: updatePet.affected,
             message: `SUCCESSFULLY UPDATED`,
+            affected: updatePet.affected,
             result: findPet
         };
         
@@ -114,7 +114,7 @@ export class PetService{
 
    return {
    deleted:  deletePet.affected,
-    message: `SUCCESSFULLY DELETED ${findPet}`
+    message: `SUCCESSFULLY DELETED`
 }
    
    }

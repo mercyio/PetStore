@@ -44,7 +44,7 @@
     
 // }
 
-import { Body, Controller, Get, HttpCode, Post, Req, Res, UseGuards } from "@nestjs/common";
+import { Body, ClassSerializerInterceptor, Controller, Get, HttpCode, Post, Req, Res, UseGuards, UseInterceptors } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { LoginDto } from "src/auth/dto/login.dto";
 import { SignupDto } from "src/auth/dto/signup.dto";
@@ -87,8 +87,9 @@ export class AuthController{
       return req.user;
       }
     
-    @Roles(Role.Admin)
+    @Roles(Role.admin)
     @UseGuards(AuthGuard, RolesGuard)
+    @UseInterceptors(ClassSerializerInterceptor)
     @Get()
     async getUsers(){
     return await this.authService.Allusers()

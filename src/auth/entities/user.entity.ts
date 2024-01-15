@@ -7,7 +7,7 @@ export class UserEntity{
         userId: string;
 
         @Column()
-        username: string;
+        userName: string;
       
         @Column({unique:true})
         Email: string;
@@ -21,7 +21,7 @@ export class UserEntity{
         @Column({
                 type:'enum', 
                 enum: Role,
-                default: Role.Unknown
+                default: Role.unknown
         })
         role:Role
       

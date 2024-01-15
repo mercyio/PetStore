@@ -1,8 +1,9 @@
 import { Repository } from 'typeorm';
 import { UserEntity } from '../auth/entities/user.entity';
-import { SignupDto } from '../auth/dto/signup.dto';
 import { Request, Response } from 'express';
 import { JwtService } from '@nestjs/jwt';
+import { SignupDto } from './dto/signup.dto';
+import { SerializeUsers } from './serializer/users';
 export declare class AuthService {
     private UserEntity;
     private jwtService;
@@ -13,5 +14,5 @@ export declare class AuthService {
         clearCookie: Response<any, Record<string, any>>;
         response: Response<any, Record<string, any>>;
     }>;
-    Allusers(): Promise<UserEntity[]>;
+    Allusers(): Promise<SerializeUsers[]>;
 }
