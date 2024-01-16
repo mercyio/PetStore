@@ -17,6 +17,7 @@ import { UserModule } from './user/user.module';
       isGlobal: true
     }),
     PetModule,
+    UserModule,
     PetsUploadModule,
     AuthModule,
     DatabaseModule,

@@ -89,6 +89,7 @@ export class AuthController{
       return req.user;
       }
     
+
     @Roles(Role.admin)
     @UseGuards(AuthGuard, RolesGuard)
     @UseInterceptors(ClassSerializerInterceptor)
@@ -96,16 +97,7 @@ export class AuthController{
     async getUsers(){
     return await this.authService.GetAllusers()
     }
-
-    @Post()
-    async CreateProfile(payload:ProfileDto){
-      return await this.authService.createProfile(payload)
-    }
-
-    @Patch()
-    async UpdateProfile(Id: string, payload:UpdateProfileDto){
-      return await this.authService.updateProfile(Id, payload)
-    }
+    
 
       // @UseGuards(AuthGuard('jwt-refreshtoken'))
   //    @Post('auth/refreshtoken')

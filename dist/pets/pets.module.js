@@ -23,7 +23,7 @@ exports.PetModule = PetModule;
 exports.PetModule = PetModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            typeorm_1.TypeOrmModule.forFeature([pets_entity_1.PetEntity, user_entity_1.UserEntity, profile_entity_1.profileEntity]),
+            typeorm_1.TypeOrmModule.forFeature([pets_entity_1.PetEntity, user_entity_1.UserEntity, profile_entity_1.ProfileEntity]),
             jwt_1.JwtModule.registerAsync({
                 imports: [config_1.ConfigModule],
                 useFactory: async (configService) => ({

@@ -9,41 +9,42 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.profileEntity = void 0;
-const user_entity_1 = require("../../user/entities/user.entity");
+exports.ProfileEntity = void 0;
+const user_entity_1 = require("./user.entity");
 const typeorm_1 = require("typeorm");
-let profileEntity = class profileEntity {
+let ProfileEntity = class ProfileEntity {
 };
-exports.profileEntity = profileEntity;
+exports.ProfileEntity = ProfileEntity;
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", String)
-], profileEntity.prototype, "Id", void 0);
+], ProfileEntity.prototype, "Id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], profileEntity.prototype, "firstname", void 0);
+], ProfileEntity.prototype, "firstname", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], profileEntity.prototype, "lastname", void 0);
+], ProfileEntity.prototype, "lastname", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], profileEntity.prototype, "phonenumber", void 0);
+], ProfileEntity.prototype, "phonenumber", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
-], profileEntity.prototype, "createdAt", void 0);
+], ProfileEntity.prototype, "createdAt", void 0);
 __decorate([
     (0, typeorm_1.UpdateDateColumn)(),
     __metadata("design:type", Date)
-], profileEntity.prototype, "updatedAt", void 0);
+], ProfileEntity.prototype, "updatedAt", void 0);
 __decorate([
-    (0, typeorm_1.OneToOne)(() => user_entity_1.User, (user) => user.profile),
-    __metadata("design:type", user_entity_1.User)
-], profileEntity.prototype, "user", void 0);
-exports.profileEntity = profileEntity = __decorate([
-    (0, typeorm_1.Entity)()
-], profileEntity);
+    (0, typeorm_1.OneToOne)(() => user_entity_1.UserEntity, (user) => user.profile),
+    (0, typeorm_1.JoinColumn)({ name: 'user_id' }),
+    __metadata("design:type", user_entity_1.UserEntity)
+], ProfileEntity.prototype, "user", void 0);
+exports.ProfileEntity = ProfileEntity = __decorate([
+    (0, typeorm_1.Entity)('profile')
+], ProfileEntity);
 //# sourceMappingURL=profile.entity.js.map

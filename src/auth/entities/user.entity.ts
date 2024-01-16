@@ -1,7 +1,6 @@
-import { Profile } from "passport";
 import { Role } from "src/auth/enum/roles.enum";
-// import { User } from "src/profile/entities/profile.entity";
 import {Column, CreateDateColumn, Entity, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
+import { ProfileEntity } from "./profile.entity";
 
 @Entity('user')
 export class UserEntity{
@@ -30,7 +29,7 @@ export class UserEntity{
         @UpdateDateColumn()
         updatedAt: Date
 
-        // @OneToOne(() => Profile, (profile) => profile.user )
-        // profile: Profile;
+        @OneToOne(() => ProfileEntity, (profile) => profile.user )
+        profile: ProfileEntity;
 }
 

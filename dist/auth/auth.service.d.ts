@@ -4,14 +4,12 @@ import { Request, Response } from 'express';
 import { JwtService } from '@nestjs/jwt';
 import { SignupDto } from './dto/signup.dto';
 import { SerializeUsers } from './serializer/users';
-import { ProfileDto } from './dto/profile.dto';
-import { UpdateProfileDto } from './dto/update-profile.dto';
-import { profileEntity } from './entities/profile.entity';
+import { ProfileEntity } from './entities/profile.entity';
 export declare class AuthService {
     private userRepo;
     private profileRepo;
     private jwtService;
-    constructor(userRepo: Repository<UserEntity>, profileRepo: Repository<profileEntity>, jwtService: JwtService);
+    constructor(userRepo: Repository<UserEntity>, profileRepo: Repository<ProfileEntity>, jwtService: JwtService);
     signup(payload: SignupDto): Promise<any>;
     login(Email: string, Password: string, req: Request, res: Response): Promise<Response<any, Record<string, any>>>;
     logout(req: Request, res: Response): Promise<{
@@ -19,6 +17,4 @@ export declare class AuthService {
         response: Response<any, Record<string, any>>;
     }>;
     GetAllusers(): Promise<SerializeUsers[]>;
-    createProfile(payload: ProfileDto): Promise<ProfileDto & profileEntity>;
-    updateProfile(Id: string, payload: UpdateProfileDto): Promise<void>;
 }

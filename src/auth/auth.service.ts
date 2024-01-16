@@ -11,7 +11,7 @@ import { SignupDto } from './dto/signup.dto';
 import { SerializeUsers } from './serializer/users';
 import { ProfileDto } from './dto/profile.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
-import { profileEntity } from './entities/profile.entity';
+import { ProfileEntity } from './entities/profile.entity';
 
 // import { generate } from 'rxjs';
 
@@ -21,8 +21,8 @@ export class AuthService {
   constructor ( 
     @InjectRepository(UserEntity)
      private userRepo: Repository<UserEntity>,
-    @InjectRepository(profileEntity)
-    private profileRepo: Repository<profileEntity>,
+    @InjectRepository(ProfileEntity)
+    private profileRepo: Repository<ProfileEntity>,
      private jwtService :JwtService,
     ){}
 
@@ -115,15 +115,15 @@ export class AuthService {
       return serializeAllUsers;
     }
 
-    async createProfile(payload:ProfileDto){
-        const createUser = await this.profileRepo.save(payload)
-        return createUser;
-    }
+    // async createProfile(payload:ProfileDto){
+    //     const createUser = await this.profileRepo.save(payload)
+    //     return createUser;
+    // }
 
 
-    async updateProfile(Id:string, payload:UpdateProfileDto){
-      const update = await this.profileRepo.update(Id, payload)
-    }
+    // async updateProfile(Id:string, payload:UpdateProfileDto){
+    //   const update = await this.profileRepo.update(Id, payload)
+    // }
 }
     
     

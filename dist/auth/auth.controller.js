@@ -21,8 +21,6 @@ const auth_guard_1 = require("./guard/auth.guard");
 const roles_guard_1 = require("./guard/roles.guard");
 const roles_decorator_1 = require("./rolesDecorator/roles.decorator");
 const roles_enum_1 = require("./enum/roles.enum");
-const profile_dto_1 = require("./dto/profile.dto");
-const update_profile_dto_1 = require("./dto/update-profile.dto");
 let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
@@ -43,12 +41,6 @@ let AuthController = class AuthController {
     }
     async getUsers() {
         return await this.authService.GetAllusers();
-    }
-    async CreateProfile(payload) {
-        return await this.authService.createProfile(payload);
-    }
-    async UpdateProfile(Id, payload) {
-        return await this.authService.updateProfile(Id, payload);
     }
 };
 exports.AuthController = AuthController;
@@ -94,18 +86,6 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "getUsers", null);
-__decorate([
-    (0, common_1.Post)(),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [profile_dto_1.ProfileDto]),
-    __metadata("design:returntype", Promise)
-], AuthController.prototype, "CreateProfile", null);
-__decorate([
-    (0, common_1.Patch)(),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, update_profile_dto_1.UpdateProfileDto]),
-    __metadata("design:returntype", Promise)
-], AuthController.prototype, "UpdateProfile", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('user'),
     __metadata("design:paramtypes", [auth_service_1.AuthService])

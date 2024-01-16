@@ -1,12 +1,12 @@
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { ProfileDto } from 'src/auth/dto/profile.dto';
+import { UpdateProfileDto } from 'src/auth/dto/update-profile.dto';
 export declare class UserController {
-    private readonly userService;
+    private userService;
     constructor(userService: UserService);
-    create(createUserDto: CreateUserDto): string;
-    findAll(): string;
+    CreateProfile(payload: ProfileDto): Promise<ProfileDto & import("../auth/entities/profile.entity").ProfileEntity>;
+    user: any;
+    UpdateProfile(id: string, payload: UpdateProfileDto): Promise<void>;
     findOne(id: string): string;
-    update(id: string, updateUserDto: UpdateUserDto): string;
     remove(id: string): string;
 }

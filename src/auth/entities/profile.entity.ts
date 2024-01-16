@@ -1,9 +1,8 @@
-import { profile } from "console";
-import { User } from "src/user/entities/user.entity";
-import { Column, CreateDateColumn, Entity, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { UserEntity } from "src/auth/entities/user.entity";
+import { Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity('profile')
-export class profileEntity{
+export class ProfileEntity{
     @PrimaryGeneratedColumn()
     Id: string
 
@@ -23,7 +22,8 @@ export class profileEntity{
     updatedAt: Date
 
 
-    // @OneToOne(() => User, (user) => user.profile )
-    // user: User;
+    @OneToOne(() => UserEntity, (user) => user.profile )
+    @JoinColumn({name: 'user_id'})
+    user: UserEntity;
 
 }

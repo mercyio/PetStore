@@ -3,8 +3,9 @@ import { ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PetEntity } from 'src/Pets/pet-entity/pets.entity';
 import { PetModule } from 'src/Pets/pets.module';
-import { profileEntity } from 'src/auth/entities/profile.entity';
+import { ProfileEntity } from 'src/auth/entities/profile.entity';
 import { UserEntity } from 'src/auth/entities/user.entity';
+import { UserModule } from 'src/user/user.module';
 
 @Module({
     imports:[
@@ -16,13 +17,14 @@ import { UserEntity } from 'src/auth/entities/user.entity';
               username: configService.getOrThrow('DB_USER'),
               password: configService.getOrThrow('DB_PASSWORD'),
               database: configService.getOrThrow('DB_DATABASE'),
-              entities: [PetEntity, UserEntity, profileEntity],
+              entities: [PetEntity, UserEntity, ProfileEntity],
               synchronize: configService.getOrThrow('DB_SYNC'),
             }),
             inject: [ConfigService]
           
           }),
-          PetModule
+          PetModule,
+          UserModule
     ]
 })
 export class DatabaseModule {}

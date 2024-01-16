@@ -26,7 +26,7 @@ exports.AuthModule = AuthModule;
 exports.AuthModule = AuthModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            typeorm_1.TypeOrmModule.forFeature([user_entity_1.UserEntity, pets_entity_1.PetEntity, profile_entity_1.profileEntity]),
+            typeorm_1.TypeOrmModule.forFeature([user_entity_1.UserEntity, pets_entity_1.PetEntity, profile_entity_1.ProfileEntity]),
             jwt_1.JwtModule.registerAsync({
                 imports: [config_1.ConfigModule],
                 useFactory: async (configService) => ({

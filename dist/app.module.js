@@ -24,6 +24,7 @@ exports.AppModule = AppModule = __decorate([
                 isGlobal: true
             }),
             pets_module_1.PetModule,
+            user_module_1.UserModule,
             pets_upload_module_1.PetsUploadModule,
             auth_module_1.AuthModule,
             database_module_1.DatabaseModule,

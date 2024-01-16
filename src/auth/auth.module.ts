@@ -11,12 +11,12 @@ import { AuthGuard } from './guard/auth.guard';
 import { PetEntity } from 'src/Pets/pet-entity/pets.entity';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './guard/roles.guard';
-import { profileEntity } from './entities/profile.entity';
+import { ProfileEntity } from './entities/profile.entity';
 
 
 @Module({
   imports: [
-      TypeOrmModule.forFeature([UserEntity, PetEntity, profileEntity]),
+      TypeOrmModule.forFeature([UserEntity, PetEntity, ProfileEntity]),
          JwtModule.registerAsync({
           imports: [ConfigModule],
           useFactory: async (configService: ConfigService) =>

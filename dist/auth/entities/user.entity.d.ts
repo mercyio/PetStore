@@ -1,4 +1,5 @@
 import { Role } from "src/auth/enum/roles.enum";
+import { ProfileEntity } from "./profile.entity";
 export declare class UserEntity {
     userId: string;
     userName: string;
@@ -7,4 +8,5 @@ export declare class UserEntity {
     role: Role;
     createdAt: Date;
     updatedAt: Date;
+    profile: ProfileEntity;
 }

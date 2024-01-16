@@ -14,6 +14,7 @@ const pets_entity_1 = require("../Pets/pet-entity/pets.entity");
 const pets_module_1 = require("../Pets/pets.module");
 const profile_entity_1 = require("../auth/entities/profile.entity");
 const user_entity_1 = require("../auth/entities/user.entity");
+const user_module_1 = require("../user/user.module");
 let DatabaseModule = class DatabaseModule {
 };
 exports.DatabaseModule = DatabaseModule;
@@ -28,12 +29,13 @@ exports.DatabaseModule = DatabaseModule = __decorate([
                     username: configService.getOrThrow('DB_USER'),
                     password: configService.getOrThrow('DB_PASSWORD'),
                     database: configService.getOrThrow('DB_DATABASE'),
-                    entities: [pets_entity_1.PetEntity, user_entity_1.UserEntity, profile_entity_1.profileEntity],
+                    entities: [pets_entity_1.PetEntity, user_entity_1.UserEntity, profile_entity_1.ProfileEntity],
                     synchronize: configService.getOrThrow('DB_SYNC'),
                 }),
                 inject: [config_1.ConfigService]
             }),
-            pets_module_1.PetModule
+            pets_module_1.PetModule,
+            user_module_1.UserModule
         ]
     })
 ], DatabaseModule);

@@ -89,13 +89,6 @@ let AuthService = class AuthService {
         const serializeAllUsers = Users.map((users) => new users_1.SerializeUsers(users));
         return serializeAllUsers;
     }
-    async createProfile(payload) {
-        const createUser = await this.profileRepo.save(payload);
-        return createUser;
-    }
-    async updateProfile(Id, payload) {
-        const update = await this.profileRepo.update(Id, payload);
-    }
 };
 exports.AuthService = AuthService;
 __decorate([
@@ -115,7 +108,7 @@ __decorate([
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(user_entity_1.UserEntity)),
-    __param(1, (0, typeorm_1.InjectRepository)(profile_entity_1.profileEntity)),
+    __param(1, (0, typeorm_1.InjectRepository)(profile_entity_1.ProfileEntity)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
         typeorm_2.Repository,
         jwt_1.JwtService])
