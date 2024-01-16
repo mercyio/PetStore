@@ -4,7 +4,6 @@ export declare class UserEntity {
     userName: string;
     Email: string;
     Password: string;
-    PhoneNumber: string;
     role: Role;
     createdAt: Date;
     updatedAt: Date;

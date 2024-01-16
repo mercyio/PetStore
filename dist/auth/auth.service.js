@@ -20,23 +20,25 @@ const user_entity_1 = require("../auth/entities/user.entity");
 const bcrypt = require("bcrypt");
 const jwt_1 = require("@nestjs/jwt");
 const users_1 = require("./serializer/users");
+const profile_entity_1 = require("./entities/profile.entity");
 let AuthService = class AuthService {
-    constructor(UserEntity, jwtService) {
-        this.UserEntity = UserEntity;
+    constructor(userRepo, profileRepo, jwtService) {
+        this.userRepo = userRepo;
+        this.profileRepo = profileRepo;
         this.jwtService = jwtService;
     }
     async signup(payload) {
         payload.Email = payload.Email.toLowerCase();
         const { Email, Password, ...rest } = payload;
-        const userEmail = await this.UserEntity.findOne({ where: { Email: Email } });
+        const userEmail = await this.userRepo.findOne({ where: { Email: Email } });
         if (userEmail) {
             throw new common_1.HttpException('EMAIL ALREADY EXIST', 400);
         }
         const saltOrRounds = 10;
         const hashedPassword = await bcrypt.hash(Password, saltOrRounds);
         try {
-            const user = await this.UserEntity.save({ ...payload, Password: hashedPassword });
-            await this.UserEntity.save(user);
+            const user = await this.userRepo.save({ ...payload, Password: hashedPassword });
+            await this.userRepo.save(user);
             delete user.Password;
             return user;
         }
@@ -48,7 +50,7 @@ let AuthService = class AuthService {
         }
     }
     async login(Email, Password, req, res) {
-        const findUser = await this.UserEntity.findOne({ where: { Email } });
+        const findUser = await this.userRepo.findOne({ where: { Email } });
         if (!findUser) {
             throw new common_1.UnauthorizedException('INVALID CREDENTIALS');
         }
@@ -61,7 +63,6 @@ let AuthService = class AuthService {
             Username: findUser.userName,
             Email: findUser.Email,
             Password: findUser.Password,
-            PhoneNumber: findUser.PhoneNumber,
             Role: findUser.role
         };
         const Token = await this.jwtService.sign(payload);
@@ -83,10 +84,17 @@ let AuthService = class AuthService {
             response
         };
     }
-    async Allusers() {
-        const Users = await this.UserEntity.find();
+    async GetAllusers() {
+        const Users = await this.userRepo.find();
         const serializeAllUsers = Users.map((users) => new users_1.SerializeUsers(users));
         return serializeAllUsers;
+    }
+    async createProfile(payload) {
+        const createUser = await this.profileRepo.save(payload);
+        return createUser;
+    }
+    async updateProfile(Id, payload) {
+        const update = await this.profileRepo.update(Id, payload);
     }
 };
 exports.AuthService = AuthService;
@@ -107,7 +115,9 @@ __decorate([
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(user_entity_1.UserEntity)),
+    __param(1, (0, typeorm_1.InjectRepository)(profile_entity_1.profileEntity)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository,
         jwt_1.JwtService])
 ], AuthService);
 //# sourceMappingURL=auth.service.js.map

@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PetEntity } from 'src/Pets/pet-entity/pets.entity';
 import { PetModule } from 'src/Pets/pets.module';
+import { profileEntity } from 'src/auth/entities/profile.entity';
 import { UserEntity } from 'src/auth/entities/user.entity';
 
 @Module({
@@ -15,7 +16,7 @@ import { UserEntity } from 'src/auth/entities/user.entity';
               username: configService.getOrThrow('DB_USER'),
               password: configService.getOrThrow('DB_PASSWORD'),
               database: configService.getOrThrow('DB_DATABASE'),
-              entities: [PetEntity, UserEntity],
+              entities: [PetEntity, UserEntity, profileEntity],
               synchronize: configService.getOrThrow('DB_SYNC'),
             }),
             inject: [ConfigService]

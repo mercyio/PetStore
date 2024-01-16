@@ -31,11 +31,6 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.MinLength)(6),
     __metadata("design:type", String)
-], SignupDto.prototype, "PhoneNumber", void 0);
-__decorate([
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.MinLength)(6),
-    __metadata("design:type", String)
 ], SignupDto.prototype, "Password", void 0);
 __decorate([
     (0, class_validator_1.IsOptional)(),

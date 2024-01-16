@@ -16,13 +16,14 @@ const user_entity_1 = require("../auth/entities/user.entity");
 const auth_guard_1 = require("../auth/guard/auth.guard");
 const jwt_1 = require("@nestjs/jwt");
 const config_1 = require("@nestjs/config");
+const profile_entity_1 = require("../auth/entities/profile.entity");
 let PetModule = class PetModule {
 };
 exports.PetModule = PetModule;
 exports.PetModule = PetModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            typeorm_1.TypeOrmModule.forFeature([pets_entity_1.PetEntity, user_entity_1.UserEntity]),
+            typeorm_1.TypeOrmModule.forFeature([pets_entity_1.PetEntity, user_entity_1.UserEntity, profile_entity_1.profileEntity]),
             jwt_1.JwtModule.registerAsync({
                 imports: [config_1.ConfigModule],
                 useFactory: async (configService) => ({

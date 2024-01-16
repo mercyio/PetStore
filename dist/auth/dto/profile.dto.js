@@ -9,16 +9,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AdminEntity = void 0;
-const typeorm_1 = require("typeorm");
-let AdminEntity = class AdminEntity {
-};
-exports.AdminEntity = AdminEntity;
+exports.ProfileDto = void 0;
+const class_validator_1 = require("class-validator");
+class ProfileDto {
+}
+exports.ProfileDto = ProfileDto;
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.MinLength)(3),
     __metadata("design:type", String)
-], AdminEntity.prototype, "AdminId", void 0);
-exports.AdminEntity = AdminEntity = __decorate([
-    (0, typeorm_1.Entity)()
-], AdminEntity);
-//# sourceMappingURL=admin.entity.js.map
+], ProfileDto.prototype, "firstname", void 0);
+__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.MinLength)(3),
+    __metadata("design:type", String)
+], ProfileDto.prototype, "lastname", void 0);
+__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.Length)(11),
+    __metadata("design:type", String)
+], ProfileDto.prototype, "phonenumber", void 0);
+//# sourceMappingURL=profile.dto.js.map

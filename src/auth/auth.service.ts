@@ -9,6 +9,9 @@ import { LoginDto } from './dto/login.dto';
 import { AnySoaRecord } from 'dns';
 import { SignupDto } from './dto/signup.dto';
 import { SerializeUsers } from './serializer/users';
+import { ProfileDto } from './dto/profile.dto';
+import { UpdateProfileDto } from './dto/update-profile.dto';
+import { profileEntity } from './entities/profile.entity';
 
 // import { generate } from 'rxjs';
 
@@ -16,8 +19,11 @@ import { SerializeUsers } from './serializer/users';
 export class AuthService {
 
   constructor ( 
-    @InjectRepository(UserEntity) private UserEntity: Repository<UserEntity>,
-    private jwtService :JwtService,
+    @InjectRepository(UserEntity)
+     private userRepo: Repository<UserEntity>,
+    @InjectRepository(profileEntity)
+    private profileRepo: Repository<profileEntity>,
+     private jwtService :JwtService,
     ){}
 
     async signup(payload: SignupDto) {
@@ -25,7 +31,7 @@ export class AuthService {
 
       const {Email, Password, ...rest}=payload
       
-      const userEmail= await this.UserEntity.findOne({where:{Email:Email}})
+      const userEmail= await this.userRepo.findOne({where:{Email:Email}})
 
       if(userEmail){
         throw new HttpException('EMAIL ALREADY EXIST', 400)
@@ -35,8 +41,8 @@ export class AuthService {
 
       const hashedPassword = await bcrypt.hash(Password, saltOrRounds);
       try{
-        const user = await this.UserEntity.save({...payload, Password: hashedPassword});
-        await this.UserEntity.save(user);
+        const user = await this.userRepo.save({...payload, Password: hashedPassword});
+        await this.userRepo.save(user);
         delete user.Password;
         return user;
       }
@@ -52,7 +58,7 @@ export class AuthService {
 
     async login(Email:string, Password:string, @Req()req:Request, @Res()res:Response) {
 
-      const findUser = await this.UserEntity.findOne({where : {Email}});
+      const findUser = await this.userRepo.findOne({where : {Email}});
      
       if(!findUser){
         throw new UnauthorizedException('INVALID CREDENTIALS')
@@ -71,7 +77,6 @@ export class AuthService {
         Username: findUser.userName,
         Email: findUser.Email,
         Password: findUser.Password,
-        PhoneNumber:findUser.PhoneNumber,
         Role: findUser.role
       };
       
@@ -102,12 +107,22 @@ export class AuthService {
      }
 
 
-     async Allusers(){
-      const Users = await this.UserEntity.find()
+     async GetAllusers(){
+      const Users = await this.userRepo.find()
 
       const serializeAllUsers = Users.map((users) => new SerializeUsers(users))
       
       return serializeAllUsers;
+    }
+
+    async createProfile(payload:ProfileDto){
+        const createUser = await this.profileRepo.save(payload)
+        return createUser;
+    }
+
+
+    async updateProfile(Id:string, payload:UpdateProfileDto){
+      const update = await this.profileRepo.update(Id, payload)
     }
 }
     

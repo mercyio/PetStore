@@ -44,7 +44,7 @@
     
 // }
 
-import { Body, ClassSerializerInterceptor, Controller, Get, HttpCode, Post, Req, Res, UseGuards, UseInterceptors } from "@nestjs/common";
+import { Body, ClassSerializerInterceptor, Controller, Get, HttpCode, Patch, Post, Req, Res, UseGuards, UseInterceptors } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { LoginDto } from "src/auth/dto/login.dto";
 import { SignupDto } from "src/auth/dto/signup.dto";
@@ -53,6 +53,8 @@ import { Request, Response } from "express";
 import { RolesGuard } from "./guard/roles.guard";
 import { Roles } from "./rolesDecorator/roles.decorator";
 import { Role } from "./enum/roles.enum";
+import { ProfileDto } from "./dto/profile.dto";
+import { UpdateProfileDto } from "./dto/update-profile.dto";
 
 
 @Controller('user')
@@ -92,7 +94,17 @@ export class AuthController{
     @UseInterceptors(ClassSerializerInterceptor)
     @Get()
     async getUsers(){
-    return await this.authService.Allusers()
+    return await this.authService.GetAllusers()
+    }
+
+    @Post()
+    async CreateProfile(payload:ProfileDto){
+      return await this.authService.createProfile(payload)
+    }
+
+    @Patch()
+    async UpdateProfile(Id: string, payload:UpdateProfileDto){
+      return await this.authService.updateProfile(Id, payload)
     }
 
       // @UseGuards(AuthGuard('jwt-refreshtoken'))

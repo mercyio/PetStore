@@ -9,45 +9,41 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserEntity = void 0;
-const roles_enum_1 = require("../enum/roles.enum");
+exports.profileEntity = void 0;
+const user_entity_1 = require("../../user/entities/user.entity");
 const typeorm_1 = require("typeorm");
-let UserEntity = class UserEntity {
+let profileEntity = class profileEntity {
 };
-exports.UserEntity = UserEntity;
+exports.profileEntity = profileEntity;
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
+    (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", String)
-], UserEntity.prototype, "userId", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], UserEntity.prototype, "userName", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ unique: true }),
-    __metadata("design:type", String)
-], UserEntity.prototype, "Email", void 0);
+], profileEntity.prototype, "Id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], UserEntity.prototype, "Password", void 0);
+], profileEntity.prototype, "firstname", void 0);
 __decorate([
-    (0, typeorm_1.Column)({
-        type: 'enum',
-        enum: roles_enum_1.Role,
-        default: roles_enum_1.Role.unknown
-    }),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], UserEntity.prototype, "role", void 0);
+], profileEntity.prototype, "lastname", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], profileEntity.prototype, "phonenumber", void 0);
 __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
-], UserEntity.prototype, "createdAt", void 0);
+], profileEntity.prototype, "createdAt", void 0);
 __decorate([
     (0, typeorm_1.UpdateDateColumn)(),
     __metadata("design:type", Date)
-], UserEntity.prototype, "updatedAt", void 0);
-exports.UserEntity = UserEntity = __decorate([
-    (0, typeorm_1.Entity)('user')
-], UserEntity);
-//# sourceMappingURL=user.entity.js.map
+], profileEntity.prototype, "updatedAt", void 0);
+__decorate([
+    (0, typeorm_1.OneToOne)(() => user_entity_1.User, (user) => user.profile),
+    __metadata("design:type", user_entity_1.User)
+], profileEntity.prototype, "user", void 0);
+exports.profileEntity = profileEntity = __decorate([
+    (0, typeorm_1.Entity)()
+], profileEntity);
+//# sourceMappingURL=profile.entity.js.map

@@ -1,4 +1,4 @@
-import { IsDate, IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString, MinLength } from "class-validator"
+import { IsEmail, IsNotEmpty, IsOptional, IsString, MinLength } from "class-validator"
 import { Role } from "../enum/roles.enum"
 
 export class SignupDto {
@@ -11,10 +11,6 @@ export class SignupDto {
     @IsString()
     @IsEmail()
     Email: string
-
-    @IsNotEmpty()
-    @MinLength(6)
-    PhoneNumber: string
 
     @IsNotEmpty()
     @MinLength(6)
