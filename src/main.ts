@@ -12,6 +12,8 @@ async function bootstrap() {
   app.enableCors({
     origin: 'http://localhost:3000'
   })
+  app.setGlobalPrefix('api/v1')
+  
   const Port = process.env.LISTENING_PORT
   await app.listen(Port, ()=> console.log(`listening on port:${Port}`));
 }
