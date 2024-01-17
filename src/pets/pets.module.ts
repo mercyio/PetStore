@@ -7,13 +7,13 @@ import { UserEntity } from "src/auth/entities/user.entity";
 import { AuthGuard } from "src/auth/guard/auth.guard";
 import { JwtModule } from "@nestjs/jwt";
 import { ConfigModule, ConfigService } from "@nestjs/config";
-import { profileEntity } from "src/auth/entities/profile.entity";
+import { ProfileEntity } from "src/auth/entities/profile.entity";
 
 
 
 @Module( {
      imports:[
-        TypeOrmModule.forFeature([PetEntity, UserEntity, profileEntity]),
+        TypeOrmModule.forFeature([PetEntity, UserEntity, ProfileEntity]),
         JwtModule.registerAsync ({
          imports: [ConfigModule],
          useFactory: async (configService: ConfigService) =>

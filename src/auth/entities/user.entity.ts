@@ -33,3 +33,5 @@ export class UserEntity{
         profile: ProfileEntity;
 }
 
+// api ocumentation using swagger
+
