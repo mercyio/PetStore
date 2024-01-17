@@ -12,6 +12,19 @@ async function bootstrap() {
         origin: 'http://localhost:3000'
     });
     app.setGlobalPrefix('api/v1');
+    const config = new DocumentBuilder()
+        .setTitle('management system API')
+        .setDescription('management system')
+        .setVersion('1.0.0')
+        .addTag('users')
+        .addBearerAuth({
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'Token',
+    }, 'access-token')
+        .build();
+    const document = SwaggerModule.createDocument(app, config);
+    SwaggerModule.setup('api', app, document);
     const Port = process.env.LISTENING_PORT;
     await app.listen(Port, () => console.log(`listening on port:${Port}`));
 }
