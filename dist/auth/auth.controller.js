@@ -19,8 +19,10 @@ const login_dto_1 = require("./dto/login.dto");
 const signup_dto_1 = require("./dto/signup.dto");
 const auth_guard_1 = require("./guard/auth.guard");
 const roles_guard_1 = require("./guard/roles.guard");
-const roles_decorator_1 = require("./rolesDecorator/roles.decorator");
+const roles_decorator_1 = require("./decorator/roles.decorator");
 const roles_enum_1 = require("./enum/roles.enum");
+const profile_dto_1 = require("./dto/profile.dto");
+const swagger_1 = require("@nestjs/swagger");
 let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
@@ -39,13 +41,24 @@ let AuthController = class AuthController {
     async getProfile(req) {
         return req.user;
     }
+    async createProfile(userName) {
+        return await this.authService.createProfile(userName);
+    }
+    async updateProfile(userName, payload) {
+        return await this.authService.updateProfile(userName, payload);
+    }
     async getUsers() {
         return await this.authService.GetAllusers();
+    }
+    async user(userName) {
+        return await this.authService.getUser(userName);
     }
 };
 exports.AuthController = AuthController;
 __decorate([
     (0, common_1.Post)('signup'),
+    (0, swagger_1.ApiCreatedResponse)({ description: "User Signup/Registeration" }),
+    (0, swagger_1.ApiBody)({ type: signup_dto_1.SignupDto }),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [signup_dto_1.SignupDto]),
@@ -53,6 +66,9 @@ __decorate([
 ], AuthController.prototype, "signupUser", null);
 __decorate([
     (0, common_1.Post)('/login'),
+    (0, swagger_1.ApiCreatedResponse)({ description: "User Signup/Registeration" }),
+    (0, swagger_1.ApiBody)({ type: signup_dto_1.SignupDto }),
+    (0, swagger_1.ApiUnauthorizedResponse)({ description: "Invalid credentials" }),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Req)()),
     __param(2, (0, common_1.Res)()),
@@ -70,22 +86,47 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "logout", null);
 __decorate([
+    (0, common_1.Get)('profile'),
     (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
-    (0, common_1.Get)('/profile'),
+    (0, swagger_1.ApiOkResponse)(),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "getProfile", null);
 __decorate([
+    (0, common_1.Post)('createprofile'),
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "createProfile", null);
+__decorate([
+    (0, common_1.Patch)('updateprofile'),
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
+    __param(0, (0, common_1.Param)('userName')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, profile_dto_1.ProfileDto]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "updateProfile", null);
+__decorate([
+    (0, common_1.Get)('users'),
     (0, roles_decorator_1.Roles)(roles_enum_1.Role.admin),
     (0, common_1.UseGuards)(auth_guard_1.AuthGuard, roles_guard_1.RolesGuard),
     (0, common_1.UseInterceptors)(common_1.ClassSerializerInterceptor),
-    (0, common_1.Get)(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "getUsers", null);
+__decorate([
+    (0, common_1.Get)(':userName'),
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
+    __param(0, (0, common_1.Param)('userName')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "user", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('user'),
     __metadata("design:paramtypes", [auth_service_1.AuthService])

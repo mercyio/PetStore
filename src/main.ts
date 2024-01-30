@@ -16,8 +16,8 @@ async function bootstrap() {
   app.setGlobalPrefix('api/v1')
 
   const config = new DocumentBuilder()
-  .setTitle('management system API')
-  .setDescription('management system')
+  .setTitle(' Pets-Store API')
+  .setDescription('pets store')
   .setVersion('1.0.0')
   .addTag('users')
   .addBearerAuth(

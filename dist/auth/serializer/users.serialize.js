@@ -29,4 +29,4 @@ __decorate([
     (0, class_transformer_1.Exclude)(),
     __metadata("design:type", Date)
 ], SerializeUsers.prototype, "updatedAt", void 0);
-//# sourceMappingURL=users.js.map
+//# sourceMappingURL=users.serialize.js.map

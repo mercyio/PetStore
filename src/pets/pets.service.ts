@@ -118,5 +118,39 @@ export class PetService{
 }
    
    }
+
+//    async createProfile( userName: string){
+//     const findname = await this.userRepo.findOne({where:{userName}})
+//     if(!findname){
+//      throw new UnauthorizedException('invalid crediential')
+//     }
+//     const createProfile= await this.userRepo.save({userName})
+
+//     return({
+//       message: 'successfully created',
+//       result: createProfile
+//     })
+//   }
+ 
+
+
+//   async updateProfile(userName:string, payload:UpdateProfileDto){
+//     const findProfile = await this.userRepo.findOne({where:{userName}})
+//     if(!findProfile){
+//       throw new UnauthorizedException('invalid')
+//     }
+//     const update = await this.userRepo
+//     .createQueryBuilder()
+//     .update(ProfileEntity)
+//     .where('userName = :userName', {userName})
+//     .set(payload)
+//     .execute();
+
+//     return{
+//       message: 'successfully updated profile',
+//       result: update
+//     }
+//   }
+  
  
 }

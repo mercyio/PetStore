@@ -11,29 +11,28 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SignupDto = void 0;
 const class_validator_1 = require("class-validator");
-const roles_enum_1 = require("../enum/roles.enum");
+const swagger_1 = require("@nestjs/swagger");
 class SignupDto {
 }
 exports.SignupDto = SignupDto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.MinLength)(5),
+    (0, class_validator_1.MinLength)(2),
+    (0, swagger_1.ApiProperty)({ type: String }),
     __metadata("design:type", String)
 ], SignupDto.prototype, "userName", void 0);
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsEmail)(),
+    (0, swagger_1.ApiProperty)({ type: String }),
     __metadata("design:type", String)
 ], SignupDto.prototype, "Email", void 0);
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.MinLength)(6),
+    (0, class_validator_1.MinLength)(5),
+    (0, swagger_1.ApiProperty)({ type: String }),
     __metadata("design:type", String)
 ], SignupDto.prototype, "Password", void 0);
-__decorate([
-    (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", String)
-], SignupDto.prototype, "role", void 0);
 //# sourceMappingURL=signup.dto.js.map

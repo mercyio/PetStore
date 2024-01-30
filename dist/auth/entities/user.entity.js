@@ -13,6 +13,7 @@ exports.UserEntity = void 0;
 const roles_enum_1 = require("../enum/roles.enum");
 const typeorm_1 = require("typeorm");
 const profile_entity_1 = require("./profile.entity");
+const pets_entity_1 = require("../../Pets/pet-entity/pets.entity");
 let UserEntity = class UserEntity {
 };
 exports.UserEntity = UserEntity;
@@ -49,9 +50,15 @@ __decorate([
     __metadata("design:type", Date)
 ], UserEntity.prototype, "updatedAt", void 0);
 __decorate([
-    (0, typeorm_1.OneToOne)(() => profile_entity_1.ProfileEntity, (profile) => profile.user),
+    (0, typeorm_1.OneToOne)(() => profile_entity_1.ProfileEntity, (profile) => profile.user, { onDelete: 'CASCADE' }),
+    (0, typeorm_1.JoinColumn)(),
     __metadata("design:type", profile_entity_1.ProfileEntity)
 ], UserEntity.prototype, "profile", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => pets_entity_1.PetEntity, pet => pet.user, { onDelete: 'SET NULL' }),
+    (0, typeorm_1.JoinColumn)(),
+    __metadata("design:type", Array)
+], UserEntity.prototype, "pet", void 0);
 exports.UserEntity = UserEntity = __decorate([
     (0, typeorm_1.Entity)('user')
 ], UserEntity);

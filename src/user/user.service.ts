@@ -4,7 +4,7 @@ import { ProfileDto } from 'src/auth/dto/profile.dto';
 import { UpdateProfileDto } from 'src/auth/dto/update-profile.dto';
 import { ProfileEntity } from 'src/auth/entities/profile.entity';
 import { UserEntity } from 'src/auth/entities/user.entity';
-import { SerializeUsers } from 'src/auth/serializer/users';
+import { SerializeUsers } from 'src/auth/serializer/users.serialize';
 import { Repository } from 'typeorm';
 
 @Injectable()

@@ -1,3 +1,4 @@
+import { ApiProperty } from "@nestjs/swagger";
 import { IsEnum, IsNotEmpty, IsNumber, IsString, MinLength } from "class-validator";
 
 export class createPetsDto{
@@ -17,6 +18,7 @@ export class createPetsDto{
 
     @IsNotEmpty()
     @MinLength(5)
+    @ApiProperty({type: String})
     userName: string
 
 }

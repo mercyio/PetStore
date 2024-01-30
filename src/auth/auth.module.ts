@@ -25,7 +25,8 @@ import { ProfileEntity } from './entities/profile.entity';
               ('JWT_SECRET'),
               signOptions:{
                   algorithm: configService.getOrThrow
-                  ('JWT_ALGORITHM')
+                  ('JWT_ALGORITHM'),
+                  expiresIn : configService.getOrThrow('JWT_EXPIRESIN')
               }
           }),
           inject: [ConfigService],

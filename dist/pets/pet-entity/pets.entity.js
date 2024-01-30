@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PetEntity = void 0;
+const user_entity_1 = require("../../auth/entities/user.entity");
 const typeorm_1 = require("typeorm");
 let PetEntity = class PetEntity {
 };
@@ -42,6 +43,11 @@ __decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
 ], PetEntity.prototype, "createdAt", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => user_entity_1.UserEntity, user => user.pet),
+    (0, typeorm_1.JoinColumn)(),
+    __metadata("design:type", user_entity_1.UserEntity)
+], PetEntity.prototype, "user", void 0);
 exports.PetEntity = PetEntity = __decorate([
     (0, typeorm_1.Entity)('pets')
 ], PetEntity);

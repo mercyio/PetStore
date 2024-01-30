@@ -1,5 +1,6 @@
 import { UserEntity } from "src/auth/entities/user.entity";
 import { Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Role } from "../enum/roles.enum";
 
 @Entity('profile')
 export class ProfileEntity{
@@ -14,6 +15,13 @@ export class ProfileEntity{
 
     @Column()
     phonenumber: string
+
+    // @Column({
+    //     type:'enum', 
+    //     enum: Role,
+    //     default: Role.unknown
+    // })
+    //     role:Role
 
     @CreateDateColumn()
     createdAt: Date;

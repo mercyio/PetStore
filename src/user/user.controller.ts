@@ -1,9 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, SetMetadata, ClassSerializerInterceptor, UseGuards, UseInterceptors } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { Role } from 'src/auth/enum/roles.enum';
-import { Roles } from 'src/auth/rolesDecorator/roles.decorator';
+import { Roles } from 'src/auth/decorator/roles.decorator';
 import { AuthGuard } from '@nestjs/passport';
 import { ProfileDto } from 'src/auth/dto/profile.dto';
 import { UpdateProfileDto } from 'src/auth/dto/update-profile.dto';

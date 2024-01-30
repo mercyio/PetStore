@@ -1,18 +1,27 @@
-import { IsNotEmpty, IsString, MinLength, IsNumber, Length } from "class-validator"
+import { IsNotEmpty, IsString, MinLength, Length, IsOptional } from "class-validator"
+import { Role } from "../enum/roles.enum"
+import { ApiProperty } from "@nestjs/swagger"
 
 export class ProfileDto{
     @IsNotEmpty()
     @IsString()
-    @MinLength(3)
+    @MinLength(2)
+    @ApiProperty({type: String})
     firstname: string
 
     @IsNotEmpty()
+    @IsString()
     @MinLength(3)
+    @ApiProperty({type: String})
     lastname: string
 
     @IsNotEmpty()
-    @IsNumber()
     @Length(11)
+    @ApiProperty({type: String})
     phonenumber: string
+
+    @IsOptional()
+    @ApiProperty({type: String})
+    role: Role
 
 }

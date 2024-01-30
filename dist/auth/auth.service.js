@@ -19,20 +19,23 @@ const typeorm_2 = require("typeorm");
 const user_entity_1 = require("../auth/entities/user.entity");
 const bcrypt = require("bcrypt");
 const jwt_1 = require("@nestjs/jwt");
-const users_1 = require("./serializer/users");
+const users_serialize_1 = require("./serializer/users.serialize");
 const profile_entity_1 = require("./entities/profile.entity");
 let AuthService = class AuthService {
-    constructor(userRepo, profileRepo, jwtService) {
+    constructor(userRepo, jwtService) {
         this.userRepo = userRepo;
-        this.profileRepo = profileRepo;
         this.jwtService = jwtService;
     }
     async signup(payload) {
         payload.Email = payload.Email.toLowerCase();
-        const { Email, Password, ...rest } = payload;
+        const { Email, Password, userName, ...rest } = payload;
         const userEmail = await this.userRepo.findOne({ where: { Email: Email } });
         if (userEmail) {
             throw new common_1.HttpException('EMAIL ALREADY EXIST', 400);
+        }
+        const repeatedName = await this.userRepo.findOne({ where: { userName } });
+        if (repeatedName) {
+            throw new common_1.UnauthorizedException('userName already exist');
         }
         const saltOrRounds = 10;
         const hashedPassword = await bcrypt.hash(Password, saltOrRounds);
@@ -86,8 +89,43 @@ let AuthService = class AuthService {
     }
     async GetAllusers() {
         const Users = await this.userRepo.find();
-        const serializeAllUsers = Users.map((users) => new users_1.SerializeUsers(users));
+        const serializeAllUsers = Users.map((users) => new users_serialize_1.SerializeUsers(users));
         return serializeAllUsers;
+    }
+    async getUser(userName) {
+        const user = await this.userRepo.findOne({ where: { userName } });
+        if (!user) {
+            throw new common_1.UnauthorizedException('user not found');
+        }
+        return user;
+    }
+    async createProfile(userName) {
+        try {
+            const findUser = await this.userRepo.findOne({ where: { userName } });
+            if (!findUser) {
+                throw new common_1.UnauthorizedException('Invalid credentials');
+            }
+            const createProfile = await this.userRepo.save({ userName });
+            return {
+                message: 'Successfully created',
+                result: createProfile,
+            };
+        }
+        catch (error) {
+            throw new common_1.UnauthorizedException(`Failed to create profile`);
+        }
+    }
+    async updateProfile(userName, payload) {
+        const findProfile = await this.userRepo.findOne({ where: { userName } });
+        if (!findProfile) {
+            throw new common_1.UnauthorizedException('invalid');
+        }
+        const update = await this.userRepo
+            .createQueryBuilder()
+            .update(profile_entity_1.ProfileEntity)
+            .where('userName = :userName', { userName })
+            .set(payload)
+            .execute();
     }
 };
 exports.AuthService = AuthService;
@@ -108,9 +146,7 @@ __decorate([
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(user_entity_1.UserEntity)),
-    __param(1, (0, typeorm_1.InjectRepository)(profile_entity_1.ProfileEntity)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
-        typeorm_2.Repository,
         jwt_1.JwtService])
 ], AuthService);
 //# sourceMappingURL=auth.service.js.map

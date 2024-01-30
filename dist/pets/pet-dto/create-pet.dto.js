@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createPetsDto = void 0;
+const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 class createPetsDto {
 }
@@ -33,6 +34,7 @@ __decorate([
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.MinLength)(5),
+    (0, swagger_1.ApiProperty)({ type: String }),
     __metadata("design:type", String)
 ], createPetsDto.prototype, "userName", void 0);
 //# sourceMappingURL=create-pet.dto.js.map

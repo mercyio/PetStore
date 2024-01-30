@@ -1,4 +1,5 @@
-import {Column, CreateDateColumn, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn} from "typeorm";
+import { UserEntity } from "src/auth/entities/user.entity";
+import {Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 
 @Entity('pets')
 export class PetEntity{
@@ -23,10 +24,8 @@ export class PetEntity{
         @CreateDateColumn()
         createdAt: Date
 
-       
-
-        // @OneToMany((=> Profile))
-        // @JoinColumn()
-        // profile:Profile;
+        @ManyToOne(()=> UserEntity, user=> user.pet)
+        @JoinColumn()
+        user: UserEntity
 }
 

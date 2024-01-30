@@ -1,6 +1,7 @@
 import { Role } from "src/auth/enum/roles.enum";
-import {Column, CreateDateColumn, Entity, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
+import {Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
 import { ProfileEntity } from "./profile.entity";
+import { PetEntity } from "src/Pets/pet-entity/pets.entity";
 
 @Entity('user')
 export class UserEntity{
@@ -29,8 +30,14 @@ export class UserEntity{
         @UpdateDateColumn()
         updatedAt: Date
 
-        @OneToOne(() => ProfileEntity, (profile) => profile.user )
+        @OneToOne(() => ProfileEntity, (profile) => profile.user, {onDelete: 'CASCADE'} )
+        @JoinColumn()
         profile: ProfileEntity;
+
+        @OneToMany(()=> PetEntity, pet=> pet.user, {onDelete: 'SET NULL'})
+        @JoinColumn()
+        pet: PetEntity[]
+
 }
 
 // api ocumentation using swagger
