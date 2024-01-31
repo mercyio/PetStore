@@ -22,8 +22,9 @@ const jwt_1 = require("@nestjs/jwt");
 const users_serialize_1 = require("./serializer/users.serialize");
 const profile_entity_1 = require("./entities/profile.entity");
 let AuthService = class AuthService {
-    constructor(userRepo, jwtService) {
+    constructor(userRepo, profileRepo, jwtService) {
         this.userRepo = userRepo;
+        this.profileRepo = profileRepo;
         this.jwtService = jwtService;
     }
     async signup(payload) {
@@ -99,16 +100,21 @@ let AuthService = class AuthService {
         }
         return user;
     }
-    async createProfile(userName) {
+    async createProfile(userName, payload) {
+        const { firstname, lastname, ...rest } = payload;
         try {
             const findUser = await this.userRepo.findOne({ where: { userName } });
             if (!findUser) {
                 throw new common_1.UnauthorizedException('Invalid credentials');
             }
-            const createProfile = await this.userRepo.save({ userName });
+            const user = this.userRepo.create({ userName });
+            const profile = await this.profileRepo.create({ firstname, lastname, ...rest });
+            user.profile = profile;
+            await this.profileRepo.save(profile);
+            const savedUser = await this.userRepo.save(user);
             return {
                 message: 'Successfully created',
-                result: createProfile,
+                result: savedUser,
             };
         }
         catch (error) {
@@ -118,7 +124,7 @@ let AuthService = class AuthService {
     async updateProfile(userName, payload) {
         const findProfile = await this.userRepo.findOne({ where: { userName } });
         if (!findProfile) {
-            throw new common_1.UnauthorizedException('invalid');
+            throw new common_1.UnauthorizedException('invalid profile');
         }
         const update = await this.userRepo
             .createQueryBuilder()
@@ -126,6 +132,10 @@ let AuthService = class AuthService {
             .where('userName = :userName', { userName })
             .set(payload)
             .execute();
+        return {
+            success: true,
+            message: 'Successfully updated profile',
+        };
     }
 };
 exports.AuthService = AuthService;
@@ -146,7 +156,9 @@ __decorate([
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(user_entity_1.UserEntity)),
+    __param(1, (0, typeorm_1.InjectRepository)(user_entity_1.UserEntity)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository,
         jwt_1.JwtService])
 ], AuthService);
 //# sourceMappingURL=auth.service.js.map

@@ -13,7 +13,8 @@ exports.UserEntity = void 0;
 const roles_enum_1 = require("../enum/roles.enum");
 const typeorm_1 = require("typeorm");
 const profile_entity_1 = require("./profile.entity");
-const pets_entity_1 = require("../../Pets/pet-entity/pets.entity");
+const pets_entity_1 = require("./pets.entity");
+const post_entity_1 = require("./post.entity");
 let UserEntity = class UserEntity {
 };
 exports.UserEntity = UserEntity;
@@ -59,6 +60,10 @@ __decorate([
     (0, typeorm_1.JoinColumn)(),
     __metadata("design:type", Array)
 ], UserEntity.prototype, "pet", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => post_entity_1.PostEntity, (post) => post.user),
+    __metadata("design:type", post_entity_1.PostEntity)
+], UserEntity.prototype, "post", void 0);
 exports.UserEntity = UserEntity = __decorate([
     (0, typeorm_1.Entity)('user')
 ], UserEntity);

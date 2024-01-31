@@ -5,7 +5,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { PetEntity } from 'src/Pets/pet-entity/pets.entity';
+import { PetEntity } from 'src/auth/entities/pets.entity';
 import { ProfileEntity } from 'src/auth/entities/profile.entity';
 import { UserEntity } from 'src/auth/entities/user.entity';
 import { AuthGuard } from 'src/auth/guard/auth.guard';

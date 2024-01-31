@@ -5,12 +5,12 @@ export declare class PetController {
     private petServices;
     constructor(petServices: PetService);
     createPet(payload: createPetsDto): Promise<any>;
-    findPet(id: string): Promise<import("./pet-entity/pets.entity").PetEntity>;
-    findAllPets(): Promise<import("./pet-entity/pets.entity").PetEntity[]>;
+    findPet(id: string): Promise<import("../auth/entities/pets.entity").PetEntity>;
+    findAllPets(): Promise<import("../auth/entities/pets.entity").PetEntity[]>;
     updatePets(id: string, payload: UpdatePetsDto): Promise<{
         message: string;
         affected: number;
-        result: import("./pet-entity/pets.entity").PetEntity;
+        result: import("../auth/entities/pets.entity").PetEntity;
     }>;
     deletePets(id: string): Promise<{
         deleted: number;

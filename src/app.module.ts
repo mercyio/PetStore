@@ -8,7 +8,7 @@ import { DatabaseModule } from './database/database.module';
 import { AuthService } from './auth/auth.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './auth/entities/user.entity';
-import { PetEntity } from './Pets/pet-entity/pets.entity';
+import { PetEntity } from './auth/entities/pets.entity';
 import { UserModule } from './user/user.module';
 
 @Module({

@@ -1,5 +1,5 @@
 import { Repository } from "typeorm";
-import { PetEntity } from "src/Pets/pet-entity/pets.entity";
+import { PetEntity } from "src/auth/entities/pets.entity";
 export declare class PetService {
     private petRepo;
     constructor(petRepo: Repository<PetEntity>);

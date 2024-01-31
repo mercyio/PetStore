@@ -1,7 +1,8 @@
 import { Role } from "src/auth/enum/roles.enum";
 import {Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
 import { ProfileEntity } from "./profile.entity";
-import { PetEntity } from "src/Pets/pet-entity/pets.entity";
+import { PetEntity } from "src/auth/entities/pets.entity";
+import { PostEntity } from "./post.entity";
 
 @Entity('user')
 export class UserEntity{
@@ -37,6 +38,9 @@ export class UserEntity{
         @OneToMany(()=> PetEntity, pet=> pet.user, {onDelete: 'SET NULL'})
         @JoinColumn()
         pet: PetEntity[]
+
+        @OneToMany(() => PostEntity, (post) => post.user)
+        post: PostEntity;
 
 }
 

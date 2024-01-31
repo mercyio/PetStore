@@ -41,8 +41,8 @@ let AuthController = class AuthController {
     async getProfile(req) {
         return req.user;
     }
-    async createProfile(userName) {
-        return await this.authService.createProfile(userName);
+    async createProfile(userName, payload) {
+        return await this.authService.createProfile(userName, payload);
     }
     async updateProfile(userName, payload) {
         return await this.authService.updateProfile(userName, payload);
@@ -99,7 +99,7 @@ __decorate([
     (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [String, profile_dto_1.ProfileDto]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "createProfile", null);
 __decorate([

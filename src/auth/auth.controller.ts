@@ -101,8 +101,8 @@ export class AuthController{
 
     @Post('createprofile')
     @UseGuards(AuthGuard)
-    async createProfile( @Body() userName:string){
-      return await this.authService.createProfile(userName)
+    async createProfile( @Body() userName:string, payload:ProfileDto){
+      return await this.authService.createProfile(userName, payload)
     }
 
     @Patch('updateprofile')

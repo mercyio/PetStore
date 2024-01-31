@@ -48,7 +48,7 @@
 import { HttpException, Injectable } from "@nestjs/common";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
-import { PetEntity } from "src/Pets/pet-entity/pets.entity";
+import { PetEntity } from "src/auth/entities/pets.entity";
 import { UpdatePetsDto } from "./pet-dto/update-pets.dto";
 
 @Injectable() 

@@ -8,7 +8,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from 'src/auth/entities/user.entity';
 import { AuthGuard } from './guard/auth.guard';
  import { ConfigModule, ConfigService } from '@nestjs/config';
-import { PetEntity } from 'src/Pets/pet-entity/pets.entity';
+import { PetEntity } from 'src/auth/entities/pets.entity';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './guard/roles.guard';
 import { ProfileEntity } from './entities/profile.entity';

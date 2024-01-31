@@ -10,11 +10,15 @@ exports.DatabaseModule = void 0;
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 const typeorm_1 = require("@nestjs/typeorm");
-const pets_entity_1 = require("../Pets/pet-entity/pets.entity");
+const pets_entity_1 = require("../auth/entities/pets.entity");
 const pets_module_1 = require("../Pets/pets.module");
 const profile_entity_1 = require("../auth/entities/profile.entity");
 const user_entity_1 = require("../auth/entities/user.entity");
 const user_module_1 = require("../user/user.module");
+const post_entity_1 = require("../auth/entities/post.entity");
+const category_entity_1 = require("../auth/entities/category.entity");
+const order_entity_1 = require("../auth/entities/order.entity");
+const review_entity_1 = require("../auth/entities/review.entity");
 let DatabaseModule = class DatabaseModule {
 };
 exports.DatabaseModule = DatabaseModule;
@@ -29,7 +33,7 @@ exports.DatabaseModule = DatabaseModule = __decorate([
                     username: configService.getOrThrow('DB_USER'),
                     password: configService.getOrThrow('DB_PASSWORD'),
                     database: configService.getOrThrow('DB_DATABASE'),
-                    entities: [pets_entity_1.PetEntity, user_entity_1.UserEntity, profile_entity_1.ProfileEntity],
+                    entities: [pets_entity_1.PetEntity, user_entity_1.UserEntity, profile_entity_1.ProfileEntity, post_entity_1.PostEntity, category_entity_1.CategoryEntity, order_entity_1.OrderEntity, review_entity_1.ReviewEntity],
                     synchronize: configService.getOrThrow('DB_SYNC'),
                 }),
                 inject: [config_1.ConfigService]

@@ -1,6 +1,7 @@
 import { Role } from "src/auth/enum/roles.enum";
 import { ProfileEntity } from "./profile.entity";
-import { PetEntity } from "src/Pets/pet-entity/pets.entity";
+import { PetEntity } from "src/auth/entities/pets.entity";
+import { PostEntity } from "./post.entity";
 export declare class UserEntity {
     userId: string;
     userName: string;
@@ -11,4 +12,5 @@ export declare class UserEntity {
     updatedAt: Date;
     profile: ProfileEntity;
     pet: PetEntity[];
+    post: PostEntity;
 }

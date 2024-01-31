@@ -12,6 +12,7 @@ import { SerializeUsers } from './serializer/users.serialize';
 import { ProfileDto } from './dto/profile.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { ProfileEntity } from './entities/profile.entity';
+import { error } from 'console';
 
 // import { generate } from 'rxjs';
 
@@ -21,6 +22,8 @@ export class AuthService {
   constructor ( 
     @InjectRepository(UserEntity)
      private userRepo: Repository<UserEntity>,
+     @InjectRepository(UserEntity)
+     private profileRepo: Repository<ProfileEntity>,
      private jwtService :JwtService,
     ){}
 
@@ -128,20 +131,26 @@ export class AuthService {
     }
 
 
-      async createProfile( userName: string){
-  try {
-    const findUser = await this.userRepo.findOne({ where: { userName } });
+
+    async createProfile(userName: string, payload: ProfileDto){
+    const {firstname, lastname, ...rest} = payload
+
+     try {
+    const findUser = await this.userRepo.findOne({where:{userName} });
 
     if (!findUser) {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-
-    const createProfile = await this.userRepo.save({ userName });
-
+    const user = this.userRepo.create({userName });
+    const profile = await this.profileRepo.create({ firstname, lastname, ...rest });
+    user.profile = profile
+    await this. profileRepo.save(profile)
+    const savedUser = await this.userRepo.save(user);
+  
     return {
       message: 'Successfully created',
-      result: createProfile,
+      result: savedUser,
     };
   } catch (error) {
     throw new UnauthorizedException(`Failed to create profile`);
@@ -149,10 +158,11 @@ export class AuthService {
 }
 
 
+
     async updateProfile(userName:string, payload:UpdateProfileDto){
       const findProfile = await this.userRepo.findOne({where:{userName}})
       if(!findProfile){
-        throw new UnauthorizedException('invalid')
+        throw new UnauthorizedException('invalid profile')
       }
       const update = await this.userRepo
       .createQueryBuilder()
@@ -160,7 +170,13 @@ export class AuthService {
       .where('userName = :userName', {userName})
       .set(payload)
       .execute();
+
+      return {
+        success: true,
+        message: 'Successfully updated profile',
+      };
     }
+
 }
     
     
@@ -217,6 +233,4 @@ export class AuthService {
     //   }
     // }
     
-  
-  
-   
+

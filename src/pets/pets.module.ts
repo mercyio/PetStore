@@ -2,7 +2,7 @@ import { Module } from "@nestjs/common";
 import { PetService } from "./pets.service";
 import { PetController } from "./pets.controller";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { PetEntity } from "./pet-entity/pets.entity";
+import { PetEntity } from "../auth/entities/pets.entity";
 import { UserEntity } from "src/auth/entities/user.entity";
 import { AuthGuard } from "src/auth/guard/auth.guard";
 import { JwtModule } from "@nestjs/jwt";
