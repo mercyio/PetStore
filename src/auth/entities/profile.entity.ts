@@ -22,8 +22,16 @@ export class ProfileEntity{
     updatedAt: Date
 
 
-    @OneToOne(() => UserEntity, (user) => user.profile )
-    @JoinColumn({name: 'user_id'})
-    user: UserEntity;
+//     @Column({
+//         type:'enum', 
+//         enum: Role,
+//         default: Role.unknown
+// })
+// role:Role
+
+
+@OneToOne(() => UserEntity, (user) => user.profile )
+@JoinColumn()
+user: UserEntity;
 
 }

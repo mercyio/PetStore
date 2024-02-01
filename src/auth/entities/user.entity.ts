@@ -32,7 +32,6 @@ export class UserEntity{
         updatedAt: Date
 
         @OneToOne(() => ProfileEntity, (profile) => profile.user, {onDelete: 'CASCADE'} )
-        @JoinColumn()
         profile: ProfileEntity;
 
         @OneToMany(()=> PetEntity, pet=> pet.user, {onDelete: 'SET NULL'})

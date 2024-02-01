@@ -52,7 +52,6 @@ __decorate([
 ], UserEntity.prototype, "updatedAt", void 0);
 __decorate([
     (0, typeorm_1.OneToOne)(() => profile_entity_1.ProfileEntity, (profile) => profile.user, { onDelete: 'CASCADE' }),
-    (0, typeorm_1.JoinColumn)(),
     __metadata("design:type", profile_entity_1.ProfileEntity)
 ], UserEntity.prototype, "profile", void 0);
 __decorate([

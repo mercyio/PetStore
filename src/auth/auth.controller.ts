@@ -99,17 +99,17 @@ export class AuthController{
       }
     
 
-    @Post('createprofile')
+    @Post('/:userName/createprofile')
     @UseGuards(AuthGuard)
-    async createProfile( @Body() userName:string, payload:ProfileDto){
+    async createProfile( @Param('userId') userName:string,@Body() payload:ProfileDto){
       return await this.authService.createProfile(userName, payload)
     }
 
-    @Patch('updateprofile')
-    @UseGuards(AuthGuard)
-    async updateProfile(@Param('userName') userName:string, payload:ProfileDto){
-      return await this.authService.updateProfile(userName, payload)
-    }
+    // @Patch('updateprofile')
+    // @UseGuards(AuthGuard)
+    // async updateProfile(@Param('userName') userName:string, payload:ProfileDto){
+    //   return await this.authService.updateProfile(userName, payload)
+    // }
 
 
     @Get('users')

@@ -44,9 +44,6 @@ let AuthController = class AuthController {
     async createProfile(userName, payload) {
         return await this.authService.createProfile(userName, payload);
     }
-    async updateProfile(userName, payload) {
-        return await this.authService.updateProfile(userName, payload);
-    }
     async getUsers() {
         return await this.authService.GetAllusers();
     }
@@ -95,21 +92,14 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "getProfile", null);
 __decorate([
-    (0, common_1.Post)('createprofile'),
+    (0, common_1.Post)('/:userName/createprofile'),
     (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
-    __param(0, (0, common_1.Body)()),
+    __param(0, (0, common_1.Param)('userId')),
+    __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, profile_dto_1.ProfileDto]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "createProfile", null);
-__decorate([
-    (0, common_1.Patch)('updateprofile'),
-    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
-    __param(0, (0, common_1.Param)('userName')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, profile_dto_1.ProfileDto]),
-    __metadata("design:returntype", Promise)
-], AuthController.prototype, "updateProfile", null);
 __decorate([
     (0, common_1.Get)('users'),
     (0, roles_decorator_1.Roles)(roles_enum_1.Role.admin),

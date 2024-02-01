@@ -101,41 +101,16 @@ let AuthService = class AuthService {
         return user;
     }
     async createProfile(userName, payload) {
-        const { firstname, lastname, ...rest } = payload;
-        try {
-            const findUser = await this.userRepo.findOne({ where: { userName } });
-            if (!findUser) {
-                throw new common_1.UnauthorizedException('Invalid credentials');
-            }
-            const user = this.userRepo.create({ userName });
-            const profile = await this.profileRepo.create({ firstname, lastname, ...rest });
-            user.profile = profile;
-            await this.profileRepo.save(profile);
-            const savedUser = await this.userRepo.save(user);
-            return {
-                message: 'Successfully created',
-                result: savedUser,
-            };
+        const findUser = await this.userRepo.findOne({ where: { userName } });
+        if (!findUser) {
+            throw new common_1.UnauthorizedException('Invalid credentials');
         }
-        catch (error) {
-            throw new common_1.UnauthorizedException(`Failed to create profile`);
-        }
-    }
-    async updateProfile(userName, payload) {
-        const findProfile = await this.userRepo.findOne({ where: { userName } });
-        if (!findProfile) {
-            throw new common_1.UnauthorizedException('invalid profile');
-        }
-        const update = await this.userRepo
-            .createQueryBuilder()
-            .update(profile_entity_1.ProfileEntity)
-            .where('userName = :userName', { userName })
-            .set(payload)
-            .execute();
-        return {
-            success: true,
-            message: 'Successfully updated profile',
-        };
+        const user = findUser;
+        const userPro = this.profileRepo.create({
+            ...payload,
+            user
+        });
+        return await this.profileRepo.save(userPro);
     }
 };
 exports.AuthService = AuthService;
@@ -156,7 +131,7 @@ __decorate([
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(user_entity_1.UserEntity)),
-    __param(1, (0, typeorm_1.InjectRepository)(user_entity_1.UserEntity)),
+    __param(1, (0, typeorm_1.InjectRepository)(profile_entity_1.ProfileEntity)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
         typeorm_2.Repository,
         jwt_1.JwtService])

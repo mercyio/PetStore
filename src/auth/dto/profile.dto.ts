@@ -26,8 +26,8 @@ export class ProfileDto{
     @ApiProperty({type: String})
     phonenumber: string
 
-    @IsOptional()
-    @ApiProperty({type: String})
-    role: Role
+    // @IsOptional()
+    // @ApiProperty({type: String})
+    // role: Role
 
 }

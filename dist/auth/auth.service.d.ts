@@ -5,7 +5,6 @@ import { JwtService } from '@nestjs/jwt';
 import { SignupDto } from './dto/signup.dto';
 import { SerializeUsers } from './serializer/users.serialize';
 import { ProfileDto } from './dto/profile.dto';
-import { UpdateProfileDto } from './dto/update-profile.dto';
 import { ProfileEntity } from './entities/profile.entity';
 export declare class AuthService {
     private userRepo;
@@ -20,12 +19,5 @@ export declare class AuthService {
     }>;
     GetAllusers(): Promise<SerializeUsers[]>;
     getUser(userName: string): Promise<UserEntity>;
-    createProfile(userName: string, payload: ProfileDto): Promise<{
-        message: string;
-        result: UserEntity;
-    }>;
-    updateProfile(userName: string, payload: UpdateProfileDto): Promise<{
-        success: boolean;
-        message: string;
-    }>;
+    createProfile(userName: string, payload: ProfileDto): Promise<ProfileEntity>;
 }

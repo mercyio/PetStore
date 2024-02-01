@@ -1,4 +1,4 @@
-import { BadRequestException, Body, ExecutionContext, HttpException, Injectable, Req, Res, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Body, ExecutionContext, HttpException, Injectable, NotFoundException, Req, Res, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserEntity } from '../auth/entities/user.entity';
@@ -22,7 +22,7 @@ export class AuthService {
   constructor ( 
     @InjectRepository(UserEntity)
      private userRepo: Repository<UserEntity>,
-     @InjectRepository(UserEntity)
+     @InjectRepository(ProfileEntity)
      private profileRepo: Repository<ProfileEntity>,
      private jwtService :JwtService,
     ){}
@@ -133,51 +133,91 @@ export class AuthService {
 
 
     async createProfile(userName: string, payload: ProfileDto){
-    const {firstname, lastname, ...rest} = payload
-
-     try {
+     
     const findUser = await this.userRepo.findOne({where:{userName} });
 
     if (!findUser) {
       throw new UnauthorizedException('Invalid credentials');
     }
+    const user = findUser
 
-    const user = this.userRepo.create({userName });
-    const profile = await this.profileRepo.create({ firstname, lastname, ...rest });
-    user.profile = profile
-    await this. profileRepo.save(profile)
-    const savedUser = await this.userRepo.save(user);
+    const userPro =  this.profileRepo.create({
+ 
+      ...payload,
+      user
+    })
+    // await this.profileRepo.save(userPro)
+
+   return await this.profileRepo.save(userPro)
+
+    // const user = this.userRepo.create({userName });
+    // const profile = await this.profileRepo.create();
+    // user.profile = profile
+    // await this. profileRepo.save(profile)
+    // const savedUser = await this.userRepo.save(user);
   
-    return {
-      message: 'Successfully created',
-      result: savedUser,
-    };
-  } catch (error) {
-    throw new UnauthorizedException(`Failed to create profile`);
-  }
+    // return {
+    //   message: 'Successfully created',
+    //   result: savedUser,
+    // };
+  
 }
 
 
 
-    async updateProfile(userName:string, payload:UpdateProfileDto){
-      const findProfile = await this.userRepo.findOne({where:{userName}})
-      if(!findProfile){
-        throw new UnauthorizedException('invalid profile')
-      }
-      const update = await this.userRepo
-      .createQueryBuilder()
-      .update(ProfileEntity)
-      .where('userName = :userName', {userName})
-      .set(payload)
-      .execute();
 
-      return {
-        success: true,
-        message: 'Successfully updated profile',
-      };
-    }
+// async updateProfile(userName: string, updateProfileDto: UpdateProfileDto) {
+//   const { firstname, lastname, phonenumber, role } = updateProfileDto;
+
+//   try {
+//     const user = await this.userRepo.findOne({ where: { userName }, relations: ['profile'] });
+
+//     if (!user) {
+//       throw new NotFoundException('User not found');
+//     }
+
+//     if (!user.profile) {
+//       // user.profile = this.profileRepo.create();
+//       throw new NotFoundException('no profile found, please create a profile');
+//     }
+
+//     user.profile.firstname = firstname ;
+//     user.profile.lastname = lastname;
+//     user.profile.phonenumber = phonenumber;
+//     user.profile.role = role;
+// //  
+//     const updatedProfile = await this.profileRepo.save(user.profile);
+
+//     return {
+//       message: 'Profile successfully updated',
+//       result: updatedProfile,
+//     };
+//   } catch (error) {
+//     throw new BadRequestException(`Failed to update profile: ${error.message}`);
+//   }
+// }
+
+
 
 }
+
+    // async updateProfile(userName:string, payload:UpdateProfileDto){
+    //   const findProfile = await this.userRepo.findOne({where:{userName}})
+    //   if(!findProfile){
+    //     throw new UnauthorizedException('invalid profile')
+    //   }
+    //   const update = await this.userRepo
+    //   .createQueryBuilder()
+    //   .update(ProfileEntity)
+    //   .where('userName = :userName', {userName})
+    //   .set(payload)
+    //   .execute();
+
+    //   return {
+    //     success: true,
+    //     message: 'Successfully updated profile',
+    //   };
+    // }
     
     
 
