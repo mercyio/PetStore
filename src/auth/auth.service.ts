@@ -1,4 +1,4 @@
-import { BadRequestException, Body, ExecutionContext, HttpException, Injectable, NotFoundException, Req, Res, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Body, ExecutionContext, HttpException, HttpStatus, Injectable, NotFoundException, Req, Res, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserEntity } from '../auth/entities/user.entity';
@@ -30,7 +30,7 @@ export class AuthService {
     async signup(payload: SignupDto) {
       payload.Email=payload.Email.toLowerCase()
 
-      const {Email, Password, userName, ...rest}=payload
+      const {Email, Password, ...rest}=payload
       
       const userEmail= await this.userRepo.findOne({where:{Email:Email}})
 
@@ -38,11 +38,11 @@ export class AuthService {
         throw new HttpException('EMAIL ALREADY EXIST', 400)
       }
       
-      const repeatedName = await this.userRepo.findOne({where:{userName}})
+      // const repeatedName = await this.userRepo.findOne({where:{userName}})
 
-      if(repeatedName){
-        throw new UnauthorizedException('userName already exist')
-      }
+      // if(repeatedName){
+      //   throw new UnauthorizedException('userName already exist')
+      // }
 
       const saltOrRounds = 10;
 
@@ -81,7 +81,7 @@ export class AuthService {
   
         const payload = {
         userId: findUser.userId,
-        Username: findUser.userName,
+        // Username: findUser.userName,
         Email: findUser.Email,
         Password: findUser.Password,
         Role: findUser.role
@@ -122,8 +122,11 @@ export class AuthService {
       return serializeAllUsers;
     }
 
-    async getUser(userName:string){
-      const user = await this.userRepo.findOne({where:{userName}})
+    async getUser(@Req() req:Request){
+     const users = req.user
+     const name = users['userName']
+
+      const user = await this.profileRepo.findOne({where:{userName: name}})
       if(!user){
         throw new UnauthorizedException('user not found')
       }
@@ -132,72 +135,76 @@ export class AuthService {
 
 
 
-    async createProfile(userName: string, payload: ProfileDto){
+    async createProfile( payload: ProfileDto, @Req() req:Request){
+      try{
+        const user = req.user
+        const id = user['userId']
+        const findUser = await this.userRepo.findOne({where:{userId: id} });
+   
+       if (!findUser) {
+         throw new UnauthorizedException('Invalid credentials');
+       }
+   
+       const profile = await this.profileRepo.create({...payload, user});
+      //  findUser.profile = profile
+      
+      // const name = user['userName']
+      // const repeatedName = await this.profileRepo.findOne({where:{userName: name}})
+
+      // if(repeatedName){
+      //   throw new UnauthorizedException('userName already exist')
+      // }
+
+       const savedprofile = await this.profileRepo.save(profile);
      
-    const findUser = await this.userRepo.findOne({where:{userName} });
-
-    if (!findUser) {
-      throw new UnauthorizedException('Invalid credentials');
-    }
-    const user = findUser
-
-    const userPro =  this.profileRepo.create({
- 
-      ...payload,
-      user
-    })
-    // await this.profileRepo.save(userPro)
-
-   return await this.profileRepo.save(userPro)
-
-    // const user = this.userRepo.create({userName });
-    // const profile = await this.profileRepo.create();
-    // user.profile = profile
-    // await this. profileRepo.save(profile)
-    // const savedUser = await this.userRepo.save(user);
-  
-    // return {
-    //   message: 'Successfully created',
-    //   result: savedUser,
-    // };
+       return {
+         message: 'Successfully created',
+         result: savedprofile,
+       };
+      }catch(error){
+        return 'profile has already been created, update profile to make changes'
+      }
+    
   
 }
 
 
 
+async updateProfile(payload: UpdateProfileDto, @Req() req: Request) {
+  const user = req.user;
+  const userId = user['userId'];
 
-// async updateProfile(userName: string, updateProfileDto: UpdateProfileDto) {
-//   const { firstname, lastname, phonenumber, role } = updateProfileDto;
+  const finduser = await this.userRepo.findOne({ where: { userId }, relations: ['profile'] });
 
-//   try {
-//     const user = await this.userRepo.findOne({ where: { userName }, relations: ['profile'] });
+  if (!finduser) {
+    throw new NotFoundException('User not found');
+  }
 
-//     if (!user) {
-//       throw new NotFoundException('User not found');
-//     }
+  if (!finduser.profile) {
+    throw new NotFoundException('No profile found, please create a profile');
+  }
 
-//     if (!user.profile) {
-//       // user.profile = this.profileRepo.create();
-//       throw new NotFoundException('no profile found, please create a profile');
-//     }
+  const updateResult = await this.profileRepo
+    .createQueryBuilder()
+    .update(ProfileEntity) 
+    .where('userUserId = :userId', { userId }) 
+    .set(payload)
+    .execute();
 
-//     user.profile.firstname = firstname ;
-//     user.profile.lastname = lastname;
-//     user.profile.phonenumber = phonenumber;
-//     user.profile.role = role;
-// //  
-//     const updatedProfile = await this.profileRepo.save(user.profile);
+  if (updateResult.affected === 0) {
+    throw new NotFoundException('Profile not found or not updated');
+  }
 
-//     return {
-//       message: 'Profile successfully updated',
-//       result: updatedProfile,
-//     };
-//   } catch (error) {
-//     throw new BadRequestException(`Failed to update profile: ${error.message}`);
-//   }
-// }
+  const updatedProfile = updateResult; 
 
+  console.log(updatedProfile);
 
+  return {
+    success: true,
+    message: 'Successfully updated profile',
+    updatedProfile,
+  };
+}
 
 }
 

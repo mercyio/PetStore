@@ -4,7 +4,6 @@ import { PetEntity } from "src/auth/entities/pets.entity";
 import { PostEntity } from "./post.entity";
 export declare class UserEntity {
     userId: string;
-    userName: string;
     Email: string;
     Password: string;
     role: Role;
@@ -13,4 +12,5 @@ export declare class UserEntity {
     profile: ProfileEntity;
     pet: PetEntity[];
     post: PostEntity;
+    finduser: any;
 }

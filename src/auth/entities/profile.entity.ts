@@ -5,6 +5,9 @@ import { Role } from "../enum/roles.enum";
 export class ProfileEntity{
     @PrimaryGeneratedColumn()
     Id: string
+    
+    @Column()
+    userName: string
 
     @Column()
     firstname: string
@@ -22,12 +25,12 @@ export class ProfileEntity{
     updatedAt: Date
 
 
-//     @Column({
-//         type:'enum', 
-//         enum: Role,
-//         default: Role.unknown
-// })
-// role:Role
+    @Column({
+        type:'enum', 
+        enum: Role,
+        default: Role.user
+})
+role:Role
 
 
 @OneToOne(() => UserEntity, (user) => user.profile )

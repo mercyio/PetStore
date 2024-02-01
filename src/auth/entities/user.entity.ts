@@ -9,8 +9,8 @@ export class UserEntity{
         @PrimaryGeneratedColumn('uuid')
         userId: string;
 
-        @Column()
-        userName: string;
+        // @Column()
+        // userName: string;
       
         @Column({unique:true})
         Email: string;
@@ -40,6 +40,7 @@ export class UserEntity{
 
         @OneToMany(() => PostEntity, (post) => post.user)
         post: PostEntity;
+  finduser: any;
 
 }
 

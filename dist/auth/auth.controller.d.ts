@@ -14,7 +14,15 @@ export declare class AuthController {
         response: Response<any, Record<string, any>>;
     }>;
     getProfile(req: Request): Promise<Express.User>;
-    createProfile(userName: string, payload: ProfileDto): Promise<import("./entities/profile.entity").ProfileEntity>;
+    createProfile(payload: ProfileDto, req: Request): Promise<"profile has already been created, update profile to make changes" | {
+        message: string;
+        result: import("./entities/profile.entity").ProfileEntity;
+    }>;
+    updateProfile(payload: ProfileDto, req: Request): Promise<{
+        success: boolean;
+        message: string;
+        updatedProfile: import("typeorm").UpdateResult;
+    }>;
     getUsers(): Promise<import("./serializer/users.serialize").SerializeUsers[]>;
-    user(userName: string): Promise<import("./entities/user.entity").UserEntity>;
+    user(req: Request): Promise<import("./entities/profile.entity").ProfileEntity>;
 }

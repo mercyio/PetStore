@@ -20,6 +20,8 @@ const user_entity_1 = require("../auth/entities/user.entity");
 const bcrypt = require("bcrypt");
 const jwt_1 = require("@nestjs/jwt");
 const users_serialize_1 = require("./serializer/users.serialize");
+const profile_dto_1 = require("./dto/profile.dto");
+const update_profile_dto_1 = require("./dto/update-profile.dto");
 const profile_entity_1 = require("./entities/profile.entity");
 let AuthService = class AuthService {
     constructor(userRepo, profileRepo, jwtService) {
@@ -29,14 +31,10 @@ let AuthService = class AuthService {
     }
     async signup(payload) {
         payload.Email = payload.Email.toLowerCase();
-        const { Email, Password, userName, ...rest } = payload;
+        const { Email, Password, ...rest } = payload;
         const userEmail = await this.userRepo.findOne({ where: { Email: Email } });
         if (userEmail) {
             throw new common_1.HttpException('EMAIL ALREADY EXIST', 400);
-        }
-        const repeatedName = await this.userRepo.findOne({ where: { userName } });
-        if (repeatedName) {
-            throw new common_1.UnauthorizedException('userName already exist');
         }
         const saltOrRounds = 10;
         const hashedPassword = await bcrypt.hash(Password, saltOrRounds);
@@ -64,7 +62,6 @@ let AuthService = class AuthService {
         }
         const payload = {
             userId: findUser.userId,
-            Username: findUser.userName,
             Email: findUser.Email,
             Password: findUser.Password,
             Role: findUser.role
@@ -93,24 +90,60 @@ let AuthService = class AuthService {
         const serializeAllUsers = Users.map((users) => new users_serialize_1.SerializeUsers(users));
         return serializeAllUsers;
     }
-    async getUser(userName) {
-        const user = await this.userRepo.findOne({ where: { userName } });
+    async getUser(req) {
+        const users = req.user;
+        const name = users['userName'];
+        const user = await this.profileRepo.findOne({ where: { userName: name } });
         if (!user) {
             throw new common_1.UnauthorizedException('user not found');
         }
         return user;
     }
-    async createProfile(userName, payload) {
-        const findUser = await this.userRepo.findOne({ where: { userName } });
-        if (!findUser) {
-            throw new common_1.UnauthorizedException('Invalid credentials');
+    async createProfile(payload, req) {
+        try {
+            const user = req.user;
+            const id = user['userId'];
+            const findUser = await this.userRepo.findOne({ where: { userId: id } });
+            if (!findUser) {
+                throw new common_1.UnauthorizedException('Invalid credentials');
+            }
+            const profile = await this.profileRepo.create({ ...payload, user });
+            const savedprofile = await this.profileRepo.save(profile);
+            return {
+                message: 'Successfully created',
+                result: savedprofile,
+            };
         }
-        const user = findUser;
-        const userPro = this.profileRepo.create({
-            ...payload,
-            user
-        });
-        return await this.profileRepo.save(userPro);
+        catch (error) {
+            return 'profile has already been created, update profile to make changes';
+        }
+    }
+    async updateProfile(payload, req) {
+        const user = req.user;
+        const userId = user['userId'];
+        const finduser = await this.userRepo.findOne({ where: { userId }, relations: ['profile'] });
+        if (!finduser) {
+            throw new common_1.NotFoundException('User not found');
+        }
+        if (!finduser.profile) {
+            throw new common_1.NotFoundException('No profile found, please create a profile');
+        }
+        const updateResult = await this.profileRepo
+            .createQueryBuilder()
+            .update(profile_entity_1.ProfileEntity)
+            .where('userUserId = :userId', { userId })
+            .set(payload)
+            .execute();
+        if (updateResult.affected === 0) {
+            throw new common_1.NotFoundException('Profile not found or not updated');
+        }
+        const updatedProfile = updateResult;
+        console.log(updatedProfile);
+        return {
+            success: true,
+            message: 'Successfully updated profile',
+            updatedProfile,
+        };
     }
 };
 exports.AuthService = AuthService;
@@ -128,6 +161,24 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], AuthService.prototype, "logout", null);
+__decorate([
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], AuthService.prototype, "getUser", null);
+__decorate([
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [profile_dto_1.ProfileDto, Object]),
+    __metadata("design:returntype", Promise)
+], AuthService.prototype, "createProfile", null);
+__decorate([
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [update_profile_dto_1.UpdateProfileDto, Object]),
+    __metadata("design:returntype", Promise)
+], AuthService.prototype, "updateProfile", null);
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(user_entity_1.UserEntity)),

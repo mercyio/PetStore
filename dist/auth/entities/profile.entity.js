@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProfileEntity = void 0;
 const user_entity_1 = require("./user.entity");
 const typeorm_1 = require("typeorm");
+const roles_enum_1 = require("../enum/roles.enum");
 let ProfileEntity = class ProfileEntity {
 };
 exports.ProfileEntity = ProfileEntity;
@@ -19,6 +20,10 @@ __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", String)
 ], ProfileEntity.prototype, "Id", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], ProfileEntity.prototype, "userName", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
@@ -39,6 +44,14 @@ __decorate([
     (0, typeorm_1.UpdateDateColumn)(),
     __metadata("design:type", Date)
 ], ProfileEntity.prototype, "updatedAt", void 0);
+__decorate([
+    (0, typeorm_1.Column)({
+        type: 'enum',
+        enum: roles_enum_1.Role,
+        default: roles_enum_1.Role.user
+    }),
+    __metadata("design:type", String)
+], ProfileEntity.prototype, "role", void 0);
 __decorate([
     (0, typeorm_1.OneToOne)(() => user_entity_1.UserEntity, (user) => user.profile),
     (0, typeorm_1.JoinColumn)(),

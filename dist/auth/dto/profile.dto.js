@@ -11,10 +11,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProfileDto = void 0;
 const class_validator_1 = require("class-validator");
+const roles_enum_1 = require("../enum/roles.enum");
 const swagger_1 = require("@nestjs/swagger");
 class ProfileDto {
 }
 exports.ProfileDto = ProfileDto;
+__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.MinLength)(2),
+    (0, swagger_1.ApiProperty)({ type: String }),
+    __metadata("design:type", String)
+], ProfileDto.prototype, "userName", void 0);
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
@@ -35,4 +43,9 @@ __decorate([
     (0, swagger_1.ApiProperty)({ type: String }),
     __metadata("design:type", String)
 ], ProfileDto.prototype, "phonenumber", void 0);
+__decorate([
+    (0, class_validator_1.IsOptional)(),
+    (0, swagger_1.ApiProperty)({ type: String }),
+    __metadata("design:type", String)
+], ProfileDto.prototype, "role", void 0);
 //# sourceMappingURL=profile.dto.js.map

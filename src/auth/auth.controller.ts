@@ -99,17 +99,17 @@ export class AuthController{
       }
     
 
-    @Post('/:userName/createprofile')
+    @Post('createprofile')
     @UseGuards(AuthGuard)
-    async createProfile( @Param('userId') userName:string,@Body() payload:ProfileDto){
-      return await this.authService.createProfile(userName, payload)
+    async createProfile(@Body() payload:ProfileDto, @Req() req:Request){
+      return await this.authService.createProfile(payload, req)
     }
 
-    // @Patch('updateprofile')
-    // @UseGuards(AuthGuard)
-    // async updateProfile(@Param('userName') userName:string, payload:ProfileDto){
-    //   return await this.authService.updateProfile(userName, payload)
-    // }
+    @Patch('updateprofile')
+    @UseGuards(AuthGuard)
+    async updateProfile(@Body() payload:ProfileDto, @Req() req:Request){
+      return await this.authService.updateProfile(payload, req)
+    }
 
 
     @Get('users')
@@ -120,10 +120,10 @@ export class AuthController{
     return await this.authService.GetAllusers()
     }
 
-    @Get(':userName')
+    @Get('/finduser')
     @UseGuards(AuthGuard)
-    async user(@Param('userName') userName:string){
-      return await this.authService.getUser(userName)
+    async user( @Req() req:Request){
+      return await this.authService.getUser(req)
     }
 
     

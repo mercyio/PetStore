@@ -3,11 +3,11 @@ import { Role } from "../enum/roles.enum"
 import { ApiProperty } from "@nestjs/swagger"
 
 export class ProfileDto{
-    // @IsNotEmpty()
-    // @IsString()
-    // @MinLength(2)
-    // @ApiProperty({type: String})
-    // userName: string
+    @IsNotEmpty()
+    @IsString()
+    @MinLength(2)
+    @ApiProperty({type: String})
+    userName: string
 
     @IsNotEmpty()
     @IsString()
@@ -26,8 +26,8 @@ export class ProfileDto{
     @ApiProperty({type: String})
     phonenumber: string
 
-    // @IsOptional()
-    // @ApiProperty({type: String})
-    // role: Role
+    @IsOptional()
+    @ApiProperty({type: String})
+    role: Role
 
 }

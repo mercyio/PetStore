@@ -5,6 +5,7 @@ import { JwtService } from '@nestjs/jwt';
 import { SignupDto } from './dto/signup.dto';
 import { SerializeUsers } from './serializer/users.serialize';
 import { ProfileDto } from './dto/profile.dto';
+import { UpdateProfileDto } from './dto/update-profile.dto';
 import { ProfileEntity } from './entities/profile.entity';
 export declare class AuthService {
     private userRepo;
@@ -18,6 +19,14 @@ export declare class AuthService {
         response: Response<any, Record<string, any>>;
     }>;
     GetAllusers(): Promise<SerializeUsers[]>;
-    getUser(userName: string): Promise<UserEntity>;
-    createProfile(userName: string, payload: ProfileDto): Promise<ProfileEntity>;
+    getUser(req: Request): Promise<ProfileEntity>;
+    createProfile(payload: ProfileDto, req: Request): Promise<"profile has already been created, update profile to make changes" | {
+        message: string;
+        result: ProfileEntity;
+    }>;
+    updateProfile(payload: UpdateProfileDto, req: Request): Promise<{
+        success: boolean;
+        message: string;
+        updatedProfile: import("typeorm").UpdateResult;
+    }>;
 }

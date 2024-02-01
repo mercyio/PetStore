@@ -18,13 +18,6 @@ exports.SignupDto = SignupDto;
 __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.MinLength)(2),
-    (0, swagger_1.ApiProperty)({ type: String }),
-    __metadata("design:type", String)
-], SignupDto.prototype, "userName", void 0);
-__decorate([
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsEmail)(),
     (0, swagger_1.ApiProperty)({ type: String }),
     __metadata("design:type", String)

@@ -3,11 +3,11 @@ import { Role } from "../enum/roles.enum"
 import { ApiProperty } from "@nestjs/swagger"
 
 export class SignupDto {
-    @IsNotEmpty()
-    @IsString()
-    @MinLength(2)
-    @ApiProperty({type: String})
-    userName: string
+    // @IsNotEmpty()
+    // @IsString()
+    // @MinLength(2)
+    // @ApiProperty({type: String})
+    // userName: string
 
     @IsNotEmpty()
     @IsString()
