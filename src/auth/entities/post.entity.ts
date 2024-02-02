@@ -2,7 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'ty
 import { UserEntity } from './user.entity';
 import { ReviewEntity } from './review.entity';
 
-@Entity()
+@Entity('post')
 export class PostEntity {
   @PrimaryGeneratedColumn()
   id: number;

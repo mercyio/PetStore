@@ -23,6 +23,8 @@ const roles_decorator_1 = require("./decorator/roles.decorator");
 const roles_enum_1 = require("./enum/roles.enum");
 const profile_dto_1 = require("./dto/profile.dto");
 const swagger_1 = require("@nestjs/swagger");
+const create_pet_dto_1 = require("../Pets/pet-dto/create-pet.dto");
+const order_dto_1 = require("./dto/order.dto");
 let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
@@ -41,17 +43,23 @@ let AuthController = class AuthController {
     async getProfile(req) {
         return req.user;
     }
-    async createProfile(payload, req) {
+    async profile(payload, req) {
         return await this.authService.createProfile(payload, req);
     }
     async updateProfile(payload, req) {
-        return await this.authService.updateProfile(payload, req);
+        return await this.authService.updateprofile(payload, req);
     }
     async getUsers() {
         return await this.authService.GetAllusers();
     }
     async user(req) {
         return await this.authService.getUser(req);
+    }
+    async ownersPet(payload, req) {
+        return await this.authService.petOwned(payload, req);
+    }
+    async UsersOrder(payload, req) {
+        return await this.authService.petsOrder(payload, req);
     }
 };
 exports.AuthController = AuthController;
@@ -86,7 +94,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "logout", null);
 __decorate([
-    (0, common_1.Get)('profile'),
+    (0, common_1.Get)('myprofile'),
     (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
     (0, swagger_1.ApiOkResponse)(),
     __param(0, (0, common_1.Req)()),
@@ -102,7 +110,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [profile_dto_1.ProfileDto, Object]),
     __metadata("design:returntype", Promise)
-], AuthController.prototype, "createProfile", null);
+], AuthController.prototype, "profile", null);
 __decorate([
     (0, common_1.Patch)('updateprofile'),
     (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
@@ -122,13 +130,32 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "getUsers", null);
 __decorate([
-    (0, common_1.Get)('/finduser'),
+    (0, common_1.Get)('finduser'),
     (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
+    __param(0, (0, common_1.Body)()),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "user", null);
+__decorate([
+    (0, common_1.Post)('user-pet'),
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [create_pet_dto_1.createPetsDto, Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "ownersPet", null);
+__decorate([
+    (0, common_1.Post)('pet-order'),
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [order_dto_1.OrderDto, Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "UsersOrder", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('user'),
     __metadata("design:paramtypes", [auth_service_1.AuthService])

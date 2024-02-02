@@ -13,6 +13,9 @@ import { ProfileDto } from './dto/profile.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { ProfileEntity } from './entities/profile.entity';
 import { error } from 'console';
+import { createPetsDto } from 'src/Pets/pet-dto/create-pet.dto';
+import { PetEntity } from './entities/pets.entity';
+import { OrderDto } from './dto/order.dto';
 
 // import { generate } from 'rxjs';
 
@@ -22,8 +25,13 @@ export class AuthService {
   constructor ( 
     @InjectRepository(UserEntity)
      private userRepo: Repository<UserEntity>,
+
      @InjectRepository(ProfileEntity)
      private profileRepo: Repository<ProfileEntity>,
+
+     @InjectRepository(PetEntity)
+     private petRepo: Repository<PetEntity>,
+
      private jwtService :JwtService,
     ){}
 
@@ -144,17 +152,18 @@ export class AuthService {
        if (!findUser) {
          throw new UnauthorizedException('Invalid credentials');
        }
-   
-       const profile = await this.profileRepo.create({...payload, user});
-      //  findUser.profile = profile
-      
-      // const name = user['userName']
+       
+      //   const name = user['userName']
       // const repeatedName = await this.profileRepo.findOne({where:{userName: name}})
 
       // if(repeatedName){
       //   throw new UnauthorizedException('userName already exist')
       // }
 
+
+       const profile = await this.profileRepo.create({...payload, user});
+       findUser.profile = profile
+      
        const savedprofile = await this.profileRepo.save(profile);
      
        return {
@@ -169,8 +178,8 @@ export class AuthService {
 }
 
 
-
-async updateProfile(payload: UpdateProfileDto, @Req() req: Request) {
+// ONE user to ONE profile
+async updateprofile(payload: ProfileDto, @Req() req: Request) {
   const user = req.user;
   const userId = user['userId'];
 
@@ -181,21 +190,23 @@ async updateProfile(payload: UpdateProfileDto, @Req() req: Request) {
   }
 
   if (!finduser.profile) {
-    throw new NotFoundException('No profile found, please create a profile');
+    throw new HttpException('no existing profile found, create a new profile', HttpStatus.NOT_FOUND)
+    // const profile = await this.profileRepo.create({...payload, user});
+    // return await this.profileRepo.save(profile)
   }
-
-  const updateResult = await this.profileRepo
+  
+  const updateProfile = await this.profileRepo
     .createQueryBuilder()
     .update(ProfileEntity) 
-    .where('userUserId = :userId', { userId }) 
+    .where('user_id = :userId', { userId }) 
     .set(payload)
     .execute();
 
-  if (updateResult.affected === 0) {
+  if (updateProfile.affected === 0) {
     throw new NotFoundException('Profile not found or not updated');
   }
 
-  const updatedProfile = updateResult; 
+  const updatedProfile = updateProfile; 
 
   console.log(updatedProfile);
 
@@ -205,9 +216,74 @@ async updateProfile(payload: UpdateProfileDto, @Req() req: Request) {
     updatedProfile,
   };
 }
+ 
+
+
+// ONE user to MANY pets
+async petOwned (payload: createPetsDto, @Req() req:Request){
+   const user = req.user
+   const userId = user['userId']
+
+   const findUser = await this.userRepo.findOne({where:{userId}, relations: ['pet']})
+   if(!findUser){
+    throw new NotFoundException('user not found')
+   }
+
+  // if (!findUser.profile) {
+  //   throw new HttpException('no existing profile found, create a new profile', HttpStatus.NOT_FOUND)
+  // }
+
+   const ownedpets = await this.petRepo.create({...payload, user})
+   const pets = []
+   const savePet = await this. petRepo.save(ownedpets)
+   pets.push(savePet)
+
+   return {
+    message: 'sucessful',
+    pets
+   }
 
 }
 
+
+// MANY pet to MANY orders
+async petsOrder (payload: OrderDto, @Req() req:Request){
+  try{
+  const user = req.user
+  const userId = user['userId']
+
+  const findUser = await this.userRepo.findOne({where:{userId}, relations: ['pet']})
+  // console.log(findUser);
+  
+  if(!findUser){
+   throw new NotFoundException('user not found')
+  }
+
+  if(!findUser.pet){
+   throw new HttpException('null', HttpStatus.NOT_FOUND)
+  }
+  console.log(findUser.pet);
+  
+  const createOrder = await this.petRepo.create({...payload, user})
+  const orders = []
+  const saveOrder = await this. petRepo.save(createOrder)
+  orders.push(saveOrder)
+
+  return {
+   message: 'sucessful',
+   orders
+  }
+  }
+  catch(error){
+    return error
+  }
+
+}
+
+
+// MANY pets to Many order
+
+}
     // async updateProfile(userName:string, payload:UpdateProfileDto){
     //   const findProfile = await this.userRepo.findOne({where:{userName}})
     //   if(!findProfile){

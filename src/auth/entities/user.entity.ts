@@ -3,6 +3,7 @@ import {Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, Prima
 import { ProfileEntity } from "./profile.entity";
 import { PetEntity } from "src/auth/entities/pets.entity";
 import { PostEntity } from "./post.entity";
+import { OrderEntity } from "./order.entity";
 
 @Entity('user')
 export class UserEntity{
@@ -34,13 +35,14 @@ export class UserEntity{
         @OneToOne(() => ProfileEntity, (profile) => profile.user, {onDelete: 'CASCADE'} )
         profile: ProfileEntity;
 
-        @OneToMany(()=> PetEntity, pet=> pet.user, {onDelete: 'SET NULL'})
-        @JoinColumn()
+        @OneToMany(()=> PetEntity, pet=> pet.user, {onDelete: 'CASCADE', onUpdate: 'CASCADE'})
         pet: PetEntity[]
 
         @OneToMany(() => PostEntity, (post) => post.user)
         post: PostEntity;
-  finduser: any;
+
+        // @OneToMany(()=> OrderEntity, order=> order.user, {onDelete: 'CASCADE', onUpdate: 'CASCADE'})
+        // order: UserEntity;
 
 }
 

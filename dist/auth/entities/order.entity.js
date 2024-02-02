@@ -12,7 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.OrderEntity = void 0;
 const typeorm_1 = require("typeorm");
 const pets_entity_1 = require("./pets.entity");
-const user_entity_1 = require("./user.entity");
 let OrderEntity = class OrderEntity {
 };
 exports.OrderEntity = OrderEntity;
@@ -21,19 +20,28 @@ __decorate([
     __metadata("design:type", Number)
 ], OrderEntity.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => user_entity_1.UserEntity),
-    __metadata("design:type", user_entity_1.UserEntity)
-], OrderEntity.prototype, "user", void 0);
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], OrderEntity.prototype, "address", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], OrderEntity.prototype, "paymentMethod", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Number)
+], OrderEntity.prototype, "totalPrice", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => pets_entity_1.PetEntity, (pet) => pet.order),
+    (0, typeorm_1.JoinColumn)({ name: 'pet_id' }),
+    __metadata("design:type", pets_entity_1.PetEntity)
+], OrderEntity.prototype, "pet", void 0);
 __decorate([
     (0, typeorm_1.ManyToMany)(() => pets_entity_1.PetEntity),
     (0, typeorm_1.JoinTable)(),
     __metadata("design:type", Array)
 ], OrderEntity.prototype, "pets", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
-], OrderEntity.prototype, "totalPrice", void 0);
 exports.OrderEntity = OrderEntity = __decorate([
-    (0, typeorm_1.Entity)()
+    (0, typeorm_1.Entity)('order')
 ], OrderEntity);
 //# sourceMappingURL=order.entity.js.map

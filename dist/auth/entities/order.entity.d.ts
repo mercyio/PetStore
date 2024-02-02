@@ -1,8 +1,9 @@
 import { PetEntity } from 'src/auth/entities/pets.entity';
-import { UserEntity } from './user.entity';
 export declare class OrderEntity {
     id: number;
-    user: UserEntity;
-    pets: PetEntity[];
+    address: string;
+    paymentMethod: string;
     totalPrice: number;
+    pet: PetEntity;
+    pets: PetEntity[];
 }

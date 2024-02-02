@@ -54,7 +54,7 @@ __decorate([
 ], ProfileEntity.prototype, "role", void 0);
 __decorate([
     (0, typeorm_1.OneToOne)(() => user_entity_1.UserEntity, (user) => user.profile),
-    (0, typeorm_1.JoinColumn)(),
+    (0, typeorm_1.JoinColumn)({ name: 'user_id' }),
     __metadata("design:type", user_entity_1.UserEntity)
 ], ProfileEntity.prototype, "user", void 0);
 exports.ProfileEntity = ProfileEntity = __decorate([

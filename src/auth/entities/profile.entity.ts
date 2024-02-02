@@ -34,7 +34,7 @@ role:Role
 
 
 @OneToOne(() => UserEntity, (user) => user.profile )
-@JoinColumn()
+@JoinColumn({name: 'user_id'})
 user: UserEntity;
 
 }

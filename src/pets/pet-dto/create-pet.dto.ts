@@ -17,8 +17,12 @@ export class createPetsDto{
     age: string
 
     @IsNotEmpty()
-    @MinLength(5)
-    @ApiProperty({type: String})
-    userName: string
+    @IsString()
+    breed: string
+
+    // @IsNotEmpty()
+    // @MinLength(5)
+    // @ApiProperty({type: String})
+    // userName: string
 
 }

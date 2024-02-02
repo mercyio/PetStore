@@ -7,7 +7,7 @@ import { ProfileEntity } from 'src/auth/entities/profile.entity';
 import { UserEntity } from 'src/auth/entities/user.entity';
 import { UserModule } from 'src/user/user.module';
 import { PostEntity } from 'src/auth/entities/post.entity';
-import { CategoryEntity } from 'src/auth/entities/category.entity';
+// import { CategoryEntity } from 'src/auth/entities/category.entity';
 import { OrderEntity } from 'src/auth/entities/order.entity';
 import { ReviewEntity } from 'src/auth/entities/review.entity';
 
@@ -21,7 +21,7 @@ import { ReviewEntity } from 'src/auth/entities/review.entity';
               username: configService.getOrThrow('DB_USER'),
               password: configService.getOrThrow('DB_PASSWORD'),
               database: configService.getOrThrow('DB_DATABASE'),
-              entities: [PetEntity, UserEntity, ProfileEntity, PostEntity, CategoryEntity, OrderEntity, ReviewEntity],
+              entities: [PetEntity, UserEntity, ProfileEntity, PostEntity, OrderEntity, ReviewEntity],
               synchronize: configService.getOrThrow('DB_SYNC'),
             }),
             inject: [ConfigService]

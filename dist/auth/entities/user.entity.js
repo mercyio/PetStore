@@ -51,8 +51,7 @@ __decorate([
     __metadata("design:type", profile_entity_1.ProfileEntity)
 ], UserEntity.prototype, "profile", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => pets_entity_1.PetEntity, pet => pet.user, { onDelete: 'SET NULL' }),
-    (0, typeorm_1.JoinColumn)(),
+    (0, typeorm_1.OneToMany)(() => pets_entity_1.PetEntity, pet => pet.user, { onDelete: 'CASCADE', onUpdate: 'CASCADE' }),
     __metadata("design:type", Array)
 ], UserEntity.prototype, "pet", void 0);
 __decorate([

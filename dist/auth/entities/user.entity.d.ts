@@ -12,5 +12,4 @@ export declare class UserEntity {
     profile: ProfileEntity;
     pet: PetEntity[];
     post: PostEntity;
-    finduser: any;
 }

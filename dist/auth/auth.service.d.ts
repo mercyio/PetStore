@@ -5,13 +5,16 @@ import { JwtService } from '@nestjs/jwt';
 import { SignupDto } from './dto/signup.dto';
 import { SerializeUsers } from './serializer/users.serialize';
 import { ProfileDto } from './dto/profile.dto';
-import { UpdateProfileDto } from './dto/update-profile.dto';
 import { ProfileEntity } from './entities/profile.entity';
+import { createPetsDto } from 'src/Pets/pet-dto/create-pet.dto';
+import { PetEntity } from './entities/pets.entity';
+import { OrderDto } from './dto/order.dto';
 export declare class AuthService {
     private userRepo;
     private profileRepo;
+    private petRepo;
     private jwtService;
-    constructor(userRepo: Repository<UserEntity>, profileRepo: Repository<ProfileEntity>, jwtService: JwtService);
+    constructor(userRepo: Repository<UserEntity>, profileRepo: Repository<ProfileEntity>, petRepo: Repository<PetEntity>, jwtService: JwtService);
     signup(payload: SignupDto): Promise<any>;
     login(Email: string, Password: string, req: Request, res: Response): Promise<Response<any, Record<string, any>>>;
     logout(req: Request, res: Response): Promise<{
@@ -24,9 +27,14 @@ export declare class AuthService {
         message: string;
         result: ProfileEntity;
     }>;
-    updateProfile(payload: UpdateProfileDto, req: Request): Promise<{
+    updateprofile(payload: ProfileDto, req: Request): Promise<{
         success: boolean;
         message: string;
         updatedProfile: import("typeorm").UpdateResult;
     }>;
+    petOwned(payload: createPetsDto, req: Request): Promise<{
+        message: string;
+        pets: any[];
+    }>;
+    petsOrder(payload: OrderDto, req: Request): Promise<any>;
 }

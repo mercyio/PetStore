@@ -37,6 +37,6 @@ __decorate([
     __metadata("design:type", Array)
 ], PostEntity.prototype, "review", void 0);
 exports.PostEntity = PostEntity = __decorate([
-    (0, typeorm_1.Entity)()
+    (0, typeorm_1.Entity)('post')
 ], PostEntity);
 //# sourceMappingURL=post.entity.js.map

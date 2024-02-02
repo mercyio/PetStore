@@ -33,6 +33,6 @@ __decorate([
     __metadata("design:type", pets_entity_1.PetEntity)
 ], ReviewEntity.prototype, "pet", void 0);
 exports.ReviewEntity = ReviewEntity = __decorate([
-    (0, typeorm_1.Entity)()
+    (0, typeorm_1.Entity)('review')
 ], ReviewEntity);
 //# sourceMappingURL=review.entity.js.map

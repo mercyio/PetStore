@@ -56,6 +56,8 @@ import { Role } from "./enum/roles.enum";
 import { ProfileDto } from "./dto/profile.dto";
 import { UpdateProfileDto } from "./dto/update-profile.dto";
 import { ApiCreatedResponse, ApiBody, ApiUnauthorizedResponse, ApiOkResponse, ApiBearerAuth } from "@nestjs/swagger";
+import { createPetsDto } from "src/Pets/pet-dto/create-pet.dto";
+import { OrderDto } from "./dto/order.dto";
 
 
 @Controller('user')
@@ -90,7 +92,7 @@ export class AuthController{
     }
     
 
-    @Get('profile')
+    @Get('myprofile')
     @UseGuards(AuthGuard)
     @ApiOkResponse()
     // @ApiBearerAuth()
@@ -101,14 +103,14 @@ export class AuthController{
 
     @Post('createprofile')
     @UseGuards(AuthGuard)
-    async createProfile(@Body() payload:ProfileDto, @Req() req:Request){
+    async profile(@Body() payload:ProfileDto, @Req() req:Request){
       return await this.authService.createProfile(payload, req)
     }
 
     @Patch('updateprofile')
     @UseGuards(AuthGuard)
     async updateProfile(@Body() payload:ProfileDto, @Req() req:Request){
-      return await this.authService.updateProfile(payload, req)
+      return await this.authService.updateprofile(payload, req)
     }
 
 
@@ -120,10 +122,23 @@ export class AuthController{
     return await this.authService.GetAllusers()
     }
 
-    @Get('/finduser')
+    @Get('finduser')
     @UseGuards(AuthGuard)
-    async user( @Req() req:Request){
+    async user(@Body() @Req() req:Request){
       return await this.authService.getUser(req)
+    }
+
+
+    @Post('user-pet')
+    @UseGuards(AuthGuard)
+    async ownersPet(@Body() payload:createPetsDto, @Req() req:Request){
+      return await this.authService.petOwned(payload, req)
+    }
+
+    @Post('pet-order')
+    @UseGuards(AuthGuard)
+    async UsersOrder(@Body() payload: OrderDto, @Req() req:Request){
+      return await this.authService.petsOrder(payload, req)
     }
 
     

@@ -10,7 +10,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PetEntity = void 0;
-const category_entity_1 = require("./category.entity");
 const user_entity_1 = require("./user.entity");
 const typeorm_1 = require("typeorm");
 const review_entity_1 = require("./review.entity");
@@ -18,10 +17,6 @@ const order_entity_1 = require("./order.entity");
 let PetEntity = class PetEntity {
 };
 exports.PetEntity = PetEntity;
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], PetEntity.prototype, "userName", void 0);
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
     __metadata("design:type", String)
@@ -48,14 +43,9 @@ __decorate([
 ], PetEntity.prototype, "createdAt", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => user_entity_1.UserEntity, user => user.pet),
-    (0, typeorm_1.JoinColumn)(),
+    (0, typeorm_1.JoinColumn)({ name: 'user_id' }),
     __metadata("design:type", user_entity_1.UserEntity)
 ], PetEntity.prototype, "user", void 0);
-__decorate([
-    (0, typeorm_1.ManyToMany)(() => category_entity_1.CategoryEntity),
-    (0, typeorm_1.JoinTable)(),
-    __metadata("design:type", Array)
-], PetEntity.prototype, "categories", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => review_entity_1.ReviewEntity, review => review.pet),
     __metadata("design:type", review_entity_1.ReviewEntity)

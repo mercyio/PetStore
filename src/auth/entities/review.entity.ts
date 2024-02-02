@@ -3,7 +3,7 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { PostEntity } from './post.entity';
 
 
-@Entity()
+@Entity('review')
 export class ReviewEntity {
   @PrimaryGeneratedColumn()
   id: number;

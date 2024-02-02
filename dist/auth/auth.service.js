@@ -21,12 +21,15 @@ const bcrypt = require("bcrypt");
 const jwt_1 = require("@nestjs/jwt");
 const users_serialize_1 = require("./serializer/users.serialize");
 const profile_dto_1 = require("./dto/profile.dto");
-const update_profile_dto_1 = require("./dto/update-profile.dto");
 const profile_entity_1 = require("./entities/profile.entity");
+const create_pet_dto_1 = require("../Pets/pet-dto/create-pet.dto");
+const pets_entity_1 = require("./entities/pets.entity");
+const order_dto_1 = require("./dto/order.dto");
 let AuthService = class AuthService {
-    constructor(userRepo, profileRepo, jwtService) {
+    constructor(userRepo, profileRepo, petRepo, jwtService) {
         this.userRepo = userRepo;
         this.profileRepo = profileRepo;
+        this.petRepo = petRepo;
         this.jwtService = jwtService;
     }
     async signup(payload) {
@@ -108,6 +111,7 @@ let AuthService = class AuthService {
                 throw new common_1.UnauthorizedException('Invalid credentials');
             }
             const profile = await this.profileRepo.create({ ...payload, user });
+            findUser.profile = profile;
             const savedprofile = await this.profileRepo.save(profile);
             return {
                 message: 'Successfully created',
@@ -118,7 +122,7 @@ let AuthService = class AuthService {
             return 'profile has already been created, update profile to make changes';
         }
     }
-    async updateProfile(payload, req) {
+    async updateprofile(payload, req) {
         const user = req.user;
         const userId = user['userId'];
         const finduser = await this.userRepo.findOne({ where: { userId }, relations: ['profile'] });
@@ -126,24 +130,65 @@ let AuthService = class AuthService {
             throw new common_1.NotFoundException('User not found');
         }
         if (!finduser.profile) {
-            throw new common_1.NotFoundException('No profile found, please create a profile');
+            throw new common_1.HttpException('no existing profile found, create a new profile', common_1.HttpStatus.NOT_FOUND);
         }
-        const updateResult = await this.profileRepo
+        const updateProfile = await this.profileRepo
             .createQueryBuilder()
             .update(profile_entity_1.ProfileEntity)
-            .where('userUserId = :userId', { userId })
+            .where('user_id = :userId', { userId })
             .set(payload)
             .execute();
-        if (updateResult.affected === 0) {
+        if (updateProfile.affected === 0) {
             throw new common_1.NotFoundException('Profile not found or not updated');
         }
-        const updatedProfile = updateResult;
+        const updatedProfile = updateProfile;
         console.log(updatedProfile);
         return {
             success: true,
             message: 'Successfully updated profile',
             updatedProfile,
         };
+    }
+    async petOwned(payload, req) {
+        const user = req.user;
+        const userId = user['userId'];
+        const findUser = await this.userRepo.findOne({ where: { userId }, relations: ['pet'] });
+        if (!findUser) {
+            throw new common_1.NotFoundException('user not found');
+        }
+        const ownedpets = await this.petRepo.create({ ...payload, user });
+        const pets = [];
+        const savePet = await this.petRepo.save(ownedpets);
+        pets.push(savePet);
+        return {
+            message: 'sucessful',
+            pets
+        };
+    }
+    async petsOrder(payload, req) {
+        try {
+            const user = req.user;
+            const userId = user['userId'];
+            const findUser = await this.userRepo.findOne({ where: { userId }, relations: ['pet'] });
+            if (!findUser) {
+                throw new common_1.NotFoundException('user not found');
+            }
+            if (!findUser.pet) {
+                throw new common_1.HttpException('null', common_1.HttpStatus.NOT_FOUND);
+            }
+            console.log(findUser.pet);
+            const createOrder = await this.petRepo.create({ ...payload, user });
+            const orders = [];
+            const saveOrder = await this.petRepo.save(createOrder);
+            orders.push(saveOrder);
+            return {
+                message: 'sucessful',
+                orders
+            };
+        }
+        catch (error) {
+            return error;
+        }
     }
 };
 exports.AuthService = AuthService;
@@ -176,14 +221,28 @@ __decorate([
 __decorate([
     __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [update_profile_dto_1.UpdateProfileDto, Object]),
+    __metadata("design:paramtypes", [profile_dto_1.ProfileDto, Object]),
     __metadata("design:returntype", Promise)
-], AuthService.prototype, "updateProfile", null);
+], AuthService.prototype, "updateprofile", null);
+__decorate([
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [create_pet_dto_1.createPetsDto, Object]),
+    __metadata("design:returntype", Promise)
+], AuthService.prototype, "petOwned", null);
+__decorate([
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [order_dto_1.OrderDto, Object]),
+    __metadata("design:returntype", Promise)
+], AuthService.prototype, "petsOrder", null);
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(user_entity_1.UserEntity)),
     __param(1, (0, typeorm_1.InjectRepository)(profile_entity_1.ProfileEntity)),
+    __param(2, (0, typeorm_1.InjectRepository)(pets_entity_1.PetEntity)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository,
         typeorm_2.Repository,
         jwt_1.JwtService])
 ], AuthService);
