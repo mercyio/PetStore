@@ -32,6 +32,9 @@ export declare class AuthController {
         message: string;
         pets: any[];
     }>;
-    UsersOrder(payload: OrderDto, req: Request): Promise<void>;
     reviews(id: string, payload: reviewDto, req: Request): Promise<import("../entities/review.entity").ReviewEntity>;
+    orders(payload: OrderDto, req: Request): Promise<{
+        message: string;
+        saveOrder: import("../entities/order.entity").OrderEntity;
+    }>;
 }

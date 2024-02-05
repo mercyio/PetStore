@@ -1,5 +1,5 @@
 import { Role } from "src/auth/enum/roles.enum";
-import {Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
+import {Column, CreateDateColumn, Entity, JoinColumn, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
 import { ProfileEntity } from "./profile.entity";
 import { PetEntity } from "src/entities/pets.entity";
 import { PostEntity } from "./post.entity";
@@ -40,6 +40,9 @@ export class UserEntity{
 
         @OneToMany(() => PostEntity, (post) => post.user)
         post: PostEntity;
+
+        @OneToMany(() => OrderEntity, order => order.user )
+        order: OrderEntity[];
 
         // @OneToMany(()=> OrderEntity, order=> order.user, {onDelete: 'CASCADE', onUpdate: 'CASCADE'})
         // order: UserEntity;

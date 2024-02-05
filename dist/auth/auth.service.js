@@ -179,23 +179,6 @@ let AuthService = class AuthService {
             pets
         };
     }
-    async petsOrder(payload, req) {
-        const pet = req.user;
-        const userId = pet['userId'];
-        const findUser = await this.userRepo.findOne({ where: { userId }, relations: ['pet'] });
-        if (!findUser) {
-            throw new common_1.NotFoundException('user not found');
-        }
-        if (!findUser.pet) {
-            throw new common_1.HttpException('null', common_1.HttpStatus.NOT_FOUND);
-        }
-        console.log(findUser.pet);
-        const createOrder = await this.orderRepo.create({ ...payload, pet });
-        const orders = [];
-        const saveOrder = await this.orderRepo.save(createOrder);
-        orders.push(saveOrder);
-        console.log(orders);
-    }
     async review(id, payload, req) {
         const user = req.user;
         const userId = user['userId'];
@@ -212,6 +195,20 @@ let AuthService = class AuthService {
         const reviews = [];
         const savedReview = await this.reviewRepo.save(newReview);
         return savedReview;
+    }
+    async usersOrder(payload, req) {
+        const user = req.user;
+        const userId = user['userId'];
+        const findUser = await this.userRepo.findOne({ where: { userId }, relations: ['order'] });
+        if (!findUser) {
+            throw new common_1.NotFoundException('user not found');
+        }
+        const userOrder = await this.orderRepo.create({ ...payload, user });
+        const saveOrder = await this.orderRepo.save(userOrder);
+        return {
+            message: 'sucessful',
+            saveOrder
+        };
     }
 };
 exports.AuthService = AuthService;
@@ -260,17 +257,17 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthService.prototype, "petOwned", null);
 __decorate([
-    __param(1, (0, common_1.Req)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [order_dto_1.OrderDto, Object]),
-    __metadata("design:returntype", Promise)
-], AuthService.prototype, "petsOrder", null);
-__decorate([
     __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, review_dto_1.reviewDto, Object]),
     __metadata("design:returntype", Promise)
 ], AuthService.prototype, "review", null);
+__decorate([
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [order_dto_1.OrderDto, Object]),
+    __metadata("design:returntype", Promise)
+], AuthService.prototype, "usersOrder", null);
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(user_entity_1.UserEntity)),

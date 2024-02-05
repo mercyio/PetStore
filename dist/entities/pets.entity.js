@@ -48,7 +48,7 @@ __decorate([
 ], PetEntity.prototype, "user", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => review_entity_1.ReviewEntity, review => review.pet),
-    __metadata("design:type", review_entity_1.ReviewEntity)
+    __metadata("design:type", Array)
 ], PetEntity.prototype, "review", void 0);
 __decorate([
     (0, typeorm_1.ManyToMany)(() => order_entity_1.OrderEntity, order => order.pet),

@@ -15,6 +15,7 @@ const typeorm_1 = require("typeorm");
 const profile_entity_1 = require("./profile.entity");
 const pets_entity_1 = require("./pets.entity");
 const post_entity_1 = require("./post.entity");
+const order_entity_1 = require("./order.entity");
 let UserEntity = class UserEntity {
 };
 exports.UserEntity = UserEntity;
@@ -58,6 +59,10 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => post_entity_1.PostEntity, (post) => post.user),
     __metadata("design:type", post_entity_1.PostEntity)
 ], UserEntity.prototype, "post", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => order_entity_1.OrderEntity, order => order.user),
+    __metadata("design:type", Array)
+], UserEntity.prototype, "order", void 0);
 exports.UserEntity = UserEntity = __decorate([
     (0, typeorm_1.Entity)('user')
 ], UserEntity);

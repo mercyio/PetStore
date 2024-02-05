@@ -9,6 +9,6 @@ export declare class PetEntity {
     breed: string;
     createdAt: Date;
     user: UserEntity;
-    review: ReviewEntity;
+    review: ReviewEntity[];
     order: OrderEntity[];
 }

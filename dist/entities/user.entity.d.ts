@@ -2,6 +2,7 @@ import { Role } from "src/auth/enum/roles.enum";
 import { ProfileEntity } from "./profile.entity";
 import { PetEntity } from "src/entities/pets.entity";
 import { PostEntity } from "./post.entity";
+import { OrderEntity } from "./order.entity";
 export declare class UserEntity {
     userId: string;
     Email: string;
@@ -12,4 +13,5 @@ export declare class UserEntity {
     profile: ProfileEntity;
     pet: PetEntity[];
     post: PostEntity;
+    order: OrderEntity[];
 }

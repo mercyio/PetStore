@@ -136,17 +136,24 @@ export class AuthController{
       return await this.authService.petOwned(payload, req)
     }
 
-    @Post('pet-order')
-    @UseGuards(AuthGuard)
-    async UsersOrder(@Body() payload: OrderDto, @Req() req:Request){
-      return await this.authService.petsOrder(payload, req)
-    }
+    // @Post('pet-order')
+    // @UseGuards(AuthGuard)
+    // async UsersOrder(@Body() payload: OrderDto, @Req() req:Request){
+    //   return await this.authService.petsOrder(payload, req)
+    // }
 
 
     @Post('review/:id')
     @UseGuards(AuthGuard)
     async reviews(@Param('id') id:string, @Body() payload: reviewDto, @Req() req:Request,){
       return await this.authService.review(id, payload, req)
+    }
+
+
+    @Post('order')
+    @UseGuards(AuthGuard)
+    async orders( @Body() payload: OrderDto, @Req() req:Request,){
+      return await this.authService.usersOrder( payload, req)
     }
 
     

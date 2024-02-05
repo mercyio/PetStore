@@ -42,6 +42,9 @@ export declare class AuthService {
         message: string;
         pets: any[];
     }>;
-    petsOrder(payload: OrderDto, req: Request): Promise<void>;
     review(id: string, payload: reviewDto, req: Request): Promise<ReviewEntity>;
+    usersOrder(payload: OrderDto, req: Request): Promise<{
+        message: string;
+        saveOrder: OrderEntity;
+    }>;
 }

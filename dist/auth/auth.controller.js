@@ -59,11 +59,11 @@ let AuthController = class AuthController {
     async ownersPet(payload, req) {
         return await this.authService.petOwned(payload, req);
     }
-    async UsersOrder(payload, req) {
-        return await this.authService.petsOrder(payload, req);
-    }
     async reviews(id, payload, req) {
         return await this.authService.review(id, payload, req);
+    }
+    async orders(payload, req) {
+        return await this.authService.usersOrder(payload, req);
     }
 };
 exports.AuthController = AuthController;
@@ -152,15 +152,6 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "ownersPet", null);
 __decorate([
-    (0, common_1.Post)('pet-order'),
-    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
-    __param(0, (0, common_1.Body)()),
-    __param(1, (0, common_1.Req)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [order_dto_1.OrderDto, Object]),
-    __metadata("design:returntype", Promise)
-], AuthController.prototype, "UsersOrder", null);
-__decorate([
     (0, common_1.Post)('review/:id'),
     (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
     __param(0, (0, common_1.Param)('id')),
@@ -170,6 +161,15 @@ __decorate([
     __metadata("design:paramtypes", [String, review_dto_1.reviewDto, Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "reviews", null);
+__decorate([
+    (0, common_1.Post)('order'),
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [order_dto_1.OrderDto, Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "orders", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('user'),
     __metadata("design:paramtypes", [auth_service_1.AuthService])

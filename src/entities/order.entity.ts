@@ -8,21 +8,25 @@ export class OrderEntity {
   id: number;
   
 
-  @Column()
-  name: string;
+  // @Column()
+  // name: string;
+
+  // @Column()
+  // address: string;
+
+  // @Column()
+  // paymentMethod: string;
 
   @Column()
-  address: string;
-
-  @Column()
-  paymentMethod: string;
-
-  @Column()
-  totalPrice: number;
+  bidingPrice: string;
 
   @ManyToMany(() => PetEntity, (pet) => pet.order )
-  @JoinColumn({name: 'pet_id'})
-  pet: PetEntity;
+  @JoinTable({name: 'pet_id'})
+  pet: PetEntity[];
+
+  @ManyToOne(() => UserEntity, user => user.order )
+  @JoinColumn({name: 'user_id'})
+  user: UserEntity;
 
   // @ManyToMany(() => PetEntity,(pet) => pet. )
   // @JoinTable()

@@ -21,26 +21,5 @@ __decorate([
     (0, class_validator_1.MinLength)(2),
     (0, swagger_1.ApiProperty)({ type: String }),
     __metadata("design:type", String)
-], OrderDto.prototype, "name", void 0);
-__decorate([
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.MinLength)(2),
-    (0, swagger_1.ApiProperty)({ type: String }),
-    __metadata("design:type", String)
-], OrderDto.prototype, "address", void 0);
-__decorate([
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.MinLength)(2),
-    (0, swagger_1.ApiProperty)({ type: String }),
-    __metadata("design:type", String)
-], OrderDto.prototype, "paymentMethod", void 0);
-__decorate([
-    (0, class_validator_1.IsNotEmpty)(),
-    (0, class_validator_1.IsString)(),
-    (0, class_validator_1.MinLength)(2),
-    (0, swagger_1.ApiProperty)({ type: String }),
-    __metadata("design:type", String)
-], OrderDto.prototype, "totalprice", void 0);
+], OrderDto.prototype, "bidingPrice", void 0);
 //# sourceMappingURL=order.dto.js.map

@@ -36,7 +36,7 @@ export class PetEntity{
         // categories: CategoryEntity[];
 
         @OneToMany(() => ReviewEntity, review => review.pet)
-        review:  ReviewEntity;
+        review:  ReviewEntity[];
 
         @ManyToMany(() => OrderEntity, order => order.pet )
         order: OrderEntity[];

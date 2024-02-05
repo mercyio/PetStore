@@ -265,42 +265,42 @@ async petOwned (payload: createPetsDto, @Req() req:Request){
 
 
 // MANY pet to MANY orders
-async petsOrder (payload: OrderDto, @Req() req:Request){
-  // try{
-  const pet = req.user
-  const userId = pet['userId']
+// async petsOrder (payload: OrderDto, @Req() req:Request){
+//   // try{
+//   const pet = req.user
+//   const userId = pet['userId']
 
-  const findUser = await this.userRepo.findOne({where:{userId}, relations: ['pet']})
-  // console.log(findUser);
+//   const findUser = await this.userRepo.findOne({where:{userId}, relations: ['pet']})
+//   // console.log(findUser);
   
-  if(!findUser){
-   throw new NotFoundException('user not found')
-  }
+//   if(!findUser){
+//    throw new NotFoundException('user not found')
+//   }
 
-  if(!findUser.pet){
-   throw new HttpException('null', HttpStatus.NOT_FOUND)
-  }
-  console.log(findUser.pet);
+//   if(!findUser.pet){
+//    throw new HttpException('null', HttpStatus.NOT_FOUND)
+//   }
+//   console.log(findUser.pet);
   
-  const createOrder = await this.orderRepo.create({...payload, pet})
-  const orders = []
-  const saveOrder = await this. orderRepo.save(createOrder)
-  orders.push(saveOrder)
-  console.log(orders);
+//   const createOrder = await this.orderRepo.create({...payload, pet})
+//   const orders = []
+//   const saveOrder = await this. orderRepo.save(createOrder)
+//   orders.push(saveOrder)
+//   console.log(orders);
   
   
-  // return {
-  //  message: 'sucessful',
-  //  orders
-  // }
-  // }
-  // catch(error){
-  //   return error
-  // }
+//   // return {
+//   //  message: 'sucessful',
+//   //  orders
+//   // }
+//   // }
+//   // catch(error){
+//   //   return error
+//   // }
+
+// // }
 
 // }
-
-}
 
 // ONE pet to Many REVIEW
 async review(id: string,payload: reviewDto, @Req() req: Request, ) {
@@ -328,9 +328,64 @@ async review(id: string,payload: reviewDto, @Req() req: Request, ) {
   // };
   return savedReview
 }
+ 
 
+// ONE user to MANY order
+
+async usersOrder (payload: OrderDto, @Req() req:Request){
+  const user = req.user
+  const userId = user['userId']
+
+  const findUser = await this.userRepo.findOne({where:{userId}, relations: ['order']})
+  if(!findUser){
+   throw new NotFoundException('user not found')
+  }
+
+  const userOrder = await this.orderRepo.create({...payload, user})
+  // const order = []
+  const saveOrder = await this. orderRepo.save(userOrder)
+  // order.push(saveOrder)
+
+  return {
+   message: 'sucessful',
+   saveOrder
+  }
 
 }
+
+
+  // // MANY pet to MANY order
+  // async createOrder( id:string, payload: OrderDto, @Req() req:Request){
+
+  //   const user = req.user;
+  //   const userId = user['userId'];
+
+  //   const findUser = await this.userRepo.findOne({
+  //   where: { userId },
+  //   relations: ['pet'],
+  // });
+
+  // if (!findUser ) {
+  //   throw new HttpException('User or associated pet not found', HttpStatus.NOT_FOUND);
+  // }
+
+  // const findpet = await this.petRepo.findOne({where:{id}})
+  // const pet = findpet
+
+  //   const order = this.orderRepo.create({...payload, pet});
+  //   console.log(order);
+    
+  //   order.pet = findpet
+    
+  //    await this.orderRepo.save(order);
+
+  
+  //   }
+  }
+
+   
+
+
     // async updateProfile(userName:string, payload:UpdateProfileDto){
     //   const findProfile = await this.userRepo.findOne({where:{userName}})
     //   if(!findProfile){
