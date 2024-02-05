@@ -1,15 +1,15 @@
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { PetEntity } from 'src/auth/entities/pets.entity';
+import { PetEntity } from 'src/entities/pets.entity';
 import { PetModule } from 'src/Pets/pets.module';
-import { ProfileEntity } from 'src/auth/entities/profile.entity';
-import { UserEntity } from 'src/auth/entities/user.entity';
-import { UserModule } from 'src/user/user.module';
-import { PostEntity } from 'src/auth/entities/post.entity';
+import { ProfileEntity } from 'src/entities/profile.entity';
+import { UserEntity } from 'src/entities/user.entity';
+// import { UserModule } from 'src/user/user.module';
+import { PostEntity } from 'src/entities/post.entity';
 // import { CategoryEntity } from 'src/auth/entities/category.entity';
-import { OrderEntity } from 'src/auth/entities/order.entity';
-import { ReviewEntity } from 'src/auth/entities/review.entity';
+import { OrderEntity } from 'src/entities/order.entity';
+import { ReviewEntity } from 'src/entities/review.entity';
 
 @Module({
     imports:[
@@ -28,7 +28,7 @@ import { ReviewEntity } from 'src/auth/entities/review.entity';
           
           }),
           PetModule,
-          UserModule
+          // UserModule
     ]
 })
 export class DatabaseModule {}

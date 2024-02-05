@@ -15,16 +15,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
 const common_1 = require("@nestjs/common");
 const auth_service_1 = require("./auth.service");
-const login_dto_1 = require("./dto/login.dto");
-const signup_dto_1 = require("./dto/signup.dto");
 const auth_guard_1 = require("./guard/auth.guard");
 const roles_guard_1 = require("./guard/roles.guard");
 const roles_decorator_1 = require("./decorator/roles.decorator");
 const roles_enum_1 = require("./enum/roles.enum");
-const profile_dto_1 = require("./dto/profile.dto");
 const swagger_1 = require("@nestjs/swagger");
-const create_pet_dto_1 = require("../Pets/pet-dto/create-pet.dto");
-const order_dto_1 = require("./dto/order.dto");
+const login_dto_1 = require("../dto/login.dto");
+const order_dto_1 = require("../dto/order.dto");
+const create_pet_dto_1 = require("../dto/pet-dto/create-pet.dto");
+const profile_dto_1 = require("../dto/profile.dto");
+const signup_dto_1 = require("../dto/signup.dto");
+const review_dto_1 = require("../dto/review.dto");
 let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
@@ -60,6 +61,9 @@ let AuthController = class AuthController {
     }
     async UsersOrder(payload, req) {
         return await this.authService.petsOrder(payload, req);
+    }
+    async reviews(id, payload, req) {
+        return await this.authService.review(id, payload, req);
     }
 };
 exports.AuthController = AuthController;
@@ -156,6 +160,16 @@ __decorate([
     __metadata("design:paramtypes", [order_dto_1.OrderDto, Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "UsersOrder", null);
+__decorate([
+    (0, common_1.Post)('review/:id'),
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, review_dto_1.reviewDto, Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "reviews", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('user'),
     __metadata("design:paramtypes", [auth_service_1.AuthService])

@@ -1,6 +1,6 @@
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from "@nestjs/common";
 import { Observable, map } from "rxjs";
-import { PetEntity } from "../../auth/entities/pets.entity";
+import { PetEntity } from "../../entities/pets.entity";
 
 
 @Injectable()

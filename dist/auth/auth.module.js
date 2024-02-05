@@ -14,19 +14,21 @@ const pets_module_1 = require("../Pets/pets.module");
 const passport_1 = require("@nestjs/passport");
 const jwt_1 = require("@nestjs/jwt");
 const typeorm_1 = require("@nestjs/typeorm");
-const user_entity_1 = require("./entities/user.entity");
+const user_entity_1 = require("../entities/user.entity");
 const auth_guard_1 = require("./guard/auth.guard");
 const config_1 = require("@nestjs/config");
-const pets_entity_1 = require("./entities/pets.entity");
+const pets_entity_1 = require("../entities/pets.entity");
 const roles_guard_1 = require("./guard/roles.guard");
-const profile_entity_1 = require("./entities/profile.entity");
+const profile_entity_1 = require("../entities/profile.entity");
+const review_entity_1 = require("../entities/review.entity");
+const order_entity_1 = require("../entities/order.entity");
 let AuthModule = class AuthModule {
 };
 exports.AuthModule = AuthModule;
 exports.AuthModule = AuthModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            typeorm_1.TypeOrmModule.forFeature([user_entity_1.UserEntity, pets_entity_1.PetEntity, profile_entity_1.ProfileEntity]),
+            typeorm_1.TypeOrmModule.forFeature([user_entity_1.UserEntity, pets_entity_1.PetEntity, profile_entity_1.ProfileEntity, review_entity_1.ReviewEntity, order_entity_1.OrderEntity]),
             jwt_1.JwtModule.registerAsync({
                 imports: [config_1.ConfigModule],
                 useFactory: async (configService) => ({

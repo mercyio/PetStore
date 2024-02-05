@@ -14,22 +14,27 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
-const typeorm_1 = require("@nestjs/typeorm");
-const typeorm_2 = require("typeorm");
-const user_entity_1 = require("../auth/entities/user.entity");
-const bcrypt = require("bcrypt");
 const jwt_1 = require("@nestjs/jwt");
+const typeorm_1 = require("@nestjs/typeorm");
+const order_dto_1 = require("../dto/order.dto");
+const create_pet_dto_1 = require("../dto/pet-dto/create-pet.dto");
+const profile_dto_1 = require("../dto/profile.dto");
+const pets_entity_1 = require("../entities/pets.entity");
+const profile_entity_1 = require("../entities/profile.entity");
+const user_entity_1 = require("../entities/user.entity");
+const typeorm_2 = require("typeorm");
 const users_serialize_1 = require("./serializer/users.serialize");
-const profile_dto_1 = require("./dto/profile.dto");
-const profile_entity_1 = require("./entities/profile.entity");
-const create_pet_dto_1 = require("../Pets/pet-dto/create-pet.dto");
-const pets_entity_1 = require("./entities/pets.entity");
-const order_dto_1 = require("./dto/order.dto");
+const bcrypt = require("bcrypt");
+const review_dto_1 = require("../dto/review.dto");
+const review_entity_1 = require("../entities/review.entity");
+const order_entity_1 = require("../entities/order.entity");
 let AuthService = class AuthService {
-    constructor(userRepo, profileRepo, petRepo, jwtService) {
+    constructor(userRepo, profileRepo, petRepo, orderRepo, reviewRepo, jwtService) {
         this.userRepo = userRepo;
         this.profileRepo = profileRepo;
         this.petRepo = petRepo;
+        this.orderRepo = orderRepo;
+        this.reviewRepo = reviewRepo;
         this.jwtService = jwtService;
     }
     async signup(payload) {
@@ -102,6 +107,15 @@ let AuthService = class AuthService {
         }
         return user;
     }
+    async getUserbyId(req) {
+        const users = req.user;
+        const userId = users['userId'];
+        const user = await this.userRepo.findOne({ where: { userId } });
+        if (!user) {
+            throw new common_1.UnauthorizedException('user not found');
+        }
+        return user;
+    }
     async createProfile(payload, req) {
         try {
             const user = req.user;
@@ -166,29 +180,38 @@ let AuthService = class AuthService {
         };
     }
     async petsOrder(payload, req) {
-        try {
-            const user = req.user;
-            const userId = user['userId'];
-            const findUser = await this.userRepo.findOne({ where: { userId }, relations: ['pet'] });
-            if (!findUser) {
-                throw new common_1.NotFoundException('user not found');
-            }
-            if (!findUser.pet) {
-                throw new common_1.HttpException('null', common_1.HttpStatus.NOT_FOUND);
-            }
-            console.log(findUser.pet);
-            const createOrder = await this.petRepo.create({ ...payload, user });
-            const orders = [];
-            const saveOrder = await this.petRepo.save(createOrder);
-            orders.push(saveOrder);
-            return {
-                message: 'sucessful',
-                orders
-            };
+        const pet = req.user;
+        const userId = pet['userId'];
+        const findUser = await this.userRepo.findOne({ where: { userId }, relations: ['pet'] });
+        if (!findUser) {
+            throw new common_1.NotFoundException('user not found');
         }
-        catch (error) {
-            return error;
+        if (!findUser.pet) {
+            throw new common_1.HttpException('null', common_1.HttpStatus.NOT_FOUND);
         }
+        console.log(findUser.pet);
+        const createOrder = await this.orderRepo.create({ ...payload, pet });
+        const orders = [];
+        const saveOrder = await this.orderRepo.save(createOrder);
+        orders.push(saveOrder);
+        console.log(orders);
+    }
+    async review(id, payload, req) {
+        const user = req.user;
+        const userId = user['userId'];
+        const findUser = await this.userRepo.findOne({
+            where: { userId },
+            relations: ['pet'],
+        });
+        if (!findUser) {
+            throw new common_1.HttpException('User or associated pet not found', common_1.HttpStatus.NOT_FOUND);
+        }
+        const findpet = await this.petRepo.findOne({ where: { id } });
+        const pet = findpet;
+        const newReview = this.reviewRepo.create({ ...payload, pet });
+        const reviews = [];
+        const savedReview = await this.reviewRepo.save(newReview);
+        return savedReview;
     }
 };
 exports.AuthService = AuthService;
@@ -213,6 +236,12 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthService.prototype, "getUser", null);
 __decorate([
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], AuthService.prototype, "getUserbyId", null);
+__decorate([
     __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [profile_dto_1.ProfileDto, Object]),
@@ -236,12 +265,22 @@ __decorate([
     __metadata("design:paramtypes", [order_dto_1.OrderDto, Object]),
     __metadata("design:returntype", Promise)
 ], AuthService.prototype, "petsOrder", null);
+__decorate([
+    __param(2, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, review_dto_1.reviewDto, Object]),
+    __metadata("design:returntype", Promise)
+], AuthService.prototype, "review", null);
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(user_entity_1.UserEntity)),
     __param(1, (0, typeorm_1.InjectRepository)(profile_entity_1.ProfileEntity)),
     __param(2, (0, typeorm_1.InjectRepository)(pets_entity_1.PetEntity)),
+    __param(3, (0, typeorm_1.InjectRepository)(order_entity_1.OrderEntity)),
+    __param(4, (0, typeorm_1.InjectRepository)(review_entity_1.ReviewEntity)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository,
+        typeorm_2.Repository,
         typeorm_2.Repository,
         typeorm_2.Repository,
         jwt_1.JwtService])

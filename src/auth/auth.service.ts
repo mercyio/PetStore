@@ -1,21 +1,22 @@
 import { BadRequestException, Body, ExecutionContext, HttpException, HttpStatus, Injectable, NotFoundException, Req, Res, UnauthorizedException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { UserEntity } from '../auth/entities/user.entity';
-import * as bcrypt from 'bcrypt';
-import { Request, Response } from 'express';
 import { JwtService } from '@nestjs/jwt';
-import { LoginDto } from './dto/login.dto';
-import { AnySoaRecord } from 'dns';
-import { SignupDto } from './dto/signup.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { OrderDto } from '../dto/order.dto';
+import { createPetsDto } from '../dto/pet-dto/create-pet.dto';
+import { ProfileDto } from '../dto/profile.dto';
+import { SignupDto } from '../dto/signup.dto';
+import { PetEntity } from '../entities/pets.entity';
+import { ProfileEntity } from '../entities/profile.entity';
+import { UserEntity } from '../entities/user.entity';
+import { Repository } from 'typeorm';
 import { SerializeUsers } from './serializer/users.serialize';
-import { ProfileDto } from './dto/profile.dto';
-import { UpdateProfileDto } from './dto/update-profile.dto';
-import { ProfileEntity } from './entities/profile.entity';
-import { error } from 'console';
-import { createPetsDto } from 'src/Pets/pet-dto/create-pet.dto';
-import { PetEntity } from './entities/pets.entity';
-import { OrderDto } from './dto/order.dto';
+import { Request, Response } from "express";
+import * as bcrypt from 'bcrypt';
+import { reviewDto } from 'src/dto/review.dto';
+import { ReviewEntity } from 'src/entities/review.entity';
+import { OrderEntity } from 'src/entities/order.entity';
+
+
 
 // import { generate } from 'rxjs';
 
@@ -31,6 +32,13 @@ export class AuthService {
 
      @InjectRepository(PetEntity)
      private petRepo: Repository<PetEntity>,
+
+     
+     @InjectRepository(OrderEntity)
+     private orderRepo: Repository<OrderEntity>,
+
+     @InjectRepository(ReviewEntity)
+     private reviewRepo: Repository<ReviewEntity>,
 
      private jwtService :JwtService,
     ){}
@@ -142,6 +150,16 @@ export class AuthService {
     }
 
 
+    async getUserbyId(@Req() req:Request){
+      const users = req.user
+      const userId = users['userId']
+ 
+       const user = await this.userRepo.findOne({where:{userId}})
+       if(!user){
+         throw new UnauthorizedException('user not found')
+       }
+       return user;
+     }
 
     async createProfile( payload: ProfileDto, @Req() req:Request){
       try{
@@ -248,9 +266,9 @@ async petOwned (payload: createPetsDto, @Req() req:Request){
 
 // MANY pet to MANY orders
 async petsOrder (payload: OrderDto, @Req() req:Request){
-  try{
-  const user = req.user
-  const userId = user['userId']
+  // try{
+  const pet = req.user
+  const userId = pet['userId']
 
   const findUser = await this.userRepo.findOne({where:{userId}, relations: ['pet']})
   // console.log(findUser);
@@ -264,24 +282,53 @@ async petsOrder (payload: OrderDto, @Req() req:Request){
   }
   console.log(findUser.pet);
   
-  const createOrder = await this.petRepo.create({...payload, user})
+  const createOrder = await this.orderRepo.create({...payload, pet})
   const orders = []
-  const saveOrder = await this. petRepo.save(createOrder)
+  const saveOrder = await this. orderRepo.save(createOrder)
   orders.push(saveOrder)
+  console.log(orders);
+  
+  
+  // return {
+  //  message: 'sucessful',
+  //  orders
+  // }
+  // }
+  // catch(error){
+  //   return error
+  // }
 
-  return {
-   message: 'sucessful',
-   orders
-  }
-  }
-  catch(error){
-    return error
-  }
+// }
 
 }
 
+// ONE pet to Many REVIEW
+async review(id: string,payload: reviewDto, @Req() req: Request, ) {
+  const user = req.user;
+  const userId = user['userId'];
 
-// MANY pets to Many order
+  const findUser = await this.userRepo.findOne({
+    where: { userId },
+    relations: ['pet'],
+  });
+
+  if (!findUser ) {
+    throw new HttpException('User or associated pet not found', HttpStatus.NOT_FOUND);
+  }
+  const findpet = await this.petRepo.findOne({where:{id}})
+  const pet = findpet
+  // const pet = user
+  const newReview = this.reviewRepo.create({...payload, pet});
+  const reviews = []
+  const savedReview = await this.reviewRepo.save(newReview);
+  // reviews.push(savedReview)
+  // return {
+  //   message: 'Successful',
+  //   review: savedReview,
+  // };
+  return savedReview
+}
+
 
 }
     // async updateProfile(userName:string, payload:UpdateProfileDto){

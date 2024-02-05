@@ -9,7 +9,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UsersInterceptor = void 0;
 const common_1 = require("@nestjs/common");
 const rxjs_1 = require("rxjs");
-const pets_entity_1 = require("../../auth/entities/pets.entity");
+const pets_entity_1 = require("../../entities/pets.entity");
 let UsersInterceptor = class UsersInterceptor {
     intercept(context, next) {
         console.log(context.getClass().name);

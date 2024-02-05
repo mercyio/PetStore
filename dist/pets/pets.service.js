@@ -16,7 +16,7 @@ exports.PetService = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("typeorm");
 const typeorm_2 = require("@nestjs/typeorm");
-const pets_entity_1 = require("../auth/entities/pets.entity");
+const pets_entity_1 = require("../entities/pets.entity");
 let PetService = class PetService {
     constructor(petRepo) {
         this.petRepo = petRepo;

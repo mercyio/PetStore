@@ -1,42 +1,54 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, SetMetadata, ClassSerializerInterceptor, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, SetMetadata, ClassSerializerInterceptor, UseGuards, UseInterceptors, Req } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Role } from 'src/auth/enum/roles.enum';
 import { Roles } from 'src/auth/decorator/roles.decorator';
 import { AuthGuard } from '@nestjs/passport';
-import { ProfileDto } from 'src/auth/dto/profile.dto';
-import { UpdateProfileDto } from 'src/auth/dto/update-profile.dto';
-import { RolesGuard } from 'src/auth/guard/roles.guard';
+import { ProfileDto } from 'src/dto/profile.dto';
+import { UpdateProfileDto } from 'src/dto/update-profile.dto';
+import { RolesGuard } from '../auth/guard/roles.guard';
 import { profile } from 'console';
+import { ApiOkResponse } from '@nestjs/swagger';
+import { Request, Response } from 'express';
 
-@Controller('user/profile')
+
+@Controller()
 export class UserController {
   constructor(private  userService: UserService) {}
 
-
-
- 
-    @Post()
-    async CreateProfile(payload:ProfileDto){
-      return await this.userService.createProfile(payload)
-    }user
-
-
-    @Patch(':id')
-    async UpdateProfile(id: string, payload:UpdateProfileDto){
-      return await this.userService.updateProfile(id, payload)
+  @Get('myprofile')
+  @UseGuards(AuthGuard)
+  @ApiOkResponse()
+  // @ApiBearerAuth()
+  async getProfile(@Req()req:Request){ 
+    return req.user;
     }
+  
 
-    
+  @Post('createprofile')
+  @UseGuards(AuthGuard)
+  async profile(@Body() payload:ProfileDto, @Req() req:Request){
+    return await this.userService.createProfile(payload, req)
+  }
 
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+  @Patch('updateprofile')
+  @UseGuards(AuthGuard)
+  async updateProfile(@Body() payload:ProfileDto, @Req() req:Request){
+    return await this.userService.updateprofile(payload, req)
   }
 
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+  @Get('users')
+  @Roles(Role.admin)
+  @UseGuards(AuthGuard, RolesGuard)
+  @UseInterceptors(ClassSerializerInterceptor)
+  async getUsers(){
+  return await this.userService.GetAllusers()
   }
+
+  @Get('finduser')
+  @UseGuards(AuthGuard)
+  async user(@Body() @Req() req:Request){
+    return await this.userService.getUser(req)
+  }
+
 }

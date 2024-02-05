@@ -13,7 +13,6 @@ const config_1 = require("@nestjs/config");
 const pets_upload_module_1 = require("./Pets/pets-upload/pets-upload.module");
 const auth_module_1 = require("./auth/auth.module");
 const database_module_1 = require("./database/database.module");
-const user_module_1 = require("./user/user.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -24,11 +23,9 @@ exports.AppModule = AppModule = __decorate([
                 isGlobal: true
             }),
             pets_module_1.PetModule,
-            user_module_1.UserModule,
             pets_upload_module_1.PetsUploadModule,
             auth_module_1.AuthModule,
             database_module_1.DatabaseModule,
-            user_module_1.UserModule
         ],
     })
 ], AppModule);

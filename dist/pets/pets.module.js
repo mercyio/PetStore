@@ -11,12 +11,12 @@ const common_1 = require("@nestjs/common");
 const pets_service_1 = require("./pets.service");
 const pets_controller_1 = require("./pets.controller");
 const typeorm_1 = require("@nestjs/typeorm");
-const pets_entity_1 = require("../auth/entities/pets.entity");
-const user_entity_1 = require("../auth/entities/user.entity");
+const pets_entity_1 = require("../entities/pets.entity");
+const user_entity_1 = require("../entities/user.entity");
 const auth_guard_1 = require("../auth/guard/auth.guard");
 const jwt_1 = require("@nestjs/jwt");
 const config_1 = require("@nestjs/config");
-const profile_entity_1 = require("../auth/entities/profile.entity");
+const profile_entity_1 = require("../entities/profile.entity");
 let PetModule = class PetModule {
 };
 exports.PetModule = PetModule;

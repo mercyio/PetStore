@@ -1,11 +1,12 @@
 /// <reference types="passport" />
 import { AuthService } from "./auth.service";
-import { LoginDto } from "src/auth/dto/login.dto";
-import { SignupDto } from "src/auth/dto/signup.dto";
 import { Request, Response } from "express";
-import { ProfileDto } from "./dto/profile.dto";
-import { createPetsDto } from "src/Pets/pet-dto/create-pet.dto";
-import { OrderDto } from "./dto/order.dto";
+import { LoginDto } from "src/dto/login.dto";
+import { OrderDto } from "src/dto/order.dto";
+import { createPetsDto } from "src/dto/pet-dto/create-pet.dto";
+import { ProfileDto } from "src/dto/profile.dto";
+import { SignupDto } from "src/dto/signup.dto";
+import { reviewDto } from "src/dto/review.dto";
 export declare class AuthController {
     private authService;
     constructor(authService: AuthService);
@@ -18,7 +19,7 @@ export declare class AuthController {
     getProfile(req: Request): Promise<Express.User>;
     profile(payload: ProfileDto, req: Request): Promise<"profile has already been created, update profile to make changes" | {
         message: string;
-        result: import("./entities/profile.entity").ProfileEntity;
+        result: import("../entities/profile.entity").ProfileEntity;
     }>;
     updateProfile(payload: ProfileDto, req: Request): Promise<{
         success: boolean;
@@ -26,10 +27,11 @@ export declare class AuthController {
         updatedProfile: import("typeorm").UpdateResult;
     }>;
     getUsers(): Promise<import("./serializer/users.serialize").SerializeUsers[]>;
-    user(req: Request): Promise<import("./entities/profile.entity").ProfileEntity>;
+    user(req: Request): Promise<import("../entities/profile.entity").ProfileEntity>;
     ownersPet(payload: createPetsDto, req: Request): Promise<{
         message: string;
         pets: any[];
     }>;
-    UsersOrder(payload: OrderDto, req: Request): Promise<any>;
+    UsersOrder(payload: OrderDto, req: Request): Promise<void>;
+    reviews(id: string, payload: reviewDto, req: Request): Promise<import("../entities/review.entity").ReviewEntity>;
 }

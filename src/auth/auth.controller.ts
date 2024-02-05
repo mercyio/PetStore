@@ -46,18 +46,19 @@
 
 import { Body, ClassSerializerInterceptor, Controller, Get, HttpCode, Param, Patch, Post, Req, Res, UseGuards, UseInterceptors } from "@nestjs/common";
 import { AuthService } from "./auth.service";
-import { LoginDto } from "src/auth/dto/login.dto";
-import { SignupDto } from "src/auth/dto/signup.dto";
 import { AuthGuard } from "./guard/auth.guard";
 import { Request, Response } from "express";
 import { RolesGuard } from "./guard/roles.guard";
 import { Roles } from "./decorator/roles.decorator";
 import { Role } from "./enum/roles.enum";
-import { ProfileDto } from "./dto/profile.dto";
-import { UpdateProfileDto } from "./dto/update-profile.dto";
 import { ApiCreatedResponse, ApiBody, ApiUnauthorizedResponse, ApiOkResponse, ApiBearerAuth } from "@nestjs/swagger";
-import { createPetsDto } from "src/Pets/pet-dto/create-pet.dto";
-import { OrderDto } from "./dto/order.dto";
+import { LoginDto } from "src/dto/login.dto";
+import { OrderDto } from "src/dto/order.dto";
+import { createPetsDto } from "src/dto/pet-dto/create-pet.dto";
+import { ProfileDto } from "src/dto/profile.dto";
+import { SignupDto } from "src/dto/signup.dto";
+import { reviewDto } from "src/dto/review.dto";
+
 
 
 @Controller('user')
@@ -139,6 +140,13 @@ export class AuthController{
     @UseGuards(AuthGuard)
     async UsersOrder(@Body() payload: OrderDto, @Req() req:Request){
       return await this.authService.petsOrder(payload, req)
+    }
+
+
+    @Post('review/:id')
+    @UseGuards(AuthGuard)
+    async reviews(@Param('id') id:string, @Body() payload: reviewDto, @Req() req:Request,){
+      return await this.authService.review(id, payload, req)
     }
 
     

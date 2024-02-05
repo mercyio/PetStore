@@ -1,20 +1,25 @@
-import { Repository } from 'typeorm';
-import { UserEntity } from '../auth/entities/user.entity';
-import { Request, Response } from 'express';
 import { JwtService } from '@nestjs/jwt';
-import { SignupDto } from './dto/signup.dto';
+import { OrderDto } from '../dto/order.dto';
+import { createPetsDto } from '../dto/pet-dto/create-pet.dto';
+import { ProfileDto } from '../dto/profile.dto';
+import { SignupDto } from '../dto/signup.dto';
+import { PetEntity } from '../entities/pets.entity';
+import { ProfileEntity } from '../entities/profile.entity';
+import { UserEntity } from '../entities/user.entity';
+import { Repository } from 'typeorm';
 import { SerializeUsers } from './serializer/users.serialize';
-import { ProfileDto } from './dto/profile.dto';
-import { ProfileEntity } from './entities/profile.entity';
-import { createPetsDto } from 'src/Pets/pet-dto/create-pet.dto';
-import { PetEntity } from './entities/pets.entity';
-import { OrderDto } from './dto/order.dto';
+import { Request, Response } from "express";
+import { reviewDto } from 'src/dto/review.dto';
+import { ReviewEntity } from 'src/entities/review.entity';
+import { OrderEntity } from 'src/entities/order.entity';
 export declare class AuthService {
     private userRepo;
     private profileRepo;
     private petRepo;
+    private orderRepo;
+    private reviewRepo;
     private jwtService;
-    constructor(userRepo: Repository<UserEntity>, profileRepo: Repository<ProfileEntity>, petRepo: Repository<PetEntity>, jwtService: JwtService);
+    constructor(userRepo: Repository<UserEntity>, profileRepo: Repository<ProfileEntity>, petRepo: Repository<PetEntity>, orderRepo: Repository<OrderEntity>, reviewRepo: Repository<ReviewEntity>, jwtService: JwtService);
     signup(payload: SignupDto): Promise<any>;
     login(Email: string, Password: string, req: Request, res: Response): Promise<Response<any, Record<string, any>>>;
     logout(req: Request, res: Response): Promise<{
@@ -23,6 +28,7 @@ export declare class AuthService {
     }>;
     GetAllusers(): Promise<SerializeUsers[]>;
     getUser(req: Request): Promise<ProfileEntity>;
+    getUserbyId(req: Request): Promise<UserEntity>;
     createProfile(payload: ProfileDto, req: Request): Promise<"profile has already been created, update profile to make changes" | {
         message: string;
         result: ProfileEntity;
@@ -36,5 +42,6 @@ export declare class AuthService {
         message: string;
         pets: any[];
     }>;
-    petsOrder(payload: OrderDto, req: Request): Promise<any>;
+    petsOrder(payload: OrderDto, req: Request): Promise<void>;
+    review(id: string, payload: reviewDto, req: Request): Promise<ReviewEntity>;
 }

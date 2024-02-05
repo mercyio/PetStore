@@ -2,12 +2,12 @@ import { Module } from "@nestjs/common";
 import { PetService } from "./pets.service";
 import { PetController } from "./pets.controller";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { PetEntity } from "../auth/entities/pets.entity";
-import { UserEntity } from "src/auth/entities/user.entity";
+import { PetEntity } from "../entities/pets.entity";
+import { UserEntity } from "src/entities/user.entity";
 import { AuthGuard } from "src/auth/guard/auth.guard";
 import { JwtModule } from "@nestjs/jwt";
 import { ConfigModule, ConfigService } from "@nestjs/config";
-import { ProfileEntity } from "src/auth/entities/profile.entity";
+import { ProfileEntity } from "src/entities/profile.entity";
 
 
 

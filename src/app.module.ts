@@ -3,13 +3,8 @@ import { PetModule } from './Pets/pets.module';
 import { ConfigModule } from '@nestjs/config';
 import { PetsUploadModule } from './Pets/pets-upload/pets-upload.module';
 import { AuthModule } from './auth/auth.module';
-import { AuthController } from './auth/auth.controller';
 import { DatabaseModule } from './database/database.module';
-import { AuthService } from './auth/auth.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserEntity } from './auth/entities/user.entity';
-import { PetEntity } from './auth/entities/pets.entity';
-import { UserModule } from './user/user.module';
+// import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -17,12 +12,10 @@ import { UserModule } from './user/user.module';
       isGlobal: true
     }),
     PetModule,
-    UserModule,
+    // UserModule,
     PetsUploadModule,
     AuthModule,
     DatabaseModule,
-    
-    UserModule
   ],
   
     // controllers: [],

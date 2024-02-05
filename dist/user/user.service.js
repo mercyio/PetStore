@@ -15,29 +15,97 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserService = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
-const profile_entity_1 = require("../auth/entities/profile.entity");
-const user_entity_1 = require("../auth/entities/user.entity");
+const profile_dto_1 = require("../dto/profile.dto");
+const profile_entity_1 = require("../entities/profile.entity");
+const user_entity_1 = require("../entities/user.entity");
+const users_serialize_1 = require("../auth/serializer/users.serialize");
 const typeorm_2 = require("typeorm");
 let UserService = class UserService {
     constructor(userRepo, profileRepo) {
         this.userRepo = userRepo;
         this.profileRepo = profileRepo;
     }
-    async createProfile(payload) {
-        const createUser = await this.profileRepo.save(payload);
-        return createUser;
+    async GetAllusers() {
+        const Users = await this.userRepo.find();
+        const serializeAllUsers = Users.map((users) => new users_serialize_1.SerializeUsers(users));
+        return serializeAllUsers;
     }
-    async updateProfile(id, payload) {
-        const update = await this.profileRepo.update(id, payload);
+    async getUser(req) {
+        const users = req.user;
+        const name = users['userName'];
+        const user = await this.profileRepo.findOne({ where: { userName: name } });
+        if (!user) {
+            throw new common_1.UnauthorizedException('user not found');
+        }
+        return user;
     }
-    findOne(id) {
-        return `This action returns a #${id} user`;
+    async createProfile(payload, req) {
+        try {
+            const user = req.user;
+            const id = user['userId'];
+            const findUser = await this.userRepo.findOne({ where: { userId: id } });
+            if (!findUser) {
+                throw new common_1.UnauthorizedException('Invalid credentials');
+            }
+            const profile = await this.profileRepo.create({ ...payload, user });
+            findUser.profile = profile;
+            const savedprofile = await this.profileRepo.save(profile);
+            return {
+                message: 'Successfully created',
+                result: savedprofile,
+            };
+        }
+        catch (error) {
+            return 'profile has already been created, update profile to make changes';
+        }
     }
-    remove(id) {
-        return `This action removes a #${id} user`;
+    async updateprofile(payload, req) {
+        const user = req.user;
+        const userId = user['userId'];
+        const finduser = await this.userRepo.findOne({ where: { userId }, relations: ['profile'] });
+        if (!finduser) {
+            throw new common_1.NotFoundException('User not found');
+        }
+        if (!finduser.profile) {
+            throw new common_1.HttpException('no existing profile found, create a new profile', common_1.HttpStatus.NOT_FOUND);
+        }
+        const updateProfile = await this.profileRepo
+            .createQueryBuilder()
+            .update(profile_entity_1.ProfileEntity)
+            .where('user_id = :userId', { userId })
+            .set(payload)
+            .execute();
+        if (updateProfile.affected === 0) {
+            throw new common_1.NotFoundException('Profile not found or not updated');
+        }
+        const updatedProfile = updateProfile;
+        console.log(updatedProfile);
+        return {
+            success: true,
+            message: 'Successfully updated profile',
+            updatedProfile,
+        };
     }
 };
 exports.UserService = UserService;
+__decorate([
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UserService.prototype, "getUser", null);
+__decorate([
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [profile_dto_1.ProfileDto, Object]),
+    __metadata("design:returntype", Promise)
+], UserService.prototype, "createProfile", null);
+__decorate([
+    __param(1, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [profile_dto_1.ProfileDto, Object]),
+    __metadata("design:returntype", Promise)
+], UserService.prototype, "updateprofile", null);
 exports.UserService = UserService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(user_entity_1.UserEntity)),

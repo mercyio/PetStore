@@ -15,54 +15,80 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const common_1 = require("@nestjs/common");
 const user_service_1 = require("./user.service");
-const profile_dto_1 = require("../auth/dto/profile.dto");
-const update_profile_dto_1 = require("../auth/dto/update-profile.dto");
+const roles_enum_1 = require("../auth/enum/roles.enum");
+const roles_decorator_1 = require("../auth/decorator/roles.decorator");
+const passport_1 = require("@nestjs/passport");
+const profile_dto_1 = require("../dto/profile.dto");
+const roles_guard_1 = require("../auth/guard/roles.guard");
+const swagger_1 = require("@nestjs/swagger");
 let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
     }
-    async CreateProfile(payload) {
-        return await this.userService.createProfile(payload);
+    async getProfile(req) {
+        return req.user;
     }
-    async UpdateProfile(id, payload) {
-        return await this.userService.updateProfile(id, payload);
+    async profile(payload, req) {
+        return await this.userService.createProfile(payload, req);
     }
-    findOne(id) {
-        return this.userService.findOne(+id);
+    async updateProfile(payload, req) {
+        return await this.userService.updateprofile(payload, req);
     }
-    remove(id) {
-        return this.userService.remove(+id);
+    async getUsers() {
+        return await this.userService.GetAllusers();
+    }
+    async user(req) {
+        return await this.userService.getUser(req);
     }
 };
 exports.UserController = UserController;
 __decorate([
-    (0, common_1.Post)(),
+    (0, common_1.Get)('myprofile'),
+    (0, common_1.UseGuards)(passport_1.AuthGuard),
+    (0, swagger_1.ApiOkResponse)(),
+    __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [profile_dto_1.ProfileDto]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
-], UserController.prototype, "CreateProfile", null);
+], UserController.prototype, "getProfile", null);
 __decorate([
-    (0, common_1.Patch)(':id'),
+    (0, common_1.Post)('createprofile'),
+    (0, common_1.UseGuards)(passport_1.AuthGuard),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, update_profile_dto_1.UpdateProfileDto]),
+    __metadata("design:paramtypes", [profile_dto_1.ProfileDto, Object]),
     __metadata("design:returntype", Promise)
-], UserController.prototype, "UpdateProfile", null);
+], UserController.prototype, "profile", null);
 __decorate([
-    (0, common_1.Get)(':id'),
-    __param(0, (0, common_1.Param)('id')),
+    (0, common_1.Patch)('updateprofile'),
+    (0, common_1.UseGuards)(passport_1.AuthGuard),
+    __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
-], UserController.prototype, "findOne", null);
+    __metadata("design:paramtypes", [profile_dto_1.ProfileDto, Object]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "updateProfile", null);
 __decorate([
-    (0, common_1.Delete)(':id'),
-    __param(0, (0, common_1.Param)('id')),
+    (0, common_1.Get)('users'),
+    (0, roles_decorator_1.Roles)(roles_enum_1.Role.admin),
+    (0, common_1.UseGuards)(passport_1.AuthGuard, roles_guard_1.RolesGuard),
+    (0, common_1.UseInterceptors)(common_1.ClassSerializerInterceptor),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
-], UserController.prototype, "remove", null);
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "getUsers", null);
+__decorate([
+    (0, common_1.Get)('finduser'),
+    (0, common_1.UseGuards)(passport_1.AuthGuard),
+    __param(0, (0, common_1.Body)()),
+    __param(0, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "user", null);
 exports.UserController = UserController = __decorate([
-    (0, common_1.Controller)('user/profile'),
+    (0, common_1.Controller)(),
     __metadata("design:paramtypes", [user_service_1.UserService])
 ], UserController);
 //# sourceMappingURL=user.controller.js.map

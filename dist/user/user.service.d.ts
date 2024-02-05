@@ -1,14 +1,22 @@
-import { ProfileDto } from 'src/auth/dto/profile.dto';
-import { UpdateProfileDto } from 'src/auth/dto/update-profile.dto';
-import { ProfileEntity } from 'src/auth/entities/profile.entity';
-import { UserEntity } from 'src/auth/entities/user.entity';
+import { ProfileDto } from '../dto/profile.dto';
+import { ProfileEntity } from '../entities/profile.entity';
+import { UserEntity } from '../entities/user.entity';
+import { SerializeUsers } from '../auth/serializer/users.serialize';
 import { Repository } from 'typeorm';
+import { Request } from 'express';
 export declare class UserService {
     private userRepo;
     private profileRepo;
     constructor(userRepo: Repository<UserEntity>, profileRepo: Repository<ProfileEntity>);
-    createProfile(payload: ProfileDto): Promise<ProfileDto & ProfileEntity>;
-    updateProfile(id: string, payload: UpdateProfileDto): Promise<void>;
-    findOne(id: number): string;
-    remove(id: number): string;
+    GetAllusers(): Promise<SerializeUsers[]>;
+    getUser(req: Request): Promise<ProfileEntity>;
+    createProfile(payload: ProfileDto, req: Request): Promise<"profile has already been created, update profile to make changes" | {
+        message: string;
+        result: ProfileEntity;
+    }>;
+    updateprofile(payload: ProfileDto, req: Request): Promise<{
+        success: boolean;
+        message: string;
+        updatedProfile: import("typeorm").UpdateResult;
+    }>;
 }

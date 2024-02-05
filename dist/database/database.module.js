@@ -10,14 +10,13 @@ exports.DatabaseModule = void 0;
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 const typeorm_1 = require("@nestjs/typeorm");
-const pets_entity_1 = require("../auth/entities/pets.entity");
+const pets_entity_1 = require("../entities/pets.entity");
 const pets_module_1 = require("../Pets/pets.module");
-const profile_entity_1 = require("../auth/entities/profile.entity");
-const user_entity_1 = require("../auth/entities/user.entity");
-const user_module_1 = require("../user/user.module");
-const post_entity_1 = require("../auth/entities/post.entity");
-const order_entity_1 = require("../auth/entities/order.entity");
-const review_entity_1 = require("../auth/entities/review.entity");
+const profile_entity_1 = require("../entities/profile.entity");
+const user_entity_1 = require("../entities/user.entity");
+const post_entity_1 = require("../entities/post.entity");
+const order_entity_1 = require("../entities/order.entity");
+const review_entity_1 = require("../entities/review.entity");
 let DatabaseModule = class DatabaseModule {
 };
 exports.DatabaseModule = DatabaseModule;
@@ -38,7 +37,6 @@ exports.DatabaseModule = DatabaseModule = __decorate([
                 inject: [config_1.ConfigService]
             }),
             pets_module_1.PetModule,
-            user_module_1.UserModule
         ]
     })
 ], DatabaseModule);
