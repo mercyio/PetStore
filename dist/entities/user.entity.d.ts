@@ -1,8 +1,7 @@
 import { Role } from "src/auth/enum/roles.enum";
 import { ProfileEntity } from "./profile.entity";
 import { PetEntity } from "src/entities/pets.entity";
-import { PostEntity } from "./post.entity";
-import { OrderEntity } from "./order.entity";
+import { ReviewEntity } from "./review.entity";
 export declare class UserEntity {
     userId: string;
     Email: string;
@@ -12,6 +11,7 @@ export declare class UserEntity {
     updatedAt: Date;
     profile: ProfileEntity;
     pet: PetEntity[];
-    post: PostEntity;
-    order: OrderEntity[];
+    pets: PetEntity;
+    order: UserEntity[];
+    review: ReviewEntity[];
 }

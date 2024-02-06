@@ -130,7 +130,8 @@ export class AuthController{
     }
 
 
-    @Post('user-pet')
+    @Post('createVendorPet')
+    @Roles(Role.vendor)
     @UseGuards(AuthGuard)
     async ownersPet(@Body() payload:createPetsDto, @Req() req:Request){
       return await this.authService.petOwned(payload, req)
@@ -138,8 +139,8 @@ export class AuthController{
 
     // @Post('pet-order')
     // @UseGuards(AuthGuard)
-    // async UsersOrder(@Body() payload: OrderDto, @Req() req:Request){
-    //   return await this.authService.petsOrder(payload, req)
+    // async UsersOrder(@Body() payload: createPetsDto, @Req() req:Request){
+    //   return await this.authService.petOwned(payload, req)
     // }
 
 
@@ -156,13 +157,19 @@ export class AuthController{
       return await this.authService.usersOrder( payload, req)
     }
 
+    @Post('order/:id')
+    @UseGuards(AuthGuard)
+    async order( @Param('id') id: string, @Body() payload: OrderDto, @Req() req:Request,){
+      return await this.authService.createOrder( id, payload, req)
+    }
+
     
     
 
-      // @UseGuards(AuthGuard('jwt-refreshtoken'))
-  //    @Post('auth/refreshtoken')
-  //    async refreshToken(@Body() payload){
-  //   return await this.authService.login(payload.Email,payload.Password);
-  // }
+//       // @UseGuards(AuthGuard('jwt-refreshtoken'))
+//   //    @Post('auth/refreshtoken')
+//   //    async refreshToken(@Body() payload){
+//   //   return await this.authService.login(payload.Email,payload.Password);
+//   // }
     
 }

@@ -170,13 +170,12 @@ let AuthService = class AuthService {
         if (!findUser) {
             throw new common_1.NotFoundException('user not found');
         }
-        const ownedpets = await this.petRepo.create({ ...payload, user });
-        const pets = [];
+        const users = user;
+        const ownedpets = await this.petRepo.create({ ...payload, users });
         const savePet = await this.petRepo.save(ownedpets);
-        pets.push(savePet);
         return {
             message: 'sucessful',
-            pets
+            savePet
         };
     }
     async review(id, payload, req) {
@@ -191,8 +190,7 @@ let AuthService = class AuthService {
         }
         const findpet = await this.petRepo.findOne({ where: { id } });
         const pet = findpet;
-        const newReview = this.reviewRepo.create({ ...payload, pet });
-        const reviews = [];
+        const newReview = this.reviewRepo.create({ ...payload, pet, user });
         const savedReview = await this.reviewRepo.save(newReview);
         return savedReview;
     }
@@ -209,6 +207,42 @@ let AuthService = class AuthService {
             message: 'sucessful',
             saveOrder
         };
+    }
+    async createOrder(id, payload, req) {
+        const user = req.user;
+        const userId = user['userId'];
+        const findUser = await this.userRepo.findOne({ where: { userId }, relations: ['order'] });
+        if (!findUser) {
+            throw new common_1.NotFoundException('user not found');
+        }
+        const findPet = await this.petRepo.findOne({ where: { id } });
+        if (!findPet) {
+            throw new common_1.HttpException('Pet not found', common_1.HttpStatus.NOT_FOUND);
+        }
+        const pet = findPet;
+        const order = this.orderRepo.create({ ...payload, pet, user });
+        const savedOrder = await this.orderRepo.save(order);
+        return savedOrder;
+    }
+    async usersPetBid(id, payload, req) {
+        const user = req.user;
+        const userId = user['userId'];
+        const findUser = await this.userRepo.findOne({
+            where: { userId },
+            relations: ['pet'],
+        });
+        if (!findUser) {
+            throw new common_1.HttpException('User not found', common_1.HttpStatus.NOT_FOUND);
+        }
+        const findPet = await this.petRepo.findOne({ where: { id } });
+        if (!findPet) {
+            throw new common_1.HttpException('Pet not found', common_1.HttpStatus.NOT_FOUND);
+        }
+        const pet = findPet;
+        findUser.pet.push(findPet);
+        const petorder = this.orderRepo.create({ ...payload, pet });
+        const savedPetOrder = await this.orderRepo.save(petorder);
+        return savedPetOrder;
     }
 };
 exports.AuthService = AuthService;
@@ -268,6 +302,18 @@ __decorate([
     __metadata("design:paramtypes", [order_dto_1.OrderDto, Object]),
     __metadata("design:returntype", Promise)
 ], AuthService.prototype, "usersOrder", null);
+__decorate([
+    __param(2, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, order_dto_1.OrderDto, Object]),
+    __metadata("design:returntype", Promise)
+], AuthService.prototype, "createOrder", null);
+__decorate([
+    __param(2, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, order_dto_1.OrderDto, Object]),
+    __metadata("design:returntype", Promise)
+], AuthService.prototype, "usersPetBid", null);
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(user_entity_1.UserEntity)),

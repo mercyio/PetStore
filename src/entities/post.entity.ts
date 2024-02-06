@@ -1,21 +1,21 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
-import { UserEntity } from './user.entity';
-import { ReviewEntity } from './review.entity';
+// import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
+// import { UserEntity } from './user.entity';
+// import { ReviewEntity } from './review.entity';
 
-@Entity('post')
-export class PostEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+// @Entity('post')
+// export class PostEntity {
+//   @PrimaryGeneratedColumn()
+//   id: number;
 
-  @Column()
-  title: string;
+//   @Column()
+//   title: string;
 
-  @Column()
-  content: string;
+//   @Column()
+//   content: string;
 
-  @ManyToOne(() => UserEntity, (user) => user.post)
-  user: UserEntity;
+//   @ManyToOne(() => UserEntity, (user) => user.post)
+//   user: UserEntity;
 
-  @OneToMany(() => ReviewEntity, (review) => review.post)
-  review: ReviewEntity[];
-}
+//   // @OneToMany(() => ReviewEntity, (review) => review.post)
+//   // review: ReviewEntity[];
+// }

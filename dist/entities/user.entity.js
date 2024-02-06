@@ -14,13 +14,13 @@ const roles_enum_1 = require("../auth/enum/roles.enum");
 const typeorm_1 = require("typeorm");
 const profile_entity_1 = require("./profile.entity");
 const pets_entity_1 = require("./pets.entity");
-const post_entity_1 = require("./post.entity");
 const order_entity_1 = require("./order.entity");
+const review_entity_1 = require("./review.entity");
 let UserEntity = class UserEntity {
 };
 exports.UserEntity = UserEntity;
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
+    (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", String)
 ], UserEntity.prototype, "userId", void 0);
 __decorate([
@@ -52,17 +52,21 @@ __decorate([
     __metadata("design:type", profile_entity_1.ProfileEntity)
 ], UserEntity.prototype, "profile", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => pets_entity_1.PetEntity, pet => pet.user, { onDelete: 'CASCADE', onUpdate: 'CASCADE' }),
+    (0, typeorm_1.ManyToMany)(() => pets_entity_1.PetEntity, pet => pet.user, { onDelete: 'CASCADE', onUpdate: 'CASCADE' }),
     __metadata("design:type", Array)
 ], UserEntity.prototype, "pet", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => post_entity_1.PostEntity, (post) => post.user),
-    __metadata("design:type", post_entity_1.PostEntity)
-], UserEntity.prototype, "post", void 0);
+    (0, typeorm_1.OneToMany)(() => pets_entity_1.PetEntity, (pets) => pets.users),
+    __metadata("design:type", pets_entity_1.PetEntity)
+], UserEntity.prototype, "pets", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => order_entity_1.OrderEntity, order => order.user),
+    (0, typeorm_1.OneToMany)(() => order_entity_1.OrderEntity, order => order.user, { onDelete: 'CASCADE', onUpdate: 'CASCADE' }),
     __metadata("design:type", Array)
 ], UserEntity.prototype, "order", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => review_entity_1.ReviewEntity, review => review.user, { onDelete: 'CASCADE', onUpdate: 'CASCADE' }),
+    __metadata("design:type", Array)
+], UserEntity.prototype, "review", void 0);
 exports.UserEntity = UserEntity = __decorate([
     (0, typeorm_1.Entity)('user')
 ], UserEntity);

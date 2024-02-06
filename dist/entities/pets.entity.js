@@ -18,7 +18,7 @@ let PetEntity = class PetEntity {
 };
 exports.PetEntity = PetEntity;
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
+    (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", String)
 ], PetEntity.prototype, "id", void 0);
 __decorate([
@@ -42,18 +42,23 @@ __decorate([
     __metadata("design:type", Date)
 ], PetEntity.prototype, "createdAt", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => user_entity_1.UserEntity, user => user.pet),
-    (0, typeorm_1.JoinColumn)({ name: 'user_id' }),
+    (0, typeorm_1.ManyToOne)(() => user_entity_1.UserEntity, users => users.pet),
+    (0, typeorm_1.JoinColumn)({ name: 'vendors_id' }),
     __metadata("design:type", user_entity_1.UserEntity)
-], PetEntity.prototype, "user", void 0);
+], PetEntity.prototype, "users", void 0);
 __decorate([
     (0, typeorm_1.OneToMany)(() => review_entity_1.ReviewEntity, review => review.pet),
     __metadata("design:type", Array)
 ], PetEntity.prototype, "review", void 0);
 __decorate([
-    (0, typeorm_1.ManyToMany)(() => order_entity_1.OrderEntity, order => order.pet),
+    (0, typeorm_1.OneToMany)(() => order_entity_1.OrderEntity, order => order.pet),
     __metadata("design:type", Array)
 ], PetEntity.prototype, "order", void 0);
+__decorate([
+    (0, typeorm_1.ManyToMany)(() => user_entity_1.UserEntity, (user) => user.pet),
+    (0, typeorm_1.JoinTable)(),
+    __metadata("design:type", Array)
+], PetEntity.prototype, "user", void 0);
 exports.PetEntity = PetEntity = __decorate([
     (0, typeorm_1.Entity)('pets')
 ], PetEntity);

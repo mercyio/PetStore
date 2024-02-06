@@ -1,8 +1,8 @@
 import { PetEntity } from 'src/entities/pets.entity';
-import { PostEntity } from './post.entity';
+import { UserEntity } from './user.entity';
 export declare class ReviewEntity {
-    id: number;
+    id: string;
     content: string;
-    post: PostEntity;
     pet: PetEntity;
+    user: UserEntity;
 }

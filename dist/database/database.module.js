@@ -14,7 +14,6 @@ const pets_entity_1 = require("../entities/pets.entity");
 const pets_module_1 = require("../Pets/pets.module");
 const profile_entity_1 = require("../entities/profile.entity");
 const user_entity_1 = require("../entities/user.entity");
-const post_entity_1 = require("../entities/post.entity");
 const order_entity_1 = require("../entities/order.entity");
 const review_entity_1 = require("../entities/review.entity");
 let DatabaseModule = class DatabaseModule {
@@ -31,7 +30,7 @@ exports.DatabaseModule = DatabaseModule = __decorate([
                     username: configService.getOrThrow('DB_USER'),
                     password: configService.getOrThrow('DB_PASSWORD'),
                     database: configService.getOrThrow('DB_DATABASE'),
-                    entities: [pets_entity_1.PetEntity, user_entity_1.UserEntity, profile_entity_1.ProfileEntity, post_entity_1.PostEntity, order_entity_1.OrderEntity, review_entity_1.ReviewEntity],
+                    entities: [pets_entity_1.PetEntity, user_entity_1.UserEntity, profile_entity_1.ProfileEntity, order_entity_1.OrderEntity, review_entity_1.ReviewEntity],
                     synchronize: configService.getOrThrow('DB_SYNC'),
                 }),
                 inject: [config_1.ConfigService]

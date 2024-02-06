@@ -161,6 +161,8 @@ export class AuthService {
        return user;
      }
 
+
+    //  ONE user to ONE profile
     async createProfile( payload: ProfileDto, @Req() req:Request){
       try{
         const user = req.user
@@ -234,10 +236,11 @@ async updateprofile(payload: ProfileDto, @Req() req: Request) {
     updatedProfile,
   };
 }
- 
 
 
-// ONE user to MANY pets
+
+
+// ONE vendor to MANY pets
 async petOwned (payload: createPetsDto, @Req() req:Request){
    const user = req.user
    const userId = user['userId']
@@ -246,61 +249,19 @@ async petOwned (payload: createPetsDto, @Req() req:Request){
    if(!findUser){
     throw new NotFoundException('user not found')
    }
-
-  // if (!findUser.profile) {
-  //   throw new HttpException('no existing profile found, create a new profile', HttpStatus.NOT_FOUND)
-  // }
-
-   const ownedpets = await this.petRepo.create({...payload, user})
-   const pets = []
+   const users = user
+   const ownedpets = await this.petRepo.create({...payload, users})
+  //  const pets = []
    const savePet = await this. petRepo.save(ownedpets)
-   pets.push(savePet)
+  //  pets.push(savePet)
 
    return {
     message: 'sucessful',
-    pets
+    savePet
    }
 
 }
 
-
-// MANY pet to MANY orders
-// async petsOrder (payload: OrderDto, @Req() req:Request){
-//   // try{
-//   const pet = req.user
-//   const userId = pet['userId']
-
-//   const findUser = await this.userRepo.findOne({where:{userId}, relations: ['pet']})
-//   // console.log(findUser);
-  
-//   if(!findUser){
-//    throw new NotFoundException('user not found')
-//   }
-
-//   if(!findUser.pet){
-//    throw new HttpException('null', HttpStatus.NOT_FOUND)
-//   }
-//   console.log(findUser.pet);
-  
-//   const createOrder = await this.orderRepo.create({...payload, pet})
-//   const orders = []
-//   const saveOrder = await this. orderRepo.save(createOrder)
-//   orders.push(saveOrder)
-//   console.log(orders);
-  
-  
-//   // return {
-//   //  message: 'sucessful',
-//   //  orders
-//   // }
-//   // }
-//   // catch(error){
-//   //   return error
-//   // }
-
-// // }
-
-// }
 
 // ONE pet to Many REVIEW
 async review(id: string,payload: reviewDto, @Req() req: Request, ) {
@@ -317,18 +278,20 @@ async review(id: string,payload: reviewDto, @Req() req: Request, ) {
   }
   const findpet = await this.petRepo.findOne({where:{id}})
   const pet = findpet
-  // const pet = user
-  const newReview = this.reviewRepo.create({...payload, pet});
-  const reviews = []
+  // user = findUser
+
+  const newReview = this.reviewRepo.create({...payload, pet, user});
   const savedReview = await this.reviewRepo.save(newReview);
-  // reviews.push(savedReview)
-  // return {
-  //   message: 'Successful',
-  //   review: savedReview,
-  // };
   return savedReview
+    
+   
 }
  
+
+
+
+
+
 
 // ONE user to MANY order
 
@@ -342,9 +305,7 @@ async usersOrder (payload: OrderDto, @Req() req:Request){
   }
 
   const userOrder = await this.orderRepo.create({...payload, user})
-  // const order = []
   const saveOrder = await this. orderRepo.save(userOrder)
-  // order.push(saveOrder)
 
   return {
    message: 'sucessful',
@@ -354,36 +315,95 @@ async usersOrder (payload: OrderDto, @Req() req:Request){
 }
 
 
-  // // MANY pet to MANY order
-  // async createOrder( id:string, payload: OrderDto, @Req() req:Request){
 
+// ONE user to MANY order
+
+async createOrder (id: string, payload: OrderDto, @Req() req:Request){
+  const user = req.user
+  const userId = user['userId']
+
+  const findUser = await this.userRepo.findOne({where:{userId}, relations: ['order']})
+  if(!findUser){
+   throw new NotFoundException('user not found')
+  }
+  
+  const findPet = await this.petRepo.findOne({ where: { id } });
+  if (!findPet) {
+    throw new HttpException('Pet not found', HttpStatus.NOT_FOUND);
+  }
+  const pet = findPet
+
+  const order = this.orderRepo.create({ ...payload, pet, user});
+    // order.pet = [findPet];
+    const savedOrder = await this.orderRepo.save(order);
+  
+    return savedOrder
+
+}
+
+
+  // // // MANY pet to MANY order
+  // async createOrder(id: string, payload: OrderDto, @Req() req: Request) {
   //   const user = req.user;
   //   const userId = user['userId'];
-
+  
   //   const findUser = await this.userRepo.findOne({
-  //   where: { userId },
-  //   relations: ['pet'],
-  // });
-
-  // if (!findUser ) {
-  //   throw new HttpException('User or associated pet not found', HttpStatus.NOT_FOUND);
+  //     where: { userId },
+  //     relations: ['pet'],
+  //   });
+  
+  //   if (!findUser) {
+  //     throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+  //   }
+  
+  //   const findPet = await this.petRepo.findOne({ where: { id } });
+  
+  //   if (!findPet) {
+  //     throw new HttpException('Pet not found', HttpStatus.NOT_FOUND);
+  //   }
+    
+  //   findUser.pet.push(findPet);
+    
+  //   const order = this.orderRepo.create({ ...payload});
+  //   order.pet = [findPet];
+  //   const savedOrder = await this.orderRepo.save(order);
+  
+  //   return savedOrder;
+    
   // }
 
-  // const findpet = await this.petRepo.findOne({where:{id}})
-  // const pet = findpet
 
-  //   const order = this.orderRepo.create({...payload, pet});
-  //   console.log(order);
-    
-  //   order.pet = findpet
-    
-  //    await this.orderRepo.save(order);
-
+  // // MANY users to MANY pets
+  async usersPetBid(id: string, payload: OrderDto, @Req() req: Request) {
+    const user = req.user;
+    const userId = user['userId'];
   
-  //   }
+    const findUser = await this.userRepo.findOne({
+      where: { userId },
+      relations: ['pet'],
+    });
+  
+    if (!findUser) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+  
+    const findPet = await this.petRepo.findOne({ where: { id } });
+  
+    if (!findPet) {
+      throw new HttpException('Pet not found', HttpStatus.NOT_FOUND);
+    }
+    const pet = findPet
+    findUser.pet.push(findPet);
+    
+    const petorder = this.orderRepo.create({ ...payload, pet});
+    // order.pet = [findPet];
+    const savedPetOrder = await this.orderRepo.save(petorder);
+  
+    return savedPetOrder;
+    
   }
 
-   
+} 
 
 
     // async updateProfile(userName:string, payload:UpdateProfileDto){

@@ -65,6 +65,9 @@ let AuthController = class AuthController {
     async orders(payload, req) {
         return await this.authService.usersOrder(payload, req);
     }
+    async order(id, payload, req) {
+        return await this.authService.createOrder(id, payload, req);
+    }
 };
 exports.AuthController = AuthController;
 __decorate([
@@ -143,7 +146,8 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "user", null);
 __decorate([
-    (0, common_1.Post)('user-pet'),
+    (0, common_1.Post)('createVendorPet'),
+    (0, roles_decorator_1.Roles)(roles_enum_1.Role.vendor),
     (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Req)()),
@@ -170,6 +174,16 @@ __decorate([
     __metadata("design:paramtypes", [order_dto_1.OrderDto, Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "orders", null);
+__decorate([
+    (0, common_1.Post)('order/:id'),
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, order_dto_1.OrderDto, Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "order", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('user'),
     __metadata("design:paramtypes", [auth_service_1.AuthService])

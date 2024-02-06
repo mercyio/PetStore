@@ -9,7 +9,7 @@ export class PetEntity{
         // @Column()
         // userName: string
 
-        @PrimaryGeneratedColumn('uuid')
+        @PrimaryGeneratedColumn()
         id: string;
       
         @Column()
@@ -27,9 +27,10 @@ export class PetEntity{
         @CreateDateColumn()
         createdAt: Date
 
-        @ManyToOne(()=> UserEntity, user=> user.pet)
-        @JoinColumn({name: 'user_id'})
-        user: UserEntity
+       
+        @ManyToOne(()=> UserEntity, users=> users.pet)
+        @JoinColumn({name: 'vendors_id'})
+        users: UserEntity
 
         // @ManyToMany(() => CategoryEntity, category => category.pet)
         // @JoinTable()
@@ -38,7 +39,12 @@ export class PetEntity{
         @OneToMany(() => ReviewEntity, review => review.pet)
         review:  ReviewEntity[];
 
-        @ManyToMany(() => OrderEntity, order => order.pet )
+        @OneToMany(() => OrderEntity, order => order.pet )
         order: OrderEntity[];
+
+        @ManyToMany(()=> UserEntity, (user) => user.pet)
+        @JoinTable()
+        user: UserEntity[];
+
 }
 

@@ -40,11 +40,13 @@ export declare class AuthService {
     }>;
     petOwned(payload: createPetsDto, req: Request): Promise<{
         message: string;
-        pets: any[];
+        savePet: PetEntity;
     }>;
     review(id: string, payload: reviewDto, req: Request): Promise<ReviewEntity>;
     usersOrder(payload: OrderDto, req: Request): Promise<{
         message: string;
         saveOrder: OrderEntity;
     }>;
+    createOrder(id: string, payload: OrderDto, req: Request): Promise<OrderEntity>;
+    usersPetBid(id: string, payload: OrderDto, req: Request): Promise<OrderEntity>;
 }

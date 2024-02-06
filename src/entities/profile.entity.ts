@@ -37,4 +37,8 @@ role:Role
 @JoinColumn({name: 'user_id'})
 user: UserEntity;
 
+// @OneToOne(() => VendorEntity, (vendor) => vendor.profile )
+// @JoinColumn({name: 'vendor_id'})
+// vendor: VendorEntity;
+
 }

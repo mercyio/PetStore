@@ -12,26 +12,27 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ReviewEntity = void 0;
 const pets_entity_1 = require("./pets.entity");
 const typeorm_1 = require("typeorm");
-const post_entity_1 = require("./post.entity");
+const user_entity_1 = require("./user.entity");
 let ReviewEntity = class ReviewEntity {
 };
 exports.ReviewEntity = ReviewEntity;
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
-    __metadata("design:type", Number)
+    __metadata("design:type", String)
 ], ReviewEntity.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], ReviewEntity.prototype, "content", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => post_entity_1.PostEntity, post => post.review),
-    __metadata("design:type", post_entity_1.PostEntity)
-], ReviewEntity.prototype, "post", void 0);
-__decorate([
     (0, typeorm_1.ManyToOne)(() => pets_entity_1.PetEntity, pet => pet.review),
     __metadata("design:type", pets_entity_1.PetEntity)
 ], ReviewEntity.prototype, "pet", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => user_entity_1.UserEntity, user => user.review),
+    (0, typeorm_1.JoinColumn)({ name: 'user_id' }),
+    __metadata("design:type", user_entity_1.UserEntity)
+], ReviewEntity.prototype, "user", void 0);
 exports.ReviewEntity = ReviewEntity = __decorate([
     (0, typeorm_1.Entity)('review')
 ], ReviewEntity);

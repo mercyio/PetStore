@@ -25,9 +25,9 @@ __decorate([
     __metadata("design:type", String)
 ], OrderEntity.prototype, "bidingPrice", void 0);
 __decorate([
-    (0, typeorm_1.ManyToMany)(() => pets_entity_1.PetEntity, (pet) => pet.order),
-    (0, typeorm_1.JoinTable)({ name: 'pet_id' }),
-    __metadata("design:type", Array)
+    (0, typeorm_1.ManyToOne)(() => pets_entity_1.PetEntity, (pet) => pet.order),
+    (0, typeorm_1.JoinColumn)(),
+    __metadata("design:type", pets_entity_1.PetEntity)
 ], OrderEntity.prototype, "pet", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => user_entity_1.UserEntity, user => user.order),

@@ -3,6 +3,6 @@ import { UserEntity } from './user.entity';
 export declare class OrderEntity {
     id: number;
     bidingPrice: string;
-    pet: PetEntity[];
+    pet: PetEntity;
     user: UserEntity;
 }

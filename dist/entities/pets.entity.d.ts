@@ -8,7 +8,8 @@ export declare class PetEntity {
     age: string;
     breed: string;
     createdAt: Date;
-    user: UserEntity;
+    users: UserEntity;
     review: ReviewEntity[];
     order: OrderEntity[];
+    user: UserEntity[];
 }
