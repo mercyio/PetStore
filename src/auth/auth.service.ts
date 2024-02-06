@@ -15,6 +15,7 @@ import * as bcrypt from 'bcrypt';
 import { reviewDto } from 'src/dto/review.dto';
 import { ReviewEntity } from 'src/entities/review.entity';
 import { OrderEntity } from 'src/entities/order.entity';
+import { UserDto } from 'src/dto/user.dto';
 
 
 
@@ -288,31 +289,26 @@ async review(id: string,payload: reviewDto, @Req() req: Request, ) {
 }
  
 
-
-
-
-
-
 // ONE user to MANY order
 
-async usersOrder (payload: OrderDto, @Req() req:Request){
-  const user = req.user
-  const userId = user['userId']
+// async usersOrder (payload: OrderDto, @Req() req:Request){
+//   const user = req.user
+//   const userId = user['userId']
 
-  const findUser = await this.userRepo.findOne({where:{userId}, relations: ['order']})
-  if(!findUser){
-   throw new NotFoundException('user not found')
-  }
+//   const findUser = await this.userRepo.findOne({where:{userId}, relations: ['order']})
+//   if(!findUser){
+//    throw new NotFoundException('user not found')
+//   }
 
-  const userOrder = await this.orderRepo.create({...payload, user})
-  const saveOrder = await this. orderRepo.save(userOrder)
+//   const userOrder = await this.orderRepo.create({...payload, user})
+//   const saveOrder = await this. orderRepo.save(userOrder)
 
-  return {
-   message: 'sucessful',
-   saveOrder
-  }
+//   return {
+//    message: 'sucessful',
+//    saveOrder
+//   }
 
-}
+// }
 
 
 
@@ -333,7 +329,7 @@ async createOrder (id: string, payload: OrderDto, @Req() req:Request){
   }
   const pet = findPet
 
-  const order = this.orderRepo.create({ ...payload, pet, user});
+  const order = this.orderRepo.create({ ...payload, user});
     // order.pet = [findPet];
     const savedOrder = await this.orderRepo.save(order);
   
@@ -342,39 +338,8 @@ async createOrder (id: string, payload: OrderDto, @Req() req:Request){
 }
 
 
-  // // // MANY pet to MANY order
-  // async createOrder(id: string, payload: OrderDto, @Req() req: Request) {
-  //   const user = req.user;
-  //   const userId = user['userId'];
-  
-  //   const findUser = await this.userRepo.findOne({
-  //     where: { userId },
-  //     relations: ['pet'],
-  //   });
-  
-  //   if (!findUser) {
-  //     throw new HttpException('User not found', HttpStatus.NOT_FOUND);
-  //   }
-  
-  //   const findPet = await this.petRepo.findOne({ where: { id } });
-  
-  //   if (!findPet) {
-  //     throw new HttpException('Pet not found', HttpStatus.NOT_FOUND);
-  //   }
-    
-  //   findUser.pet.push(findPet);
-    
-  //   const order = this.orderRepo.create({ ...payload});
-  //   order.pet = [findPet];
-  //   const savedOrder = await this.orderRepo.save(order);
-  
-  //   return savedOrder;
-    
-  // }
-
-
-  // // MANY users to MANY pets
-  async usersPetBid(id: string, payload: OrderDto, @Req() req: Request) {
+  // // MANY pet to MANY order
+  async Order(id: string, payload: OrderDto, @Req() req: Request) {
     const user = req.user;
     const userId = user['userId'];
   
@@ -393,15 +358,95 @@ async createOrder (id: string, payload: OrderDto, @Req() req:Request){
       throw new HttpException('Pet not found', HttpStatus.NOT_FOUND);
     }
     const pet = findPet
+
     findUser.pet.push(findPet);
-    
-    const petorder = this.orderRepo.create({ ...payload, pet});
+
+    const order = this.orderRepo.create({ ...payload, user });
+
     // order.pet = [findPet];
-    const savedPetOrder = await this.orderRepo.save(petorder);
-  
-    return savedPetOrder;
-    
+    order.pet = findUser.pet;
+    // pet.order = findUser.order
+    console.log(order);
+    const savedOrder = await this.orderRepo.save(order);
+
+    return savedOrder;
   }
+    
+
+
+   // MANY users to MANY pet
+  async userswithpet(id: string, payload: createPetsDto, @Req() req: Request) {
+    const user = req.user;
+    const userId = user['userId'];
+  
+    const findUser = await this.userRepo.findOne({
+      where: { userId },
+      relations: ['pet'],
+    });
+  
+    if (!findUser) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+  
+    const findPet = await this.petRepo.findOne({ where: { id } });
+  
+    if (!findPet) {
+      throw new HttpException('Pet not found', HttpStatus.NOT_FOUND);
+    }
+    const pet = findUser.pet
+
+    findUser.pet.push(findPet);
+
+    const userspet = this.orderRepo.create({ ...payload, user, pet});
+
+    console.log(userspet);
+    const savedpet = await this.orderRepo.save(userspet);
+
+    return savedpet;
+  }
+    
+
+
+  // // MANY users to MANY pets
+  // async usersPetBid(id: string, payload: OrderDto, @Req() req: Request) {
+  //   const user = req.user;
+  //   const userId = user['userId'];
+  
+  //   const findUser = await this.userRepo.findOne({
+  //     where: { userId },
+  //     relations: ['pet'],
+  //   });
+  
+  //   if (!findUser) {
+  //     throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+  //   }
+  
+  //   const findPet = await this.petRepo.findOne({ where: { id } });
+  
+  //   if (!findPet) {
+  //     throw new HttpException('Pet not found', HttpStatus.NOT_FOUND);
+  //   }
+  //   const pet = findPet
+  //   // pet.user = user
+    
+  //   findUser.pet.push(findPet);
+
+    
+  //   const petorder = this.orderRepo.create({ ...payload});
+  //   findUser.pet = [findPet];
+  //   findPet.user = [findUser]
+
+  //   const savedPetOrder = await this.orderRepo.save(petorder);
+  
+  //   return savedPetOrder;
+    
+  // }
+
+  // findUser.pet = [...findUser.pet, pet];
+  // findPet.user = [..., user];
+
+  // await this.userRepo.save(user);
+  // await this.userRepo.save(pet);
 
 } 
 

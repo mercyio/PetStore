@@ -194,20 +194,6 @@ let AuthService = class AuthService {
         const savedReview = await this.reviewRepo.save(newReview);
         return savedReview;
     }
-    async usersOrder(payload, req) {
-        const user = req.user;
-        const userId = user['userId'];
-        const findUser = await this.userRepo.findOne({ where: { userId }, relations: ['order'] });
-        if (!findUser) {
-            throw new common_1.NotFoundException('user not found');
-        }
-        const userOrder = await this.orderRepo.create({ ...payload, user });
-        const saveOrder = await this.orderRepo.save(userOrder);
-        return {
-            message: 'sucessful',
-            saveOrder
-        };
-    }
     async createOrder(id, payload, req) {
         const user = req.user;
         const userId = user['userId'];
@@ -220,11 +206,11 @@ let AuthService = class AuthService {
             throw new common_1.HttpException('Pet not found', common_1.HttpStatus.NOT_FOUND);
         }
         const pet = findPet;
-        const order = this.orderRepo.create({ ...payload, pet, user });
+        const order = this.orderRepo.create({ ...payload, user });
         const savedOrder = await this.orderRepo.save(order);
         return savedOrder;
     }
-    async usersPetBid(id, payload, req) {
+    async Order(id, payload, req) {
         const user = req.user;
         const userId = user['userId'];
         const findUser = await this.userRepo.findOne({
@@ -240,9 +226,32 @@ let AuthService = class AuthService {
         }
         const pet = findPet;
         findUser.pet.push(findPet);
-        const petorder = this.orderRepo.create({ ...payload, pet });
-        const savedPetOrder = await this.orderRepo.save(petorder);
-        return savedPetOrder;
+        const order = this.orderRepo.create({ ...payload, user });
+        order.pet = findUser.pet;
+        console.log(order);
+        const savedOrder = await this.orderRepo.save(order);
+        return savedOrder;
+    }
+    async userswithpet(id, payload, req) {
+        const user = req.user;
+        const userId = user['userId'];
+        const findUser = await this.userRepo.findOne({
+            where: { userId },
+            relations: ['pet'],
+        });
+        if (!findUser) {
+            throw new common_1.HttpException('User not found', common_1.HttpStatus.NOT_FOUND);
+        }
+        const findPet = await this.petRepo.findOne({ where: { id } });
+        if (!findPet) {
+            throw new common_1.HttpException('Pet not found', common_1.HttpStatus.NOT_FOUND);
+        }
+        const pet = findUser.pet;
+        findUser.pet.push(findPet);
+        const userspet = this.orderRepo.create({ ...payload, user, pet });
+        console.log(userspet);
+        const savedpet = await this.orderRepo.save(userspet);
+        return savedpet;
     }
 };
 exports.AuthService = AuthService;
@@ -297,12 +306,6 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthService.prototype, "review", null);
 __decorate([
-    __param(1, (0, common_1.Req)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [order_dto_1.OrderDto, Object]),
-    __metadata("design:returntype", Promise)
-], AuthService.prototype, "usersOrder", null);
-__decorate([
     __param(2, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, order_dto_1.OrderDto, Object]),
@@ -313,7 +316,13 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, order_dto_1.OrderDto, Object]),
     __metadata("design:returntype", Promise)
-], AuthService.prototype, "usersPetBid", null);
+], AuthService.prototype, "Order", null);
+__decorate([
+    __param(2, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, create_pet_dto_1.createPetsDto, Object]),
+    __metadata("design:returntype", Promise)
+], AuthService.prototype, "userswithpet", null);
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(user_entity_1.UserEntity)),

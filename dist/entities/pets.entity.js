@@ -51,14 +51,14 @@ __decorate([
     __metadata("design:type", Array)
 ], PetEntity.prototype, "review", void 0);
 __decorate([
-    (0, typeorm_1.OneToMany)(() => order_entity_1.OrderEntity, order => order.pet),
-    __metadata("design:type", Array)
-], PetEntity.prototype, "order", void 0);
-__decorate([
     (0, typeorm_1.ManyToMany)(() => user_entity_1.UserEntity, (user) => user.pet),
-    (0, typeorm_1.JoinTable)(),
+    (0, typeorm_1.JoinTable)({ name: 'user_pet' }),
     __metadata("design:type", Array)
 ], PetEntity.prototype, "user", void 0);
+__decorate([
+    (0, typeorm_1.ManyToMany)(() => order_entity_1.OrderEntity, order => order.pet),
+    __metadata("design:type", Array)
+], PetEntity.prototype, "order", void 0);
 exports.PetEntity = PetEntity = __decorate([
     (0, typeorm_1.Entity)('pets')
 ], PetEntity);

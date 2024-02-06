@@ -37,7 +37,6 @@ export class UserEntity{
         profile: ProfileEntity;
 
         @ManyToMany(()=> PetEntity, pet=> pet.user, {onDelete: 'CASCADE', onUpdate: 'CASCADE'})
-        // @JoinTable()     
         pet: PetEntity[]
 
         @OneToMany(() => PetEntity, (pets) => pets.users)

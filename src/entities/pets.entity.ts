@@ -39,12 +39,12 @@ export class PetEntity{
         @OneToMany(() => ReviewEntity, review => review.pet)
         review:  ReviewEntity[];
 
-        @OneToMany(() => OrderEntity, order => order.pet )
-        order: OrderEntity[];
-
         @ManyToMany(()=> UserEntity, (user) => user.pet)
-        @JoinTable()
+        @JoinTable({name: 'user_pet'})
         user: UserEntity[];
+
+        @ManyToMany(() => OrderEntity, order => order.pet )
+        order: OrderEntity[];
 
 }
 

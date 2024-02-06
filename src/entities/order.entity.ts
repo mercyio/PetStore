@@ -20,12 +20,14 @@ export class OrderEntity {
   @Column()
   bidingPrice: string;
 
-  @ManyToOne(() => PetEntity, (pet) => pet.order )
-  @JoinColumn()
-  pet: PetEntity;
 
   @ManyToOne(() => UserEntity, user => user.order )
   @JoinColumn({name: 'user_id'})
   user: UserEntity;
+
+
+  @ManyToMany(() => PetEntity, (pet) => pet.order )
+  @JoinTable({name: 'pet_order'})
+  pet: PetEntity[];
 
 }

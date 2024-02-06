@@ -151,16 +151,22 @@ export class AuthController{
     }
 
 
-    @Post('order')
+    @Post('order/:id')
     @UseGuards(AuthGuard)
-    async orders( @Body() payload: OrderDto, @Req() req:Request,){
-      return await this.authService.usersOrder( payload, req)
+    async userswihpet(@Param('id') id: string,  @Body() payload: createPetsDto, @Req() req:Request,){
+      return await this.authService.userswithpet( id, payload, req)
     }
 
-    @Post('order/:id')
+    @Post('createorder/:id')
     @UseGuards(AuthGuard)
     async order( @Param('id') id: string, @Body() payload: OrderDto, @Req() req:Request,){
       return await this.authService.createOrder( id, payload, req)
+    }
+
+    @Post('bid/:id')
+    @UseGuards(AuthGuard)
+    async userPet( @Param('id') id: string, @Body() payload: OrderDto, @Req() req:Request,){
+      return await this.authService.Order( id, payload, req)
     }
 
     

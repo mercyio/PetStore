@@ -33,9 +33,7 @@ export declare class AuthController {
         savePet: import("../entities/pets.entity").PetEntity;
     }>;
     reviews(id: string, payload: reviewDto, req: Request): Promise<import("../entities/review.entity").ReviewEntity>;
-    orders(payload: OrderDto, req: Request): Promise<{
-        message: string;
-        saveOrder: import("../entities/order.entity").OrderEntity;
-    }>;
+    userswihpet(id: string, payload: createPetsDto, req: Request): Promise<import("../entities/order.entity").OrderEntity>;
     order(id: string, payload: OrderDto, req: Request): Promise<import("../entities/order.entity").OrderEntity>;
+    userPet(id: string, payload: OrderDto, req: Request): Promise<import("../entities/order.entity").OrderEntity>;
 }

@@ -62,11 +62,14 @@ let AuthController = class AuthController {
     async reviews(id, payload, req) {
         return await this.authService.review(id, payload, req);
     }
-    async orders(payload, req) {
-        return await this.authService.usersOrder(payload, req);
+    async userswihpet(id, payload, req) {
+        return await this.authService.userswithpet(id, payload, req);
     }
     async order(id, payload, req) {
         return await this.authService.createOrder(id, payload, req);
+    }
+    async userPet(id, payload, req) {
+        return await this.authService.Order(id, payload, req);
     }
 };
 exports.AuthController = AuthController;
@@ -166,16 +169,17 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "reviews", null);
 __decorate([
-    (0, common_1.Post)('order'),
-    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
-    __param(0, (0, common_1.Body)()),
-    __param(1, (0, common_1.Req)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [order_dto_1.OrderDto, Object]),
-    __metadata("design:returntype", Promise)
-], AuthController.prototype, "orders", null);
-__decorate([
     (0, common_1.Post)('order/:id'),
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, create_pet_dto_1.createPetsDto, Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "userswihpet", null);
+__decorate([
+    (0, common_1.Post)('createorder/:id'),
     (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
@@ -184,6 +188,16 @@ __decorate([
     __metadata("design:paramtypes", [String, order_dto_1.OrderDto, Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "order", null);
+__decorate([
+    (0, common_1.Post)('bid/:id'),
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __param(2, (0, common_1.Req)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, order_dto_1.OrderDto, Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "userPet", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('user'),
     __metadata("design:paramtypes", [auth_service_1.AuthService])
