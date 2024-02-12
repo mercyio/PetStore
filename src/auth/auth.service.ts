@@ -398,6 +398,7 @@ async createOrder (id: string, payload: OrderDto, @Req() req:Request){
     findUser.pet.push(findPet);
 
     const userspet = this.orderRepo.create({ ...payload, user, pet});
+    // user.pet= findPet.user;
 
     console.log(userspet);
     const savedpet = await this.orderRepo.save(userspet);

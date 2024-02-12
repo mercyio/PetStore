@@ -28,7 +28,7 @@ export class UserEntity{
         role:Role
       
         @CreateDateColumn()
-        createdAt: Date;
+        CreatedAt: Date;
 
         @UpdateDateColumn()
         updatedAt: Date

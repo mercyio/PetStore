@@ -151,7 +151,7 @@ export class AuthController{
     }
 
 
-    @Post('order/:id')
+    @Post('user-pet/:id')
     @UseGuards(AuthGuard)
     async userswihpet(@Param('id') id: string,  @Body() payload: createPetsDto, @Req() req:Request,){
       return await this.authService.userswithpet( id, payload, req)
