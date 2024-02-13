@@ -19,7 +19,7 @@ exports.PetsUploadModule = PetsUploadModule = __decorate([
         imports: [
             platform_express_1.MulterModule.register({
                 dest: './uploadedFiles'
-            })
+            }),
         ],
         controllers: [pets_upload_controller_1.PetsUploadController],
         providers: [pets_upload_service_1.PetsUploadService]

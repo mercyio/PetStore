@@ -11,6 +11,7 @@ const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("../../config/typeorm");
+const pets_module_1 = require("../Pets/pets.module");
 let DatabaseModule = class DatabaseModule {
 };
 exports.DatabaseModule = DatabaseModule;
@@ -19,6 +20,7 @@ exports.DatabaseModule = DatabaseModule = __decorate([
         imports: [
             config_1.ConfigModule.forRoot({ isGlobal: true }),
             typeorm_1.TypeOrmModule.forRoot(typeorm_2.dataSourceOptions),
+            pets_module_1.PetModule,
         ]
     })
 ], DatabaseModule);

@@ -17,6 +17,7 @@ const auth_guard_1 = require("../auth/guard/auth.guard");
 const jwt_1 = require("@nestjs/jwt");
 const config_1 = require("@nestjs/config");
 const profile_entity_1 = require("../entities/profile.entity");
+const pets_upload_module_1 = require("./pets-upload/pets-upload.module");
 let PetModule = class PetModule {
 };
 exports.PetModule = PetModule;
@@ -33,7 +34,8 @@ exports.PetModule = PetModule = __decorate([
                     }
                 }),
                 inject: [config_1.ConfigService],
-            })
+            }),
+            pets_upload_module_1.PetsUploadModule
         ],
         providers: [pets_service_1.PetService, auth_guard_1.AuthGuard],
         controllers: [pets_controller_1.PetController],
