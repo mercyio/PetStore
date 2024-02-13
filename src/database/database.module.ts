@@ -11,6 +11,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 // import { OrderEntity } from 'src/entities/order.entity';
 // import { ReviewEntity } from 'src/entities/review.entity';
 import { dataSourceOptions } from 'config/typeorm';
+import { PetModule } from 'src/Pets/pets.module';
 
 @Module({
     imports:[
@@ -32,7 +33,7 @@ import { dataSourceOptions } from 'config/typeorm';
         //     inject: [ConfigService]
           
         //   }),
-        //   PetModule,
+          PetModule,
         //   // UserModule
     ]
 })
