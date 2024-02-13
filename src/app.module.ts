@@ -11,9 +11,9 @@ import { DatabaseModule } from './database/database.module';
     ConfigModule.forRoot({
       isGlobal: true
     }),
-    PetModule,
+    // PetModule,
     // UserModule,
-    PetsUploadModule,
+    // PetsUploadModule,
     AuthModule,
     DatabaseModule,
   ],
