@@ -10,7 +10,6 @@ exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const pets_module_1 = require("./Pets/pets.module");
 const config_1 = require("@nestjs/config");
-const pets_upload_module_1 = require("./Pets/pets-upload/pets-upload.module");
 const auth_module_1 = require("./auth/auth.module");
 const database_module_1 = require("./database/database.module");
 let AppModule = class AppModule {
@@ -23,7 +22,6 @@ exports.AppModule = AppModule = __decorate([
                 isGlobal: true
             }),
             pets_module_1.PetModule,
-            pets_upload_module_1.PetsUploadModule,
             auth_module_1.AuthModule,
             database_module_1.DatabaseModule,
         ],

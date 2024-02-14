@@ -9,7 +9,6 @@ import { UserEntity } from '../entities/user.entity';
 import { AuthGuard } from './guard/auth.guard';
  import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PetEntity } from '../entities/pets.entity';
-import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './guard/roles.guard';
 import { ProfileEntity } from '../entities/profile.entity';
 import { ReviewEntity } from '../entities/review.entity';
