@@ -11,7 +11,6 @@ const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 const typeorm_1 = require("@nestjs/typeorm");
 const pets_entity_1 = require("../entities/pets.entity");
-const pets_module_1 = require("../Pets/pets.module");
 const profile_entity_1 = require("../entities/profile.entity");
 const user_entity_1 = require("../entities/user.entity");
 const order_entity_1 = require("../entities/order.entity");
@@ -35,7 +34,6 @@ exports.DatabaseModule = DatabaseModule = __decorate([
                 }),
                 inject: [config_1.ConfigService]
             }),
-            pets_module_1.PetModule,
         ]
     })
 ], DatabaseModule);

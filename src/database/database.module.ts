@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PetEntity } from '../entities/pets.entity';
-import { PetModule } from '../Pets/pets.module';
+// import { PetModule } from '../Pets/pets.module';
 import { ProfileEntity } from '../entities/profile.entity';
 import { UserEntity } from '../entities/user.entity';
 // import { UserModule } from 'src/user/user.module';
@@ -33,7 +33,7 @@ import { ReviewEntity } from '../entities/review.entity';
             inject: [ConfigService]
           
           }),
-          PetModule,
+          // PetModule,
       
         //   // UserModule
     ]
