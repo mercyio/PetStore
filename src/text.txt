@@ -1,3 +1,7 @@
+deployment url: https://petstore-api.onrender.com
+deployment url :  https://pet-store-api-cbxj.onrender.com
+
+
 docker login
 docker pull mysql
 docker run -e MySQL_PASSWORD=mysecretpassword -d mysql
