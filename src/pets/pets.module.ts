@@ -8,6 +8,7 @@ import { AuthGuard } from "src/auth/guard/auth.guard";
 import { JwtModule } from "@nestjs/jwt";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { ProfileEntity } from "src/entities/profile.entity";
+import { PetsUploadModule } from "./pets-upload/pets-upload.module";
 
 
 
@@ -26,7 +27,8 @@ import { ProfileEntity } from "src/entities/profile.entity";
              }
          }),
          inject: [ConfigService],
-      })
+      }),
+      PetsUploadModule
      ],
 
     providers: [PetService, AuthGuard],

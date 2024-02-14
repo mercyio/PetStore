@@ -15,7 +15,7 @@ export class PetsUploadController {
              new MaxFileSizeValidator({
                 maxSize: 10000000
              }), 
-             new FileTypeValidator({
+             new FileTypeValidator({    
                 fileType:'image/png'
              })
             ]

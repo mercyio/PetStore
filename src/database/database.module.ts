@@ -11,7 +11,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 // import { OrderEntity } from 'src/entities/order.entity';
 // import { ReviewEntity } from 'src/entities/review.entity';
 import { dataSourceOptions } from 'config/typeorm';
-import { PetModule } from 'src/Pets/pets.module';
+import { PetModule } from '../Pets/pets.module';
 
 @Module({
     imports:[
