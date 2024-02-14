@@ -1,15 +1,15 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { PetEntity } from 'src/entities/pets.entity';
-import { PetModule } from 'src/Pets/pets.module';
-import { ProfileEntity } from 'src/entities/profile.entity';
-import { UserEntity } from 'src/entities/user.entity';
+import { PetEntity } from '../entities/pets.entity';
+import { PetModule } from '../Pets/pets.module';
+import { ProfileEntity } from '../entities/profile.entity';
+import { UserEntity } from '../entities/user.entity';
 // import { UserModule } from 'src/user/user.module';
 // import { PostEntity } from 'src/entities/post.entity';
 // import { CategoryEntity } from 'src/auth/entities/category.entity';
-import { OrderEntity } from 'src/entities/order.entity';
-import { ReviewEntity } from 'src/entities/review.entity';
+import { OrderEntity } from '../entities/order.entity';
+import { ReviewEntity } from '../entities/review.entity';
 // import { dataSourceOptions } from 'config/typeorm';
 
 
