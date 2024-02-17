@@ -1,12 +1,27 @@
-version: '3.4'
+version: '3.9'
 
 services:
-  petstore:
-    image: petstore
+  nestjs_api_prod:
+    # image: nestjs-docker
     build:
       context: .
-      dockerfile: ./Dockerfile
+      dockerfile: Dockerfile.prod
     environment:
-      NODE_ENV: production
+     - PORT=9000
+     - NODE_ENV=production
+    # mapping from the host port to the container port
     ports:
-      - 3000:3000
+      - "9000:9000"  
+    volumes:
+      - ./src/usr/src/app/src
+
+postgres_db:
+     image: mysql
+     ports:  
+       - "3306:3306"
+     environment:
+       - MYSQL_ROOT_PASSWORD=mysql
+       - MYSQL_DATABASE=mysql
+       - MYSQL_USER=mysql
+       - MYSQL_PASSWORD=mysql
+       - MYSQL_TCP_PORT=3306
