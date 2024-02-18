@@ -53,6 +53,10 @@ __decorate([
     __metadata("design:type", String)
 ], ProfileEntity.prototype, "role", void 0);
 __decorate([
+    (0, typeorm_1.Column)({ default: false }),
+    __metadata("design:type", Boolean)
+], ProfileEntity.prototype, "isActive", void 0);
+__decorate([
     (0, typeorm_1.OneToOne)(() => user_entity_1.UserEntity, (user) => user.profile),
     (0, typeorm_1.JoinColumn)({ name: 'user_id' }),
     __metadata("design:type", user_entity_1.UserEntity)

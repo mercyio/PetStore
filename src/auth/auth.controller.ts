@@ -58,6 +58,9 @@ import { createPetsDto } from "src/dto/pet-dto/create-pet.dto";
 import { ProfileDto } from "src/dto/profile.dto";
 import { SignupDto } from "src/dto/signup.dto";
 import { reviewDto } from "src/dto/review.dto";
+// import { BlockGuard } from "./guard/block.guard";
+import { ForgotPasswordDto } from "src/dto/forgotpasswod.dto";
+import { ResetPasswordto } from "src/dto/resetpassword.dto";
 
 
 
@@ -130,6 +133,40 @@ export class AuthController{
     }
 
 
+    
+    // @Post('block/:userId')
+    // @UseGuards(AuthGuard, BlockGuard)
+    // @Roles(Role.admin, Role.vendor)
+    // async blockuser(@Param('userId') userId:string){
+    //   return await this.authService.blockUser(userId)
+    // }
+    
+    // @Post('unblock/:userId')
+    // @HttpCode(200)
+    // @UseGuards(AuthGuard, BlockGuard)
+    // @Roles(Role.admin, Role.vendor)
+    // async unblockuser(@Param('userId') userId: string){
+    //   return await this.authService.unblock(userId)
+    // }
+
+
+    // @UseGuards(AuthGuard, BlockGuard)
+    // // @Roles('user')
+    // @Post('forgot-password')
+    // async requestPasswordReset(@Body() payload:ForgotPasswordDto, @Req() req:Request, @Res() res:Response) {
+    //   return await this.authService.forgotPassword( res, req, payload);
+    // }
+    
+    
+    // @UseGuards(AuthGuard, BlockGuard)
+    // // @Roles('user')
+    // @Post('reset-password/:userId/:token')
+    // async resetPassword( @Body() payload: ResetPasswordto, @Param() params:['id, token'],  @Req() req:Request,  @Res() res:Response,) {
+    //   return await this.authService.resetpassword(payload, req, res);
+    // }
+
+    
+
     @Post('createVendorPet')
     @Roles(Role.vendor)
     @UseGuards(AuthGuard)
@@ -156,7 +193,7 @@ export class AuthController{
     async userswihpet(@Param('id') id: string,  @Body() payload: createPetsDto, @Req() req:Request,){
       return await this.authService.userswithpet( id, payload, req)
     }
-
+ 
     @Post('createorder/:id')
     @UseGuards(AuthGuard)
     async order( @Param('id') id: string, @Body() payload: OrderDto, @Req() req:Request,){

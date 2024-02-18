@@ -32,6 +32,9 @@ export class ProfileEntity{
 })
 role:Role
 
+ @Column({ default: false })
+    isActive: boolean;
+
 
 @OneToOne(() => UserEntity, (user) => user.profile )
 @JoinColumn({name: 'user_id'})

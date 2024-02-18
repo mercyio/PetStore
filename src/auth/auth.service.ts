@@ -16,6 +16,10 @@ import { reviewDto } from 'src/dto/review.dto';
 import { ReviewEntity } from 'src/entities/review.entity';
 import { OrderEntity } from 'src/entities/order.entity';
 import { UserDto } from 'src/dto/user.dto';
+// import { MailerService } from "@nestjs-modules/mailer";
+import { ForgotPasswordDto } from 'src/dto/forgotpasswod.dto';
+import { ResetPasswordto } from 'src/dto/resetpassword.dto';
+
 
 
 
@@ -42,6 +46,9 @@ export class AuthService {
      private reviewRepo: Repository<ReviewEntity>,
 
      private jwtService :JwtService,
+
+    //  private mailerService :MailerService
+
     ){}
 
     async signup(payload: SignupDto) {
@@ -161,6 +168,127 @@ export class AuthService {
        }
        return user;
      }
+
+   
+  //    async blockUser( userId:string){
+  //     try{
+  //     const user =await this.userRepo.findOne({where:{userId}})
+   
+  //        user.blocked = true
+  //       const block=  await this.userRepo.save(user)
+   
+  //         return {
+  //           msg: 'successfully blocked this user',
+  //           block
+  //         };
+  //     }
+  //     catch(error){
+  //        throw new UnauthorizedException('unable to block this user')
+  //     }
+      
+  //  }
+
+
+
+//    async unblock(userId:string){
+//     try{
+//     const user =await this.userRepo.findOne({where:{userId}})
+//        if(!user){
+//           throw new UnauthorizedException('invalid credentials')
+//        }
+//        user.blocked = false
+//        const unblock =this.userRepo.save(user)
+//        return unblock
+//     }
+//    catch(error){
+//     throw new UnauthorizedException('unable to unblock this user')
+//    }
+//  }
+
+
+
+//  async forgotPassword( @Res() res:Response, @Req() req:Request, payload:ForgotPasswordDto){
+
+//    const {Email} = payload
+
+//    const user = await this.userRepo.findOne({ where: { Email } });
+//    console.log(user);
+   
+
+//     if (!user) {
+//       throw new NotFoundException('email not found');
+//     }
+//     const userid = user.userId
+//    // console.log(userid);
+   
+//     const token = await this.jwtService.signAsync({
+//       email: user.Email,
+//       userid: user.userId,
+//       role: user.role
+//     })
+   
+//     // const expirationDate = new Date();
+//     // expirationDate.setMinutes(expirationDate.getMinutes() + 1); 
+//     const link = `http://localhost:9000/api/v1/user/reset-password/${userid}/${token}`
+//     console.log(link)
+//    //   return link
+  
+//    try{
+//     await this.mailerService.sendMail({
+//       from: 'mercydanke10@gmail.com',
+//       to:`${user.Email}`,
+//       subject: "Petstore API",
+//       html: `<b>Dear ${user.Email} this is a link to reset your Password 😊😊😊👍 ${link}.</b>`,
+//       text: 'here is your new password'
+
+//     });
+//  return res.send({
+//     message: `A link has been sent to ${user.Email}`
+//  })
+  
+//   }
+// catch(error){
+//   return error
+// }
+    
+//   }
+
+//     async resetpassword ( payload:ResetPasswordto, @Req() req:Request, @Res() res:Response){
+//     const {id,token} = req.params
+//     console.log(req.params);
+    
+//     const user = await this.userRepo.findOne({where:{userId:id}})
+// // console.log(user);
+
+//     if(!user){
+//      throw new NotFoundException('user not found')
+//     }
+
+//     const verify = this.jwtService.verify(token)
+//     let verifyUserId = verify['userId']
+//     console.log(verifyUserId);
+    
+//     if(id != verifyUserId){
+//      throw new NotFoundException('incorrect id')
+//     } 
+
+//     const{newPassword, confirmPassword} = payload
+//     if(newPassword !== confirmPassword){
+//      throw new UnauthorizedException('password must be the same')
+//     }
+//     console.log(newPassword);
+    
+//     user.Password = newPassword 
+
+//     const hashedPassword = await bcrypt.hash(newPassword, 10);
+//     user.Password = hashedPassword
+//     const userdetail = await this.userRepo.save(user) 
+  
+//    res.send(userdetail)
+
+//   }
+
+
 
 
     //  ONE user to ONE profile

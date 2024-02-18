@@ -13,6 +13,7 @@ import { RolesGuard } from './guard/roles.guard';
 import { ProfileEntity } from '../entities/profile.entity';
 import { ReviewEntity } from '../entities/review.entity';
 import { OrderEntity } from '../entities/order.entity';
+// import { BlockGuard } from './guard/block.guard';
 // import { UserModule } from '../user/user.module';
 
 

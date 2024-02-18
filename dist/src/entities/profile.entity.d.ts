@@ -9,5 +9,6 @@ export declare class ProfileEntity {
     createdAt: Date;
     updatedAt: Date;
     role: Role;
+    isActive: boolean;
     user: UserEntity;
 }

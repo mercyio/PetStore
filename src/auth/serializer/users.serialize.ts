@@ -18,7 +18,6 @@ export class SerializeUsers {
     @Exclude()
     createdAt: Date;
 
-
     role: Role
 
     @Exclude()

@@ -52,3 +52,5 @@ npm i dotenv
 
 
     npm run migration:generate -- config/migrations/testingFiles
+
+    npm install --save @nestjs-modules/mailer nodemailer

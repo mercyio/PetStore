@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 // import { PetModule } from './Pets/pets.module';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 // import { PetsUploadModule } from './Pets/pets-upload/pets-upload.module';
 import { AuthModule } from './auth/auth.module';
 import { DatabaseModule } from './database/database.module';
+// import { MailerModule } from '@nestjs-modules/mailer';
 
 @Module({
   imports: [
@@ -14,6 +15,20 @@ import { DatabaseModule } from './database/database.module';
     // PetsUploadModule,
     AuthModule,
     DatabaseModule,
+
+    // MailerModule.forRootAsync({
+    //   imports: [ConfigModule],
+    //   useFactory: (configService: ConfigService) => ({
+    //     transport: {
+    //       service: 'gmail',
+    //       auth: {
+    //         user: configService.getOrThrow("EMAIL_USER"),
+    //         pass: configService.getOrThrow("EMAIL_SECRET"),
+    //       },
+    //     },
+    //   }),
+    //   inject: [ConfigService],
+// }),
   ],
   
 })

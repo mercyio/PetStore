@@ -26,10 +26,21 @@ export class UserEntity{
                 default: Role.unknown
         })
         role:Role
+
+        // @Column({
+        //         default: false
+        //       })
+        //       blocked: boolean
+
+        // @Column({
+        //         default: false
+        //       })
+        //       isActive  : boolean
       
         @CreateDateColumn()
         CreatedAt: Date;
 
+         
         @UpdateDateColumn()
         updatedAt: Date
 
