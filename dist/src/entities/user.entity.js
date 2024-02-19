@@ -40,6 +40,18 @@ __decorate([
     __metadata("design:type", String)
 ], UserEntity.prototype, "role", void 0);
 __decorate([
+    (0, typeorm_1.Column)({
+        default: false
+    }),
+    __metadata("design:type", Boolean)
+], UserEntity.prototype, "blocked", void 0);
+__decorate([
+    (0, typeorm_1.Column)({
+        default: false
+    }),
+    __metadata("design:type", Boolean)
+], UserEntity.prototype, "isActive", void 0);
+__decorate([
     (0, typeorm_1.CreateDateColumn)(),
     __metadata("design:type", Date)
 ], UserEntity.prototype, "CreatedAt", void 0);

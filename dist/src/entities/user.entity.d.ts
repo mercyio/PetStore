@@ -7,6 +7,8 @@ export declare class UserEntity {
     Email: string;
     Password: string;
     role: Role;
+    blocked: boolean;
+    isActive: boolean;
     CreatedAt: Date;
     updatedAt: Date;
     profile: ProfileEntity;

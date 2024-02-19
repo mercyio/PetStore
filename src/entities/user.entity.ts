@@ -27,15 +27,15 @@ export class UserEntity{
         })
         role:Role
 
-        // @Column({
-        //         default: false
-        //       })
-        //       blocked: boolean
+        @Column({
+                default: false
+              })
+              blocked: boolean
 
-        // @Column({
-        //         default: false
-        //       })
-        //       isActive  : boolean
+        @Column({
+                default: false
+              })
+              isActive  : boolean
       
         @CreateDateColumn()
         CreatedAt: Date;
