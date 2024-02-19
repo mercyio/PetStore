@@ -170,23 +170,23 @@ export class AuthService {
      }
 
    
-  //    async blockUser( userId:string){
-  //     try{
-  //     const user =await this.userRepo.findOne({where:{userId}})
+     async blockUser( userId:string){
+      try{
+      const user =await this.userRepo.findOne({where:{userId}})
    
-  //        user.blocked = true
-  //       const block=  await this.userRepo.save(user)
+         user.blocked = true
+        const block=  await this.userRepo.save(user)
    
-  //         return {
-  //           msg: 'successfully blocked this user',
-  //           block
-  //         };
-  //     }
-  //     catch(error){
-  //        throw new UnauthorizedException('unable to block this user')
-  //     }
+          return {
+            msg: 'successfully blocked this user',
+            block
+          };
+      }
+      catch(error){
+         throw new UnauthorizedException('unable to block this user')
+      }
       
-  //  }
+   }
 
 
 

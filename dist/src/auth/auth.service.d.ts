@@ -29,6 +29,10 @@ export declare class AuthService {
     GetAllusers(): Promise<SerializeUsers[]>;
     getUser(req: Request): Promise<ProfileEntity>;
     getUserbyId(req: Request): Promise<UserEntity>;
+    blockUser(userId: string): Promise<{
+        msg: string;
+        block: UserEntity;
+    }>;
     createProfile(payload: ProfileDto, req: Request): Promise<"profile has already been created, update profile to make changes" | {
         message: string;
         result: ProfileEntity;

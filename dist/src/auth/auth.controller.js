@@ -26,6 +26,7 @@ const create_pet_dto_1 = require("../dto/pet-dto/create-pet.dto");
 const profile_dto_1 = require("../dto/profile.dto");
 const signup_dto_1 = require("../dto/signup.dto");
 const review_dto_1 = require("../dto/review.dto");
+const block_guard_1 = require("./guard/block.guard");
 let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
@@ -55,6 +56,9 @@ let AuthController = class AuthController {
     }
     async user(req) {
         return await this.authService.getUser(req);
+    }
+    async blockuser(userId) {
+        return await this.authService.blockUser(userId);
     }
     async ownersPet(payload, req) {
         return await this.authService.petOwned(payload, req);
@@ -105,7 +109,7 @@ __decorate([
 ], AuthController.prototype, "logout", null);
 __decorate([
     (0, common_1.Get)('myprofile'),
-    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard, block_guard_1.BlockGuard),
     (0, swagger_1.ApiOkResponse)(),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
@@ -114,7 +118,7 @@ __decorate([
 ], AuthController.prototype, "getProfile", null);
 __decorate([
     (0, common_1.Post)('createprofile'),
-    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard, block_guard_1.BlockGuard),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
@@ -123,7 +127,7 @@ __decorate([
 ], AuthController.prototype, "profile", null);
 __decorate([
     (0, common_1.Patch)('updateprofile'),
-    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard, block_guard_1.BlockGuard),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Req)()),
     __metadata("design:type", Function),
@@ -133,7 +137,7 @@ __decorate([
 __decorate([
     (0, common_1.Get)('users'),
     (0, roles_decorator_1.Roles)(roles_enum_1.Role.admin),
-    (0, common_1.UseGuards)(auth_guard_1.AuthGuard, roles_guard_1.RolesGuard),
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard, roles_guard_1.RolesGuard, block_guard_1.BlockGuard),
     (0, common_1.UseInterceptors)(common_1.ClassSerializerInterceptor),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
@@ -141,13 +145,22 @@ __decorate([
 ], AuthController.prototype, "getUsers", null);
 __decorate([
     (0, common_1.Get)('finduser'),
-    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard, block_guard_1.BlockGuard),
     __param(0, (0, common_1.Body)()),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "user", null);
+__decorate([
+    (0, common_1.Post)('block/:userId'),
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard, block_guard_1.BlockGuard),
+    (0, roles_decorator_1.Roles)(roles_enum_1.Role.admin, roles_enum_1.Role.vendor),
+    __param(0, (0, common_1.Param)('userId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "blockuser", null);
 __decorate([
     (0, common_1.Post)('createVendorPet'),
     (0, roles_decorator_1.Roles)(roles_enum_1.Role.vendor),

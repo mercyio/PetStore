@@ -116,6 +116,20 @@ let AuthService = class AuthService {
         }
         return user;
     }
+    async blockUser(userId) {
+        try {
+            const user = await this.userRepo.findOne({ where: { userId } });
+            user.blocked = true;
+            const block = await this.userRepo.save(user);
+            return {
+                msg: 'successfully blocked this user',
+                block
+            };
+        }
+        catch (error) {
+            throw new common_1.UnauthorizedException('unable to block this user');
+        }
+    }
     async createProfile(payload, req) {
         try {
             const user = req.user;

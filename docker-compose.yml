@@ -15,7 +15,7 @@ services:
     volumes:
       - ./src/usr/src/app/src
 
-postgres_db:
+mysql_db:
      image: mysql
      ports:  
        - "3306:3306"

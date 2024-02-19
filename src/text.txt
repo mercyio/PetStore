@@ -15,10 +15,10 @@ docker inpect
 
 
 docker build -t nestjs-docker . 
-docker run -p 7000:7000 nestjs-docker
+docker run -p 9000:9000 nestjs-docker
 or for production
 docker build -t nestjs-prod -f Dockerfile.prod .
-docker run -p 7000:7000 nestjs-prod
+docker run -p 9000:9000 nestjs-prod
 then
 docker-compose up --build
 To targrt a particular docker-compose file:

@@ -28,6 +28,10 @@ export declare class AuthController {
     }>;
     getUsers(): Promise<import("./serializer/users.serialize").SerializeUsers[]>;
     user(req: Request): Promise<import("../entities/profile.entity").ProfileEntity>;
+    blockuser(userId: string): Promise<{
+        msg: string;
+        block: import("../entities/user.entity").UserEntity;
+    }>;
     ownersPet(payload: createPetsDto, req: Request): Promise<{
         message: string;
         savePet: import("../entities/pets.entity").PetEntity;

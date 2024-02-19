@@ -61,6 +61,7 @@ import { reviewDto } from "src/dto/review.dto";
 // import { BlockGuard } from "./guard/block.guard";
 import { ForgotPasswordDto } from "src/dto/forgotpasswod.dto";
 import { ResetPasswordto } from "src/dto/resetpassword.dto";
+import { BlockGuard } from "./guard/block.guard";
 
 
 
@@ -97,7 +98,7 @@ export class AuthController{
     
 
     @Get('myprofile')
-    @UseGuards(AuthGuard)
+    @UseGuards(AuthGuard, BlockGuard)
     @ApiOkResponse()
     // @ApiBearerAuth()
     async getProfile(@Req()req:Request){ 
@@ -106,13 +107,13 @@ export class AuthController{
     
 
     @Post('createprofile')
-    @UseGuards(AuthGuard)
+    @UseGuards(AuthGuard, BlockGuard)
     async profile(@Body() payload:ProfileDto, @Req() req:Request){
       return await this.authService.createProfile(payload, req)
     }
 
     @Patch('updateprofile')
-    @UseGuards(AuthGuard)
+    @UseGuards(AuthGuard, BlockGuard)
     async updateProfile(@Body() payload:ProfileDto, @Req() req:Request){
       return await this.authService.updateprofile(payload, req)
     }
@@ -120,26 +121,26 @@ export class AuthController{
 
     @Get('users')
     @Roles(Role.admin)
-    @UseGuards(AuthGuard, RolesGuard)
+    @UseGuards(AuthGuard, RolesGuard, BlockGuard)
     @UseInterceptors(ClassSerializerInterceptor)
     async getUsers(){
     return await this.authService.GetAllusers()
     }
 
     @Get('finduser')
-    @UseGuards(AuthGuard)
+    @UseGuards(AuthGuard, BlockGuard)
     async user(@Body() @Req() req:Request){
       return await this.authService.getUser(req)
     }
 
 
     
-    // @Post('block/:userId')
-    // @UseGuards(AuthGuard, BlockGuard)
-    // @Roles(Role.admin, Role.vendor)
-    // async blockuser(@Param('userId') userId:string){
-    //   return await this.authService.blockUser(userId)
-    // }
+    @Post('block/:userId')
+    @UseGuards(AuthGuard, BlockGuard)
+    @Roles(Role.admin, Role.vendor)
+    async blockuser(@Param('userId') userId:string){
+      return await this.authService.blockUser(userId)
+    }
     
     // @Post('unblock/:userId')
     // @HttpCode(200)
