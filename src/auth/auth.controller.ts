@@ -120,8 +120,8 @@ export class AuthController{
 
 
     @Get('users')
-    @Roles(Role.admin)
-    @UseGuards(AuthGuard, RolesGuard, BlockGuard)
+    // @Roles(Role.admin)
+    // @UseGuards(AuthGuard, RolesGuard, BlockGuard)
     @UseInterceptors(ClassSerializerInterceptor)
     async getUsers(){
     return await this.authService.GetAllusers()

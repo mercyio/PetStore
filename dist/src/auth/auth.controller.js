@@ -16,7 +16,6 @@ exports.AuthController = void 0;
 const common_1 = require("@nestjs/common");
 const auth_service_1 = require("./auth.service");
 const auth_guard_1 = require("./guard/auth.guard");
-const roles_guard_1 = require("./guard/roles.guard");
 const roles_decorator_1 = require("./decorator/roles.decorator");
 const roles_enum_1 = require("./enum/roles.enum");
 const swagger_1 = require("@nestjs/swagger");
@@ -136,8 +135,6 @@ __decorate([
 ], AuthController.prototype, "updateProfile", null);
 __decorate([
     (0, common_1.Get)('users'),
-    (0, roles_decorator_1.Roles)(roles_enum_1.Role.admin),
-    (0, common_1.UseGuards)(auth_guard_1.AuthGuard, roles_guard_1.RolesGuard, block_guard_1.BlockGuard),
     (0, common_1.UseInterceptors)(common_1.ClassSerializerInterceptor),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
